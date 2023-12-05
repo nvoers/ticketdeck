@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main className="container mx-auto h-screen">
       <Navbar />
-      <div className="w-full h-[65%] bg-gradient-to-b from-primary to-zinc-100 rounded-xl mt-8 p-8 flex justify-center">
+      <div className="w-full h-[70%] bg-gradient-to-b from-primary to-zinc-100 rounded-xl mt-8 p-8 flex justify-center">
         <div className="w-[40%] flex flex-col place-content-center h-full py-8">
           <p className="font-bold text-5xl pb-4">
             All your tickets in one place
