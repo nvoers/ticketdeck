@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Navbar from "./components/navbar/Navbar.js";
-import Footer from "./components/footer/Footer.js";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -13,14 +14,27 @@ export default function Home() {
               All your tickets in one place
             </p>
             <div className="pt-4">
-              <div className="btn btn-secondary text-lg mr-6">Register</div>
-              <div className="btn btn-secondary text-lg">Login</div>
+              <Link
+                href="/register"
+                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                className="btn btn-secondary text-lg mr-6"
+              >
+                Register
+              </Link>
+              <Link
+                href="/login"
+                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                className="btn btn-secondary text-lg"
+              >
+                Login
+              </Link>
             </div>
           </div>
           <div className="w-1/2 flex flex-col place-content-center py-8">
             <div className="flex justify-center">
               <Image
                 src="/ticket-icon.svg"
+                alt= "Ticketdeck"
                 objectFit="contain"
                 width={300}
                 height={300}
