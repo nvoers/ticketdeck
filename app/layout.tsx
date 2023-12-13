@@ -3,7 +3,6 @@ import "@/styles/globals.css";
 import { Metadata } from "next";
 import { Roboto_Flex } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import AuthStatus from "@/components/auth-status";
 import { Suspense } from "react";
 
 const roboto = Roboto_Flex({
@@ -36,7 +35,6 @@ export default async function RootLayout({
         <Toaster />
         <Suspense fallback="Loading...">
           {}
-          {/* <AuthStatus /> */}
         </Suspense>
         {children}
       </body>

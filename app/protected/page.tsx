@@ -5,8 +5,8 @@ export default function Home() {
 
   return (
     <>
+    {/* @ts-expect-error Server Component */}
       <Navbar />
-      <SignOut />
     </>
   );
 }

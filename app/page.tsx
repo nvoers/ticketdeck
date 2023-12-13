@@ -6,6 +6,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
+      {/* @ts-expect-error Server Component */}
       <Navbar />
       <div className="container mx-auto pt-8">
         <div className="w-full bg-gradient-to-b from-primary to-zinc-100 rounded-xl px-8 py-28 flex justify-between">
