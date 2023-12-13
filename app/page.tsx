@@ -33,7 +33,7 @@ export default function Home() {
           <div className="w-1/2 flex flex-col place-content-center py-8">
             <div className="flex justify-center">
               <Image
-                src="/ticket-icon.svg"
+                src="/ticket-icon.png"
                 alt= "Ticketdeck"
                 objectFit="contain"
                 width={300}
