@@ -31,6 +31,10 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+      </head>
       <body className={roboto.className}>
         <Toaster />
         <Suspense fallback="Loading...">
