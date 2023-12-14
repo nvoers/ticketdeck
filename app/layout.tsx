@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { Roboto_Flex } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
+import PrelineScript from "@/components/PrelineScript";
 
 const roboto = Roboto_Flex({
   subsets: ["latin"],
@@ -42,6 +43,7 @@ export default async function RootLayout({
         </Suspense>
         {children}
       </body>
+      <PrelineScript />
     </html>
   );
 }

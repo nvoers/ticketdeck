@@ -13,6 +13,7 @@
     "bcrypt": "^5.1.0",
     "next": "^14.0.3",
     "next-auth": "^4.22.1",
+    "preline": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1"

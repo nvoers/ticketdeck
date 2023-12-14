@@ -19,15 +19,7 @@ export default async function Navbar() {
           </Link>
           </div>
           <div className="navbar-end">
-            {session ? 
-            <SignOut /> :
-          <Link
-          href="/login"
-          prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-          className="btn-accent btn btn-outline"
-        >
-          Login
-        </Link>}
+            
 
           </div>
         </div>
