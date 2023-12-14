@@ -2,26 +2,36 @@ import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import Image from "next/image";
 
 export default async function Navbar() {
   const session = await getServerSession();
 
     return (
       <>
-        <div className="navbar container mx-auto">
-          <div className="navbar-start"></div>
+        <div className="navbar container mx-auto bg-primary text-white">
+          <div className="navbar-start pl-4">
+          <Image
+            src="/ticket-icon.svg"
+            alt="Vercel Logo"
+            width={20}
+            height={20}
+            priority
+          />
+          </div>
           <div className="navbar-center">
             <Link
             href="/"
             prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
             className="btn btn-ghost text-xl"
           >
+
             Ticketdeck
           </Link>
           </div>
           <div className="navbar-end">
           <button type="button" className="btn btn-ghost" data-hs-overlay="#hs-overlay-example">
-          <FontAwesomeIcon icon={faBars} style={{color: "#0035B2",}}/>
+          <FontAwesomeIcon icon={faBars} style={{color: "#FFFFFF",}}/>
           </button>
 
           <div id="hs-overlay-example" className="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full fixed top-0 start-0 transition-all duration-300 transform h-full max-w-xs w-full z-[60] bg-gradient-to-b from-primary to-primary-content text-white hidden" tabIndex="-1">
