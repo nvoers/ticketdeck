@@ -10,11 +10,11 @@ export default function PrelineScript() {
     import("preline/preline");
   }, []);
 
-//   useEffect(() => {
-//     setTimeout(() => {
-//       HSStaticMethods.autoInit();
-//     }, 100);
-//   }, [path]);
+  useEffect(() => {
+    setTimeout(() => {
+      HSStaticMethods.autoInit();
+    }, 100);
+  }, [path]);
 
   return null;
 }

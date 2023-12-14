@@ -5,6 +5,9 @@ import { Roboto_Flex } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import PrelineScript from "@/components/PrelineScript";
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+config.autoAddCss = false;
 
 const roboto = Roboto_Flex({
   subsets: ["latin"],
