@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Navbar from "@/components/navbar";
+import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       {/* @ts-expect-error Server Component */}
-      <Navbar />
+      <Header />
       <div className="container mx-auto">
         <div className="w-full bg-gradient-to-b from-primary to-white flex justify-between px-8 py-32">
           <div className="flex flex-col place-content-center">
@@ -31,17 +31,6 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          {/* <div className="w-1/2 flex flex-col place-content-center py-8">
-            <div className="flex justify-center">
-              <Image
-                src="/ticket-icon.png"
-                alt= "Ticketdeck"
-                objectFit="contain"
-                width={300}
-                height={300}
-              />
-            </div>
-          </div> */}
         </div>
       </div>
       <div className="container mx-auto pt-16 px-8">

@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import PrelineScript from "@/components/PrelineScript";
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import Navbar from "@/components/navbar";
+import header from "@/components/header";
 config.autoAddCss = false;
 
 const roboto = Roboto_Flex({
