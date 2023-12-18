@@ -1,5 +1,6 @@
 import Header from "@/components/header";
 import NextEvent from "@/components/nextevent";
+import TicketModal from "@/components/ticketmodal";
 
 export default function Home() {
 
@@ -8,7 +9,7 @@ export default function Home() {
       {/* @ts-expect-error Server Component */}
       <Header />
       <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
-        <NextEvent/>
+        <NextEvent formId="next_event"/>
 
         <div className="text-neutral mt-8">
           <div className="text-2xl font-bold">Upcoming events</div>
@@ -44,6 +45,7 @@ export default function Home() {
           </div>
 
         </div>
+        <TicketModal formId="next_event" />
       </div>
     </>
   );
