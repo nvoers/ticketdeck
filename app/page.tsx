@@ -1,16 +1,17 @@
 import Image from "next/image";
-import Navbar from "@/components/navbar";
+import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
-      <div className="container mx-auto pt-8">
-        <div className="w-full bg-gradient-to-b from-primary to-zinc-100 rounded-xl px-8 py-28 flex justify-between">
-          <div className="w-1/2 flex flex-col place-content-center py-8 pl-24">
-            <p className="font-bold text-5xl pb-4 text-white w-fit">
+      {/* @ts-expect-error Server Component */}
+      <Header />
+      <div className="container mx-auto">
+        <div className="w-full bg-gradient-to-b from-primary to-white flex justify-between px-8 py-32">
+          <div className="flex flex-col place-content-center">
+            <p className="font-bold text-4xl text-white w-fit">
               All your tickets in one place
             </p>
             <div className="pt-4">
@@ -30,20 +31,9 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div className="w-1/2 flex flex-col place-content-center py-8">
-            <div className="flex justify-center">
-              <Image
-                src="/ticket-icon.png"
-                alt= "Ticketdeck"
-                objectFit="contain"
-                width={300}
-                height={300}
-              />
-            </div>
-          </div>
         </div>
       </div>
-      <div className="container mx-auto pt-16">
+      <div className="container mx-auto pt-16 px-8">
         <p className="text-5xl font-bold">
           Ticketdeck: Your personal digital ticket wallet
         </p>
