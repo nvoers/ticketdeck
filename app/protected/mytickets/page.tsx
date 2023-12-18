@@ -1,7 +1,7 @@
 import Header from "@/components/header";
 import EventCard from "@/components/eventcard";
-import Link from "next/link";
 import TicketModal from "@/components/ticketmodal";
+import Button from "@/components/button";
 
 export default function MyTickets() {
     return (
@@ -16,15 +16,9 @@ export default function MyTickets() {
             <EventCard formId={"event5"}/>
             <EventCard formId={"event6"}/>
         </div>
-        <div className="h-full flex justify-center">
-            <Link
-                href="/"
-                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-                className="btn btn-sm btn-accent btn-outline text-md"
-            >
-            Add new ticket
-            </Link>
-        </div>
+        <Button 
+            link={"/"} 
+            text={"Add tickets"}/>
         <TicketModal formId={"event1"}/>
         <TicketModal formId={"event2"}/>
         <TicketModal formId={"event3"}/>

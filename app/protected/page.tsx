@@ -1,3 +1,4 @@
+import Button from "@/components/button";
 import Header from "@/components/header";
 import NextEvent from "@/components/nextevent";
 import TicketModal from "@/components/ticketmodal";
@@ -11,7 +12,7 @@ export default function Home() {
       <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
         <NextEvent formId="next_event"/>
 
-        <div className="text-neutral mt-8">
+        <div className="text-neutral mt-8 mb-8">
           <div className="text-2xl font-bold">Upcoming events</div>
           <div className="flex flex-col pl-2 pt-2">
             <div className="pt-2 pb-1 flex items-center">
@@ -45,6 +46,7 @@ export default function Home() {
           </div>
 
         </div>
+        <Button link={"/protected/mytickets"} text={"View all tickets"}/>
         <TicketModal formId="next_event" />
       </div>
     </>
