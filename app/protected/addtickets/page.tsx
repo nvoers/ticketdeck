@@ -2,8 +2,6 @@ import Header from "@/components/header";
 // import { sql } from '@vercel/postgres';
 
 export default async function AddTickets() {
-    let data = await sql `SELECT * FROM todos`
-    const { rows: todos } = data
 
     return (
         <>
