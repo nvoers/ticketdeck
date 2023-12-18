@@ -17,3 +17,11 @@ model User {
   email    String @unique
   password String
 }
+
+model Ticket {
+  id      Int      @id @default(autoincrement())
+  name    String
+  code    String
+  date    DateTime
+  user_id Int
+}

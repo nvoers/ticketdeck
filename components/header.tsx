@@ -1,33 +1,10 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth/next";
 import SignOut from "@/components/sign-out";
-import { signOut } from "next-auth/react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
 
 export default async function Header() {
   const session = await getServerSession();
 
-    // return (
-    //   <>
-    //     <div className="navbar container mx-auto bg-primary text-white">
-    //       <div className="navbar-start">
-    //       </div>
-    //       <div className="navbar-center">
-    //         <Link
-    //         href="/"
-    //         prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-    //         className="btn btn-ghost text-xl"
-    //       >
-
-    //         Ticketdeck
-    //       </Link>
-    //       </div>
-    //       <div className="navbar-end">
-    //       </div>
-    //     </div>
-    //   </>
-    // );
     return (
       <div className="navbar bg-primary text-white">
         <div className="navbar-start">
@@ -43,12 +20,12 @@ export default async function Header() {
               className="text-black"
               >My tickets</Link></li>
               <li><Link
-              href={"/login"}
+              href={"/"}
               prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
               className="text-black"
               >Add ticket</Link></li>
               <li><Link
-              href={"/login"}
+              href={"/"}
               prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
               className="text-black"
               >Profile and Settings</Link></li>
