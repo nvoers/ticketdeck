@@ -17,7 +17,7 @@ export default function MyTickets() {
             <EventCard formId={"event6"}/>
         </div>
         <Button 
-            link={"/"} 
+            link={"/protected/addtickets"} 
             text={"Add tickets"}/>
         <TicketModal formId={"event1"}/>
         <TicketModal formId={"event2"}/>
