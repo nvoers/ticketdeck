@@ -22,7 +22,7 @@ function isToday(date: Date) {
     return false;
 }
 
-export default async function EventCard({ticketId, eventName, eventDate}: {ticketId: string, eventName: string, eventDate: Date}) {
+export default function EventCard({ticketId, eventName, eventDate}: {ticketId: string, eventName: string, eventDate: Date}) {
     const formatDate = (dateString) => {
         const formattedDate = new Date(dateString).toLocaleDateString('en-UK', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
         return formattedDate;

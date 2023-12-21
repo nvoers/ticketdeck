@@ -1,6 +1,9 @@
-import Image from 'next/image'
+"use client"
+import { useQRCode } from 'next-qrcode';
 
-export default function TicketModal({ ticketId, eventName }: { ticketId: string, eventName: string }) {
+export default function TicketModal({ ticketId, eventName, ticketInfo }: { ticketId: string, eventName: string, ticketInfo: string }) {
+
+    const { SVG } = useQRCode();
     return(
         <>
         <input type="checkbox" id={ticketId} className="modal-toggle" />
@@ -8,11 +11,12 @@ export default function TicketModal({ ticketId, eventName }: { ticketId: string,
                 <div className="modal-box bg-neutral">
                     <p className="text-lg font-bold mb-4 text-center text-white">{eventName}</p>
                     <div className="flex justify-center">
-                    <Image 
-                        src={"/ticket-icon.png"}
-                        alt="Ticket"
-                        width={200}
-                        height={200}
+                    <SVG 
+                        text={ticketInfo}
+                        options={{
+                            margin: 2,
+                            width: 200,
+                        }}
                     />
                     </div>
                     

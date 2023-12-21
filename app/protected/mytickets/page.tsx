@@ -30,7 +30,7 @@ export default async function MyTickets() {
             text={"Add tickets"}/>
         {tickets.map((ticket) => {
             return(
-                <TicketModal key={ticket.id} ticketId={ticket.id} eventName={ticket.name}/>
+                <TicketModal key={ticket.id} ticketId={ticket.id} eventName={ticket.name} ticketInfo={ticket.code}/>
             );
         })}
         </>
