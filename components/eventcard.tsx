@@ -1,3 +1,5 @@
+import prisma from '@/lib/prisma';
+
 async function getTicket({ticketId}: {ticketId: string}) {
     const ticket = await prisma.ticket.findUnique({
         where: {
