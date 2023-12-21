@@ -1,13 +1,50 @@
-import TicketModal from "./ticketmodal";
+import prisma from '@/lib/prisma';
 
-export default function EventCard({formId}: {formId: string}) {
+async function getTicket({ticketId}: {ticketId: string}) {
+    const ticket = await prisma.ticket.findUnique({
+        where: {
+            id: ticketId
+        }
+    });
+    return ticket;
+}
+
+function isTomorrow(date: Date) {
+    if(date.getDate() === (new Date().getDate() + 1)) {
+        if(date.getMonth() === (new Date().getMonth())) {
+            if(date.getFullYear() === (new Date().getFullYear())) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function isToday(date: Date) {
+    if(date.getDate() === (new Date().getDate())) {
+        if(date.getMonth() === (new Date().getMonth())) {
+            if(date.getFullYear() === (new Date().getFullYear())) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+export default async function EventCard({ticketId}: {ticketId: string}) {
+    const ticket = await getTicket({ticketId});
+    const formatDate = (dateString) => {
+        const formattedDate = new Date(dateString).toLocaleDateString('en-UK', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        return formattedDate;
+      };
     return(
-        <label htmlFor={formId} className="card bg-secondary glass text-white py-2 px-4 my-4 rounded-none relative">
+        <label htmlFor={ticketId} className="card bg-secondary glass text-white py-2 px-4 my-4 rounded-none relative">
             <div className="flex items-center">
-                <p className="text-xl font-bold ">Event name placeholder</p>
-                <span className="badge badge-accent font-bold ml-2">Tomorrow</span>
+                <p className="text-xl font-bold ">{ticket.name}</p>
+                {isToday(ticket.date) ? <span className="badge badge-accent font-bold ml-2">Today</span> : <></>}
+                {isTomorrow(ticket.date) ? <span className="badge badge-accent font-bold ml-2">Tomorrow</span> : <></>}
             </div>
-            <p className="text-md">Sat 16 Dec 2023</p>
+            <p className="text-md">{formatDate(ticket.date)}</p>
         </label>
     );
 }

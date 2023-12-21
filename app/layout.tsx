@@ -47,7 +47,7 @@ export default async function RootLayout({
         </Suspense>
         {children}
       </body>
-      <PrelineScript />
+      {/* <PrelineScript /> */}
     </html>
   );
 }
