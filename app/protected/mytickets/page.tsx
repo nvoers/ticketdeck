@@ -21,7 +21,7 @@ export default async function MyTickets() {
         <div className="pt-4">
             {tickets.map((ticket) => {
                 return(
-                    <EventCard ticketId={ticket.id}/>
+                    <EventCard key={ticket.id} ticketId={ticket.id}/>
                 );
             })}
         </div>
@@ -30,7 +30,7 @@ export default async function MyTickets() {
             text={"Add tickets"}/>
         {tickets.map((ticket) => {
             return(
-                <TicketModal ticketId={ticket.id}/>
+                <TicketModal key={ticket.id} ticketId={ticket.id}/>
             );
         })}
         </>
