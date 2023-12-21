@@ -29,7 +29,7 @@ export default async function Home() {
     <>
       <Header />
       <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
-        <NextEvent ticketId={events[0].id}/>
+        <NextEvent ticketId={events[0].id} eventName={events[0].name} eventDate={events[0].date}/>
 
         <div className="text-neutral mt-8 mb-8">
           <div className="text-2xl font-bold">Upcoming events</div>
@@ -55,7 +55,7 @@ export default async function Home() {
 
         </div>
         <Button link={"/protected/mytickets"} text={"View all tickets"}/>
-        <TicketModal ticketId={events[0].id} />
+        <TicketModal ticketId={events[0].id} eventName={events[0].name}/>
       </div>
     </>
   );
