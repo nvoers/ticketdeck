@@ -2,51 +2,60 @@ import Button from "@/components/button";
 import Header from "@/components/header";
 import NextEvent from "@/components/nextevent";
 import TicketModal from "@/components/ticketmodal";
+import prisma from "@/lib/prisma";
 
-export default function Home() {
+async function getEvents(){
+  const date = new Date();
+  date.setHours(1,0,0,0);
+  const ticket = await prisma.ticket.findMany({
+    where: {
+      date: {
+        gte: date
+      },
+      userId: "clqezvvme0000nx71tk0oloyh"
+    },
+    orderBy: {
+      date: 'asc'
+    }
+  });
+  return ticket;
+}
+
+export default async function Home() {
+
+  const events = await getEvents();
 
   return (
     <>
       <Header />
       <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
-        <NextEvent formId="next_event"/>
+        <NextEvent ticketId={events[0].id}/>
 
         <div className="text-neutral mt-8 mb-8">
           <div className="text-2xl font-bold">Upcoming events</div>
-          <div className="flex flex-col pl-2 pt-2">
-            <div className="pt-2 pb-1 flex items-center">
-              <div className="w-2 h-2 rounded-full bg-neutral dark:bg-neutral translate-x-[15%]"></div>
-              <p className="text-neutral font-bold pl-2">
-                Event name placeholder
-              </p>
-            </div>
-            <div>
-              <div className="flex items-center">
-                <p className="justify-center border-l-2 border-neutral font-semibold text-neutral pl-2 ml-1">
-                  Sat 16 Dec 2023
-                </p>
+          {events.slice(1,4).map((ticket) => {
+            return(
+              <div key={ticket.id} className="flex flex-col pl-2 pt-2">
+                <div className="pt-2 pb-1 flex items-center">
+                  <div className="w-2 h-2 rounded-full bg-neutral dark:bg-neutral translate-x-[15%]"></div>
+                  <p className="text-neutral font-bold pl-2">
+                    {ticket.name}
+                  </p>
+                </div>
+                <div>
+                  <div className="flex items-center">
+                    <p className="justify-center border-l-2 border-neutral font-semibold text-neutral pl-2 ml-1">
+                      {ticket.date.toLocaleDateString('en-UK', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="flex flex-col pl-2 pt-2">
-            <div className="pt-2 pb-1 flex items-center">
-              <div className="w-2 h-2 z-0 rounded-full bg-neutral translate-x-[15%]"></div>
-              <p className="text-neutral font-bold pl-2">
-                Event name placeholder
-              </p>
-            </div>
-            <div>
-              <div className="flex items-center">
-                <p className="justify-center border-l-2 border-neutral font-semibold text-neutral pl-2 ml-1">
-                  Sun 31 Dec 2023
-                </p>
-              </div>
-            </div>
-          </div>
+            );
+          })}
 
         </div>
         <Button link={"/protected/mytickets"} text={"View all tickets"}/>
-        <TicketModal ticketId="next_event" />
+        <TicketModal ticketId={events[0].id} />
       </div>
     </>
   );
