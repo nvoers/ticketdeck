@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma";
 
 async function getEvents(){
   const date = new Date();
-  date.setHours(1,0,0,0);
+  date.setHours(0,0,0,0);
   const ticket = await prisma.ticket.findMany({
     where: {
       date: {
