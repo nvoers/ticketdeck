@@ -3,7 +3,7 @@
 import Header from "@/components/header";
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 function SubmitButton() {
     const { pending } = useFormStatus()
@@ -17,15 +17,16 @@ function SubmitButton() {
 
 export default function AddTickets() {
     const [event_name, setEventName] = useState('');
-    const [date, setDate] = useState('');
+    const [event_date, setEventDate] = useState('');
     const [ticket_info, setTicketInfo] = useState('');
+    const router = useRouter();
 
     const handleEventNameChange = (event) => {
         setEventName(event.target.value);
     }
 
     const handleDateChange = (event) => {
-        setDate(event.target.value);
+        setEventDate(event.target.value);
     }
 
     const handleTicketInfoChange = (event) => {
@@ -34,21 +35,21 @@ export default function AddTickets() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("Submitting form");
         try{
             await fetch('/api/ticket', {
                 method: 'POST', 
                 headers: {
                 'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({event_name, date, ticket_info}) 
+                body: JSON.stringify({event_name, event_date, ticket_info}) 
             });
+            router.refresh();
         } catch (error){
             console.error(error);
         }
     
         setEventName('');
-        setDate('');
+        setEventDate('');
         setTicketInfo('');
       };
 
@@ -56,7 +57,7 @@ export default function AddTickets() {
         <>
             <Header/>
             <div className="flex justify-center pt-8">
-            <form className="form-control w-full max-w-xs" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="form-control w-full max-w-xs">
                 <label htmlFor="event_name">Event name</label>
                 <input 
                     id="event_name" 
@@ -74,7 +75,7 @@ export default function AddTickets() {
                     type="date" 
                     placeholder="Date" 
                     className="input input-bordered w-full max-w-xs"
-                    value={date}
+                    value={event_date}
                     onChange={handleDateChange}
                     required/>
                 <label htmlFor="ticket_info">Ticket info</label>
@@ -87,10 +88,9 @@ export default function AddTickets() {
                     value={ticket_info}
                     onChange={handleTicketInfoChange}
                     required/>
-                <button type="submit" className='btn btn-accent btn-outline mt-4'>
-                    Add ticket
-                </button>
+                <SubmitButton />
             </form>
+            
             </div>
         </>
     );

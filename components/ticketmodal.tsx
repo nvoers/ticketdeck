@@ -3,7 +3,7 @@ import Image from 'next/image'
 export default function TicketModal({ ticketId }: { ticketId: string }) {
     return(
         <>
-        <input type="checkbox" id={ticketId} className="modal-toggle" />
+        <input type="checkbox" className="modal-toggle" />
             <div className="modal modal-bottom" role="dialog">
                 <div className="modal-box bg-neutral">
                     <p className="text-lg font-bold mb-4 text-center text-white">Event name placeholder</p>
