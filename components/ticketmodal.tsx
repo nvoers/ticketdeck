@@ -1,9 +1,9 @@
 import Image from 'next/image'
 
-export default function TicketModal({ formId }: { formId: string }) {
+export default function TicketModal({ ticketId }: { ticketId: string }) {
     return(
         <>
-        <input type="checkbox" id={formId} className="modal-toggle" />
+        <input type="checkbox" id={ticketId} className="modal-toggle" />
             <div className="modal modal-bottom" role="dialog">
                 <div className="modal-box bg-neutral">
                     <p className="text-lg font-bold mb-4 text-center text-white">Event name placeholder</p>
@@ -17,7 +17,7 @@ export default function TicketModal({ formId }: { formId: string }) {
                     </div>
                     
                 </div>
-                <label className="modal-backdrop" htmlFor={formId}>Close</label>
+                <label className="modal-backdrop" htmlFor={ticketId}>Close</label>
             </div>
         </>
     );}

@@ -12,7 +12,7 @@
       "@/lib/*": ["lib/*"],
       "@/styles/*": ["styles/*"]
     },
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -26,7 +26,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "noImplicitAny": false
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]

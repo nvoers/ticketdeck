@@ -2,29 +2,38 @@ import Header from "@/components/header";
 import EventCard from "@/components/eventcard";
 import TicketModal from "@/components/ticketmodal";
 import Button from "@/components/button";
+import prisma from "@/lib/prisma";
 
-export default function MyTickets() {
+async function getTickets() {
+    const tickets = await prisma.ticket.findMany({
+        where: {
+            userId: "clqezvvme0000nx71tk0oloyh"
+        }
+    });
+    return tickets;
+}
+
+export default async function MyTickets() {
+    const tickets = await getTickets();
+    console.log({tickets});
     return (
         <>
-        {/* @ts-expect-error Server Component */}
         <Header/>
         <div className="pt-4">
-            <EventCard formId={"event1"}/>
-            <EventCard formId={"event2"}/>
-            <EventCard formId={"event3"}/>
-            <EventCard formId={"event4"}/>
-            <EventCard formId={"event5"}/>
-            <EventCard formId={"event6"}/>
+            {tickets.map((ticket) => {
+                return(
+                    <EventCard ticketId={ticket.id}/>
+                );
+            })}
         </div>
         <Button 
-            link={"/protected/addtickets"} 
+            link={"/protected/mytickets/add"} 
             text={"Add tickets"}/>
-        <TicketModal formId={"event1"}/>
-        <TicketModal formId={"event2"}/>
-        <TicketModal formId={"event3"}/>
-        <TicketModal formId={"event4"}/>
-        <TicketModal formId={"event5"}/>
-        <TicketModal formId={"event6"}/>
+        {tickets.map((ticket) => {
+            return(
+                <TicketModal ticketId={ticket.id}/>
+            );
+        })}
         </>
     );
 
