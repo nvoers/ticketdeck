@@ -2,6 +2,7 @@ import Image from "next/image";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Link from "next/link";
+import { SignInButton, SignUpButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -14,20 +15,12 @@ export default function Home() {
               All your tickets in one place
             </p>
             <div className="pt-4">
-              <Link
-                href="/register"
-                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-                className="btn btn-secondary text-lg mr-6"
-              >
-                Register
-              </Link>
-              <Link
-                href="/login"
-                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-                className="btn btn-secondary text-lg"
-              >
-                Login
-              </Link>
+              <SignUpButton redirectUrl="/protected">
+                <button className="btn btn-secondary text-lg mr-4">Register</button>
+              </SignUpButton>
+              <SignInButton redirectUrl="/protected" mode="modal">
+                <button className="btn btn-secondary text-lg mr-4">Sign in</button>
+              </SignInButton>
             </div>
           </div>
         </div>
