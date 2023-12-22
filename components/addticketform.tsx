@@ -1,6 +1,5 @@
 'use client'
 
-import { useFormState } from 'react-dom'
 import { useFormStatus } from 'react-dom'
 
 const initialState = {

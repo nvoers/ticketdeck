@@ -15,10 +15,10 @@ export default function Home() {
               All your tickets in one place
             </p>
             <div className="pt-4">
-              <SignUpButton redirectUrl="/protected">
+              <SignUpButton redirectUrl="/mytickets">
                 <button className="btn btn-secondary text-lg mr-4">Register</button>
               </SignUpButton>
-              <SignInButton redirectUrl="/protected" mode="modal">
+              <SignInButton redirectUrl="/mytickets" mode="modal">
                 <button className="btn btn-secondary text-lg mr-4">Sign in</button>
               </SignInButton>
             </div>
