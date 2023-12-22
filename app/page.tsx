@@ -2,33 +2,25 @@ import Image from "next/image";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Link from "next/link";
+import { SignInButton, SignUpButton } from "@clerk/nextjs";
 
 export default function Home() {
   return (
     <>
-      {/* @ts-expect-error Server Component */}
       <Header />
-      <div className="container mx-auto">
-        <div className="w-full bg-gradient-to-b from-primary to-white flex justify-between px-8 py-32">
+      <div className="bg-gradient-to-b from-primary to-white ">
+        <div className="w-full flex justify-between px-8 py-32 container mx-auto">
           <div className="flex flex-col place-content-center">
             <p className="font-bold text-4xl text-white w-fit">
               All your tickets in one place
             </p>
             <div className="pt-4">
-              <Link
-                href="/register"
-                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-                className="btn btn-secondary text-lg mr-6"
-              >
-                Register
-              </Link>
-              <Link
-                href="/login"
-                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-                className="btn btn-secondary text-lg"
-              >
-                Login
-              </Link>
+              <SignUpButton redirectUrl="/protected">
+                <button className="btn btn-secondary text-lg mr-4">Register</button>
+              </SignUpButton>
+              <SignInButton redirectUrl="/protected" mode="modal">
+                <button className="btn btn-secondary text-lg mr-4">Sign in</button>
+              </SignInButton>
             </div>
           </div>
         </div>

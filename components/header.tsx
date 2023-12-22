@@ -1,70 +1,42 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth/next";
-import SignOut from "@/components/sign-out";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { UserButton } from "@clerk/nextjs";
+import { SignedIn } from "@clerk/nextjs";
 
 export default function Header() {
-  // const session = await getServerSession();
 
     return (
       <div className="navbar bg-primary text-white">
         <div className="navbar-start">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-              <FontAwesomeIcon icon={faBars} />
+          <SignedIn>
+            <div className="dropdown">
+              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+                <FontAwesomeIcon icon={faBars} />
+              </div>
+              <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                <li><Link
+                href={"/protected"}
+                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                className="text-black"
+                >Home</Link></li>
+                <li><Link
+                href={"/protected/mytickets"}
+                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                className="text-black"
+                >My tickets</Link></li>
+                <li><Link
+                href={"/protected/mytickets/add"}
+                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                className="text-black"
+                >Add ticket</Link></li>
+              </ul>
             </div>
-            {/* {session ? 
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li><Link
-              href={"/protected/mytickets"}
-              prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-              className="text-black"
-              >My tickets</Link></li>
-              <li><Link
-              href={"/"}
-              prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-              className="text-black"
-              >Add ticket</Link></li>
-              <li><Link
-              href={"/"}
-              prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-              className="text-black"
-              >Profile and Settings</Link></li>
-              <li><SignOut/></li>
-            </ul>
-             :
-             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li><Link
-              href={"/login"}
-              prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-              className="text-black"
-              >Login</Link></li>
-            </ul>
-            } */}
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-              <li><Link
-              href={"/protected/mytickets"}
-              prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-              className="text-black"
-              >My tickets</Link></li>
-              <li><Link
-              href={"/"}
-              prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-              className="text-black"
-              >Add ticket</Link></li>
-              <li><Link
-              href={"/"}
-              prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-              className="text-black"
-              >Profile and Settings</Link></li>
-              <li><SignOut/></li>
-            </ul>
-          </div>
+          </SignedIn>
         </div>
         <div className="navbar-center">
           <Link
-            href="/"
+            href="/protected"
             prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
             className="btn btn-ghost text-xl"
           >
@@ -73,7 +45,15 @@ export default function Header() {
           </Link>
         </div>
         <div className="navbar-end">
-        
+            <UserButton 
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox:
+                    "bg-white",
+                },
+              }}
+            />
         </div>
       </div>
     );

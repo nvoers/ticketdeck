@@ -7,6 +7,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.29.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
@@ -20,6 +21,7 @@
     "bcrypt": "^5.1.0",
     "next": "^14.0.3",
     "next-auth": "^4.22.1",
+    "next-qrcode": "^2.5.1",
     "preline": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
