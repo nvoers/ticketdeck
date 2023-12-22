@@ -1,5 +1,4 @@
 "use client"
-import TicketModal from "./ticketmodal";
 
 export default function NextEvent({formId}: {formId: string}) {
     return(

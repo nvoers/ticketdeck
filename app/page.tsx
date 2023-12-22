@@ -6,7 +6,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
-      {/* @ts-expect-error Server Component */}
       <Header />
       <div className="container mx-auto">
         <div className="w-full bg-gradient-to-b from-primary to-white flex justify-between px-8 py-32">

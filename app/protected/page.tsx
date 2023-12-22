@@ -7,7 +7,6 @@ export default function Home() {
 
   return (
     <>
-      {/* @ts-expect-error Server Component */}
       <Header />
       <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
         <NextEvent formId="next_event"/>
@@ -47,7 +46,7 @@ export default function Home() {
 
         </div>
         <Button link={"/protected/mytickets"} text={"View all tickets"}/>
-        <TicketModal formId="next_event" />
+        <TicketModal ticketId="next_event" />
       </div>
     </>
   );
