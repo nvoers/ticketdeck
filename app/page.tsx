@@ -7,8 +7,8 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className="container mx-auto">
-        <div className="w-full bg-gradient-to-b from-primary to-white flex justify-between px-8 py-32">
+      <div className="bg-gradient-to-b from-primary to-white ">
+        <div className="w-full flex justify-between px-8 py-32 container mx-auto">
           <div className="flex flex-col place-content-center">
             <p className="font-bold text-4xl text-white w-fit">
               All your tickets in one place
