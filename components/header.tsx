@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import SignOut from "@/components/sign-out";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { UserButton } from "@clerk/nextjs";
 
 export default function Header() {
   // const session = await getServerSession();
@@ -73,7 +74,7 @@ export default function Header() {
           </Link>
         </div>
         <div className="navbar-end">
-        
+            <UserButton afterSignOutUrl="/"/>
         </div>
       </div>
     );

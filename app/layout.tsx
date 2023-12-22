@@ -8,6 +8,8 @@ import PrelineScript from "@/components/PrelineScript";
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import header from "@/components/header";
+import { ClerkProvider } from '@clerk/nextjs'
+
 config.autoAddCss = false;
 
 const roboto = Roboto_Flex({
@@ -35,19 +37,21 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-      </head>
-      <body className={roboto.className}>
-        <Toaster />
-        <Suspense fallback="Loading...">
-          {}
-        </Suspense>
-        {children}
-      </body>
-      {/* <PrelineScript /> */}
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <head>
+          <title>{title}</title>
+          <meta name="description" content={description} />
+        </head>
+        <body className={roboto.className}>
+          <Toaster />
+          <Suspense fallback="Loading...">
+            {}
+          </Suspense>
+          {children}
+        </body>
+        {/* <PrelineScript /> */}
+      </html>
+    </ClerkProvider>
   );
 }
