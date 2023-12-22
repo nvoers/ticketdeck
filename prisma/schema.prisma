@@ -12,8 +12,10 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
+model Ticket {
+  id     String   @id @default(cuid())
+  name   String
+  code   String
+  date   DateTime
+  userId String
 }
