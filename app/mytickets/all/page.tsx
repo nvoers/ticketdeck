@@ -28,7 +28,7 @@ export default async function MyTickets() {
             })}
         </div>
         <Button 
-            link={"/protected/mytickets/add"} 
+            link={"/mytickets/add"} 
             text={"Add tickets"}/>
         {tickets.map((ticket) => {
             return(

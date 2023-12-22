@@ -60,7 +60,7 @@ export default async function Home() {
           })}
 
         </div>
-        <Button link={"/protected/mytickets"} text={"View all tickets"}/>
+        <Button link={"/mytickets/all"} text={"View all tickets"}/>
         {events.length > 0 ?
         <TicketModal ticketId={events[0].id} eventName={events[0].name} ticketInfo={events[0].code}/>:<></>}
       </div>
