@@ -2,6 +2,7 @@ import Header from '@/components/header';
 import prisma from '@/lib/prisma';
 import { auth } from '@clerk/nextjs';
 import QRCode from '@/components/qrcode';
+import { notFound } from 'next/navigation';
 
 export default async function Page({params} : {params: {id: string}}) {
     const { userId } = auth();
@@ -11,6 +12,9 @@ export default async function Page({params} : {params: {id: string}}) {
             id: params.id
         }
     });
+    if (!ticket) {
+        notFound();
+    }
 
     return(
         <>
