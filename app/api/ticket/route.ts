@@ -19,3 +19,18 @@ export async function POST(req) {
         return NextResponse.json({error: "Not logged in"})
     }
 }
+
+export async function DELETE(req) {
+    const { userId } = auth();
+    const res = await req.json();
+    if(userId) {
+        const result = await prisma.ticket.delete({
+            where: {
+                id: res.id
+            }
+        })
+        return NextResponse.json({result})
+    } else {
+        return NextResponse.json({error: "Not logged in"})
+    }
+}
