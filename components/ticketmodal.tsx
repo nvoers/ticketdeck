@@ -1,5 +1,6 @@
 "use client"
 import { useQRCode } from 'next-qrcode';
+import Link from 'next/link';
 
 export default function TicketModal({ ticketId, eventName, ticketInfo }: { ticketId: string, eventName: string, ticketInfo: string }) {
 
@@ -9,17 +10,17 @@ export default function TicketModal({ ticketId, eventName, ticketInfo }: { ticke
         <input type="checkbox" id={ticketId} className="modal-toggle" />
             <div className="modal modal-bottom" role="dialog">
                 <div className="modal-box bg-neutral">
-                    <p className="text-lg font-bold mb-4 text-center text-white">{eventName}</p>
-                    <div className="flex justify-center">
-                    <SVG 
-                        text={ticketInfo}
-                        options={{
-                            margin: 2,
-                            width: 200,
-                        }}
-                    />
+                    <div className='grid grid-cols-1 gap-y-4 justify-items-center items-center'>
+                        <p className="text-lg font-bold text-center text-white">{eventName}</p>
+                        <SVG 
+                            text={ticketInfo}
+                            options={{
+                                margin: 2,
+                                width: 200,
+                            }}
+                        />
+                        <Link href={`/mytickets/${ticketId}`} className="text-md text-center text-white">View ticket info</Link>
                     </div>
-                    
                 </div>
                 <label className="modal-backdrop" htmlFor={ticketId}>Close</label>
             </div>
