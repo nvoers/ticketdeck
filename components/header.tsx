@@ -16,17 +16,12 @@ export default function Header() {
               </div>
               <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                 <li><Link
-                href={"/protected"}
-                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-                className="text-black"
-                >Home</Link></li>
-                <li><Link
-                href={"/protected/mytickets"}
+                href={"/mytickets"}
                 prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
                 className="text-black"
                 >My tickets</Link></li>
                 <li><Link
-                href={"/protected/mytickets/add"}
+                href={"/mytickets/add"}
                 prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
                 className="text-black"
                 >Add ticket</Link></li>
@@ -36,7 +31,7 @@ export default function Header() {
         </div>
         <div className="navbar-center">
           <Link
-            href="/protected"
+            href="/mytickets"
             prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
             className="btn btn-ghost text-xl"
           >

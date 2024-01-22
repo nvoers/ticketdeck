@@ -4,7 +4,6 @@ import { Metadata } from "next";
 import { Roboto_Flex } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
-import PrelineScript from "@/components/PrelineScript";
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import header from "@/components/header";
@@ -37,7 +36,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
         <head>
           <title>{title}</title>
@@ -50,7 +49,6 @@ export default async function RootLayout({
           </Suspense>
           {children}
         </body>
-        {/* <PrelineScript /> */}
       </html>
     </ClerkProvider>
   );
