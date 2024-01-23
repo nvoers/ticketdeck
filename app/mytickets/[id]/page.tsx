@@ -1,5 +1,5 @@
 import Header from '@/components/header';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { auth } from '@clerk/nextjs';
 import QRCode from '@/components/qrcode';
 import { notFound } from 'next/navigation';
