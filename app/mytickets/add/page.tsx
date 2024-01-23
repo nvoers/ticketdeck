@@ -30,28 +30,52 @@ export default function AddTickets() {
     }
 
     const handleTicketInfoChange = (event) => {
-        setTicketInfo(event.target.value);
+        setTicketInfo(event.target.files[0]);
     }
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try{
-            await fetch('/api/ticket', {
-                method: 'POST', 
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({event_name, event_date, ticket_info}) 
-            });
-            router.refresh();
-        } catch (error){
-            console.error(error);
-        }
+    // const handleSubmit = async (event) => {
+    //     event.preventDefault();
+    //     console.log({ticket_info});
+    //     try{
+    //         await fetch('/api/ticket', {
+    //             method: 'POST', 
+    //             headers: {
+    //             'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({event_name, event_date, ticket_info}) 
+    //         });
+    //         router.refresh();
+    //     } catch (error){
+    //         console.error(error);
+    //     }
     
-        setEventName('');
-        setEventDate('');
-        setTicketInfo('');
-      };
+    //     setEventName('');
+    //     setEventDate('');
+    //     setTicketInfo('');
+    // };
+    
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (!ticket_info) return
+        console.log("event_name: " + event_name)
+    
+        try {
+            const data = new FormData()
+            data.append('ticket_info', ticket_info)
+            data.append('event_name', event_name)
+            data.append('event_date', event_date)
+    
+            const res = await fetch('/api/ticket', {
+                method: 'POST',
+                body: data,
+            })
+            // handle the error
+            if (!res.ok) throw new Error(await res.text())
+        } catch (e: any) {
+            // Handle errors here
+            console.error(e)
+        }
+      }
 
     return (
         <>
@@ -93,9 +117,7 @@ export default function AddTickets() {
                     name="ticket_info"
                     type="file"
                     placeholder="Ticket info" 
-                    accept="image/*"
-                    className="input input-bordered w-full max-w-xs"
-                    value={ticket_info}
+                    className="input input-bordered w-full max-w-xs py-2"
                     onChange={handleTicketInfoChange}
                     required
                 />

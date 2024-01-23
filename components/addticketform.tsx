@@ -1,32 +1,34 @@
-'use client'
+import { writeFile } from 'fs/promises'
+import { join } from 'path'
 
-import { useFormStatus } from 'react-dom'
+export default function ServerUploadPage() {
+  async function upload(data: FormData) {
+    'use server'
 
-const initialState = {
-  message: "",
-}
+    const file: File | null = data.get('file') as unknown as File
+    if (!file) {
+      throw new Error('No file uploaded')
+    }
 
-function SubmitButton() {
-  const { pending } = useFormStatus()
+    const bytes = await file.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+
+    // With the file data in the buffer, you can do whatever you want with it.
+    // For this, we'll just write it to the filesystem in a new location
+    const path = join('/', 'tmp', file.name)
+    await writeFile(path, buffer)
+    console.log(`open ${path} to see the uploaded file`)
+
+    return { success: true }
+  }
 
   return (
-    <button type="submit" aria-disabled={pending} className='btn btn-accent btn-outline mt-4'>
-      Add ticket
-    </button>
+    <main>
+      <h1>React Server Component: Upload</h1>
+      <form action={upload}>
+        <input type="file" name="file" />
+        <input type="submit" value="Upload" />
+      </form>
+    </main>
   )
-}
-
-export default function AddTicketForm() {
-
-    return(
-        <form className="form-control w-full max-w-xs" action="/api/ticket">
-            <label htmlFor="event_name">Event name</label>
-            <input id="event_name" name="event_name" type="text" placeholder="Event name" className="input input-bordered w-full max-w-xs" />
-            <label htmlFor="event_date">Date</label>
-            <input id="event_date" name="event_date" type="date" placeholder="Date" className="input input-bordered w-full max-w-xs"/>
-            <label htmlFor="ticket_info">Ticket info</label>
-            <input id="ticket_info" name="ticket_info" type="text" placeholder="Ticket info" className="input input-bordered w-full max-w-xs"/>
-            <SubmitButton />
-        </form>
-    );
 }

@@ -41,6 +41,9 @@ dependencies:
   bcrypt:
     specifier: ^5.1.0
     version: 5.1.0
+  jsqr:
+    specifier: ^1.4.0
+    version: 1.4.0
   next:
     specifier: ^14.0.3
     version: 14.0.4(react-dom@18.2.0)(react@18.2.0)
@@ -2411,6 +2414,10 @@ packages:
     dependencies:
       minimist: 1.2.8
     dev: true
+
+  /jsqr@1.4.0:
+    resolution: {integrity: sha512-dxLob7q65Xg2DvstYkRpkYtmKm2sPJ9oFhrhmudT1dZvNFFTlroai3AWSpLey/w5vMcLBXRgOJsbXpdN9HzU/A==}
+    dev: false
 
   /jsx-ast-utils@3.3.3:
     resolution: {integrity: sha512-fYQHZTZ8jSfmWZ0iyzfwiU4WDX4HpHbMCZ3gPlWYiCl3BoeOTsqKBqnTVfH2rYT7eP5c3sVbeSPHnnJOaTrWiw==}
