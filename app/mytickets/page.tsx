@@ -2,7 +2,7 @@ import Button from "@/components/button";
 import Header from "@/components/header";
 import NextEvent from "@/components/nextevent";
 import TicketModal from "@/components/ticketmodal";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs";
 
 async function getEvents(userId){
