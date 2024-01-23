@@ -79,7 +79,7 @@ export default function AddTickets() {
                     onChange={handleDateChange}
                     required/>
                 <label htmlFor="ticket_info">Ticket info</label>
-                <input 
+                {/* <input 
                     id="ticket_info" 
                     name="ticket_info" 
                     type="text" 
@@ -87,7 +87,18 @@ export default function AddTickets() {
                     className="input input-bordered w-full max-w-xs"
                     value={ticket_info}
                     onChange={handleTicketInfoChange}
-                    required/>
+                    required/> */}
+                <input
+                    id="ticket_info"
+                    name="ticket_info"
+                    type="file"
+                    placeholder="Ticket info" 
+                    accept="image/*"
+                    className="input input-bordered w-full max-w-xs"
+                    value={ticket_info}
+                    onChange={handleTicketInfoChange}
+                    required
+                />
                 <SubmitButton />
             </form>
             
