@@ -75,6 +75,7 @@ export default function AddTickets() {
             window.location.href = '/mytickets?addSuccess=1';
         } catch (e: any) {
             // Handle errors here
+            toast.error('Something went wrong');
             console.error(e)
         }
       }
