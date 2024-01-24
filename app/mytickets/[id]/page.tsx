@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { auth } from '@clerk/nextjs';
 import QRCode from '@/components/qrcode';
 import TicketOptions from '@/components/ticketoptions';
+import { notFound } from 'next/navigation';
 
 export default async function Page({params} : {params: {id: string}}) {
     const { userId } = auth();
