@@ -19,3 +19,16 @@ model Ticket {
   date   DateTime
   userId String
 }
+
+model Friendship {
+  id          String           @id @default(cuid())
+  requesterId String
+  accepterId  String
+  status      FriendshipStatus
+}
+
+enum FriendshipStatus {
+  REQUESTED
+  ACCEPTED
+  DECLINED
+}
