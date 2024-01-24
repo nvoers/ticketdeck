@@ -2,13 +2,16 @@ import Header from "@/components/header";
 import EventCard from "@/components/eventcard";
 import TicketModal from "@/components/ticketmodal";
 import Button from "@/components/button";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs";
 
 async function getTickets(userId) {
     const tickets = await prisma.ticket.findMany({
         where: {
             userId: userId
+        },
+        orderBy: {
+            date: 'asc'
         }
     });
     return tickets;
