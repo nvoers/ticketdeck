@@ -43,7 +43,7 @@ export default async function RootLayout({
           <meta name="description" content={description} />
         </head>
         <body className={roboto.className}>
-          <Toaster />
+          <Toaster position="bottom-right" reverseOrder={false}/>
           <Suspense fallback="Loading...">
             {}
           </Suspense>

@@ -4,6 +4,7 @@ import Header from "@/components/header";
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { useRouter } from 'next/navigation'
+import toast from "react-hot-toast";
 
 function SubmitButton() {
     const { pending } = useFormStatus()
@@ -19,7 +20,6 @@ export default function AddTickets() {
     const [event_name, setEventName] = useState('');
     const [event_date, setEventDate] = useState('');
     const [ticket_info, setTicketInfo] = useState('');
-    const router = useRouter();
 
     const handleEventNameChange = (event) => {
         setEventName(event.target.value);
@@ -43,8 +43,11 @@ export default function AddTickets() {
                 },
                 body: JSON.stringify({event_name, event_date, ticket_info}) 
             });
-            router.refresh();
+            // window.location.href = '/mytickets';
+            window.location.href = '/mytickets?addSuccess=1';
+            toast.success('Ticket added!');
         } catch (error){
+            toast.error('Something went wrong');
             console.error(error);
         }
     

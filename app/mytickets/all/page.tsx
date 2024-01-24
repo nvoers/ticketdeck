@@ -9,6 +9,9 @@ async function getTickets(userId) {
     const tickets = await prisma.ticket.findMany({
         where: {
             userId: userId
+        },
+        orderBy: {
+            date: 'asc'
         }
     });
     return tickets;
