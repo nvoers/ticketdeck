@@ -53,14 +53,10 @@ export async function POST(request: NextRequest) {
     const code = jsQR(Uint8ClampedArray.from(png.data), png.width, png.height);
     const qrCodeText = code?.data;
 
-    console.log('QR Code Text: ', qrCodeText);
-
     const { userId } = auth();
     
     if(userId) {
         const eventName = data.get('event_name') as string
-        console.log(data)
-        console.log(eventName, qrCodeText)
         const result = await prisma.ticket.create({
             data: {
                 name: eventName,

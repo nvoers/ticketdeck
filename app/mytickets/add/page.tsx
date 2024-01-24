@@ -33,28 +33,51 @@ export default function AddTickets() {
         setTicketInfo(event.target.files[0]);
     }
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try{
-            await fetch('/api/ticket', {
-                method: 'POST', 
-                headers: {
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({event_name, event_date, ticket_info}) 
-            });
-            // window.location.href = '/mytickets';
-            window.location.href = '/mytickets?addSuccess=1';
-            toast.success('Ticket added!');
-        } catch (error){
-            toast.error('Something went wrong');
-            console.error(error);
-        }
+    // const handleSubmit = async (event) => {
+    //     event.preventDefault();
+    //     try{
+    //         await fetch('/api/ticket', {
+    //             method: 'POST', 
+    //             headers: {
+    //             'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({event_name, event_date, ticket_info}) 
+    //         });
+    //         // window.location.href = '/mytickets';
+    //         window.location.href = '/mytickets?addSuccess=1';
+    //         toast.success('Ticket added!');
+    //     } catch (error){
+    //         toast.error('Something went wrong');
+    //         console.error(error);
+    //     }
     
-        setEventName('');
-        setEventDate('');
-        setTicketInfo('');
-    };
+    //     setEventName('');
+    //     setEventDate('');
+    //     setTicketInfo('');
+    // };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (!ticket_info) return
+    
+        try {
+            const data = new FormData()
+            data.append('ticket_info', ticket_info)
+            data.append('event_name', event_name)
+            data.append('event_date', event_date)
+    
+            const res = await fetch('/api/ticket', {
+                method: 'POST',
+                body: data,
+            })
+            // handle the error
+            if (!res.ok) throw new Error(await res.text())
+            window.location.href = '/mytickets?addSuccess=1';
+        } catch (e: any) {
+            // Handle errors here
+            console.error(e)
+        }
+      }
 
     return (
         <>
