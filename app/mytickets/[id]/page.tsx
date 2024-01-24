@@ -2,7 +2,7 @@ import Header from '@/components/header';
 import { prisma } from '@/lib/prisma';
 import { auth } from '@clerk/nextjs';
 import QRCode from '@/components/qrcode';
-import { notFound } from 'next/navigation';
+import TicketOptions from '@/components/ticketoptions';
 
 export default async function Page({params} : {params: {id: string}}) {
     const { userId } = auth();
@@ -25,6 +25,7 @@ export default async function Page({params} : {params: {id: string}}) {
                 <div className='w-fit'>
                     <QRCode info={ticket.code}/>
                 </div>
+                <TicketOptions ticketId={params.id}/>
             </div>
         </>
     );

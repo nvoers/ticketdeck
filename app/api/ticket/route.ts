@@ -82,7 +82,7 @@ export async function DELETE(req) {
     if(userId) {
         const result = await prisma.ticket.delete({
             where: {
-                id: res.id
+                id: res.ticketId
             }
         })
         return NextResponse.json({result})

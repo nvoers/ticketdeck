@@ -4,6 +4,7 @@ import Header from "@/components/header";
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { useRouter } from 'next/navigation'
+import toast from "react-hot-toast";
 
 function SubmitButton() {
     const { pending } = useFormStatus()
@@ -19,7 +20,6 @@ export default function AddTickets() {
     const [event_name, setEventName] = useState('');
     const [event_date, setEventDate] = useState('');
     const [ticket_info, setTicketInfo] = useState('');
-    const router = useRouter();
 
     const handleEventNameChange = (event) => {
         setEventName(event.target.value);
@@ -33,49 +33,28 @@ export default function AddTickets() {
         setTicketInfo(event.target.files[0]);
     }
 
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //     console.log({ticket_info});
-    //     try{
-    //         await fetch('/api/ticket', {
-    //             method: 'POST', 
-    //             headers: {
-    //             'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({event_name, event_date, ticket_info}) 
-    //         });
-    //         router.refresh();
-    //     } catch (error){
-    //         console.error(error);
-    //     }
-    
-    //     setEventName('');
-    //     setEventDate('');
-    //     setTicketInfo('');
-    // };
-    
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        if (!ticket_info) return
-        console.log("event_name: " + event_name)
-    
-        try {
-            const data = new FormData()
-            data.append('ticket_info', ticket_info)
-            data.append('event_name', event_name)
-            data.append('event_date', event_date)
-    
-            const res = await fetch('/api/ticket', {
-                method: 'POST',
-                body: data,
-            })
-            // handle the error
-            if (!res.ok) throw new Error(await res.text())
-        } catch (e: any) {
-            // Handle errors here
-            console.error(e)
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try{
+            await fetch('/api/ticket', {
+                method: 'POST', 
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({event_name, event_date, ticket_info}) 
+            });
+            // window.location.href = '/mytickets';
+            window.location.href = '/mytickets?addSuccess=1';
+            toast.success('Ticket added!');
+        } catch (error){
+            toast.error('Something went wrong');
+            console.error(error);
         }
-      }
+    
+        setEventName('');
+        setEventDate('');
+        setTicketInfo('');
+    };
 
     return (
         <>
