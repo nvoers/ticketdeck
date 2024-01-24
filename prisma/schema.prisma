@@ -15,7 +15,7 @@ datasource db {
 model Ticket {
   id     String   @id @default(cuid())
   name   String
-  code   String
+  code   String /// @encrypted
   date   DateTime
   userId String
 }

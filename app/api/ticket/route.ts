@@ -1,23 +1,79 @@
-import prisma from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
+import { fromPath, fromBuffer } from "pdf2pic";
+import jsQR from "jsqr";
+import { writeFile } from 'fs/promises'
+import path from 'path'
 
-export async function POST(req) {
+export async function POST(request: NextRequest) {
+    const PNG = require('pngjs').PNG;
+
+    const data = await request.formData()
+    const file: File | null = data.get('ticket_info') as unknown as File
+  
+    if (!file) {
+      return NextResponse.json({ success: false })
+    }
+  
+    const bytes = await file.arrayBuffer()
+    const fileBuffer = Buffer.from(bytes)
+  
+    // const uploadpath = `/tmp/${file.name}`
+    // await writeFile(uploadpath, fileBuffer)
+    // console.log(`open ${uploadpath} to see the uploaded file`)
+
+    // const pdf2picOptions = {
+    //     quality: 100,
+    //     density: 300,
+    //     format: 'png',
+    //     width: 2000,
+    //     height: 2000,
+    // };
+    // const base64Response = await fromPath('/Users/nickvanoers/Documents/ticketdeck/app/api/ticket/sample.pdf', pdf2picOptions)(1, {responseType: "base64"} );
+    // console.log('base64Response:', base64Response);
+    // const dataUri = base64Response?.base64;
+    // if (!dataUri) {
+    //     console.error('base64Response is undefined or null');
+    //     // Handle the error or return early
+    //     return NextResponse.json({ succes: false });
+    // }
+    // console.log('dataUri:', dataUri);
+
+    // let buffer;
+    // try {
+    //     buffer = Buffer.from(dataUri, 'base64');
+    // } catch (error) {
+    //     console.error('Error creating buffer:', error);
+    //     // Handle the error or return early
+    //     return NextResponse.json({ succes: false });
+    // }
+
+    const png = PNG.sync.read(fileBuffer);
+    const code = jsQR(Uint8ClampedArray.from(png.data), png.width, png.height);
+    const qrCodeText = code?.data;
+
+    console.log('QR Code Text: ', qrCodeText);
+
     const { userId } = auth();
-    const res = await req.json();
+    
     if(userId) {
+        const eventName = data.get('event_name') as string
+        console.log(data)
+        console.log(eventName, qrCodeText)
         const result = await prisma.ticket.create({
             data: {
-                name: res.event_name,
-                code: res.ticket_info,
-                date: new Date(res.event_date).toISOString(),
+                name: eventName,
+                code: qrCodeText,
+                date: new Date(data.get('event_date') as string).toISOString(),
                 userId: userId
             }
         })
-        return NextResponse.json({result})
+        return NextResponse.json({succes: true})
     } else {
         return NextResponse.json({error: "Not logged in"})
     }
+  
 }
 
 export async function DELETE(req) {

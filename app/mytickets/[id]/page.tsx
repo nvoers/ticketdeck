@@ -1,5 +1,5 @@
 import Header from '@/components/header';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { auth } from '@clerk/nextjs';
 import QRCode from '@/components/qrcode';
 import TicketOptions from '@/components/ticketoptions';
@@ -12,6 +12,9 @@ export default async function Page({params} : {params: {id: string}}) {
             id: params.id
         }
     });
+    if (!ticket) {
+        notFound();
+    }
 
     return(
         <>
