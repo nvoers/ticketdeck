@@ -1,9 +1,11 @@
 import Search from "@/components/search";
 import Header from "@/components/header";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@clerk/nextjs";
+import SearchResult from "@/components/searchresult";
 
 
-async function searchResults(query: string){
+async function searchResults({query, userId} : {query: string, userId: string}){
     if (!query) {
         return [];
     }
@@ -11,6 +13,9 @@ async function searchResults(query: string){
         where: {
             username: {
                 contains: query.toLowerCase()
+            },
+            id: {
+                not: userId
             }
         },
     });
@@ -27,7 +32,20 @@ export default async function Page({
   }) {
 
     const query = searchParams?.query || null;
-    const users = await searchResults(query);
+    const { userId } = auth();
+    const users = await searchResults({query, userId:"id"});
+
+    const sendFriendrequest = async (userId: any) => {
+        try {
+            await fetch(`/api/friendrequest`, {
+                method: 'POST',
+                body: JSON.stringify({userId: userId})
+            });
+            window.location.href = '/friends?addSuccess=1';
+        } catch (error) {
+            console.log(error);
+        }
+    }
     
     return(
         <>
@@ -35,23 +53,15 @@ export default async function Page({
             <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
                 <div className="container mx-auto">
                     <Search placeholder="Search for friends" />
-                    {users.map((user) => {
-                        return(
-                            <div className="flex flex-row justify-between items-center bg-white rounded-md shadow-md p-4 mt-4" key={user.id}>
-                                <div className="flex flex-row items-center">
-                                    <div className="flex flex-col">
-                                        <p className="text-md font-semibold">Nick van Oers</p>
-                                        <p className="text-sm text-gray-500">{user.username}</p>
-                                    </div>
-                                </div>
-                                <div className="flex flex-row items-center">
-                                    <div className="flex flex-col">
-                                        <button className="btn btn-sm btn-success">Add friend</button>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })}
+                    {users.length == 0 && query ? 
+                        <div className="text-md text-center mt-4 text-gray-800">No results</div> 
+                        : 
+                        users.map((user) => {
+                            return(
+                                <SearchResult user={user} key={user.id}/>
+                            );
+                        })
+                    }
                 </div>
             </div>
         </>
