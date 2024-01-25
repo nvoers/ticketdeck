@@ -2,8 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["jsonProtocol"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -12,19 +11,42 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+model User {
+  id                String       @id
+  firstName         String?
+  lastName          String?
+  username          String       @unique
+  profileImageUrl   String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  userFriendships   Friendship[] @relation(name: "userFriendships")
+  friendFriendships Friendship[] @relation(name: "friendFriendships")
+}
+
 model Ticket {
   id     String   @id @default(cuid())
   name   String
   code   String /// @encrypted
   date   DateTime
-  userId String
+  userId String?
 }
 
 model Friendship {
-  id          String           @id @default(cuid())
-  requesterId String
-  accepterId  String
-  status      FriendshipStatus
+  id String @id @default(cuid())
+
+  userId String
+  user   User?  @relation(name: "userFriendships", fields: [userId], references: [id])
+
+  friendId String
+  friend   User?  @relation(name: "friendFriendships", fields: [friendId], references: [id])
+
+  status FriendshipStatus @default(REQUESTED)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([userId, friendId])
+  @@unique([friendId, userId])
 }
 
 enum FriendshipStatus {
