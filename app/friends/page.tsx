@@ -1,8 +1,8 @@
 import Search from "@/components/search";
 import Header from "@/components/header";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs";
 import SearchResult from "@/components/searchresult";
+import { auth } from "@clerk/nextjs";
 
 
 async function searchResults({query, userId} : {query: string, userId: string}){
@@ -32,20 +32,8 @@ export default async function Page({
   }) {
 
     const query = searchParams?.query || null;
-    const { userId } = auth();
     const users = await searchResults({query, userId:"id"});
-
-    const sendFriendrequest = async (userId: any) => {
-        try {
-            await fetch(`/api/friendrequest`, {
-                method: 'POST',
-                body: JSON.stringify({userId: userId})
-            });
-            window.location.href = '/friends?addSuccess=1';
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    const { userId } = auth();
     
     return(
         <>
@@ -58,7 +46,7 @@ export default async function Page({
                         : 
                         users.map((user) => {
                             return(
-                                <SearchResult user={user} key={user.id}/>
+                                <SearchResult userResult={user} key={user.id} userId={userId}/>
                             );
                         })
                     }
