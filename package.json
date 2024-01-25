@@ -34,6 +34,7 @@
     "react-fontawesome": "^1.7.1",
     "react-hot-toast": "^2.4.1",
     "spawn-sync": "^2.0.0",
+    "svix": "^1.16.0",
     "use-debounce": "^10.0.0",
     "zod": "^3.22.4"
   },
