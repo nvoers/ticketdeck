@@ -19,37 +19,37 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer()
     const fileBuffer = Buffer.from(bytes)
   
-    // const uploadpath = `/tmp/${file.name}`
-    // await writeFile(uploadpath, fileBuffer)
-    // console.log(`open ${uploadpath} to see the uploaded file`)
+    const uploadpath = `/tmp/${file.name}`
+    await writeFile(uploadpath, fileBuffer)
+    console.log(`open ${uploadpath} to see the uploaded file`)
 
-    // const pdf2picOptions = {
-    //     quality: 100,
-    //     density: 300,
-    //     format: 'png',
-    //     width: 2000,
-    //     height: 2000,
-    // };
-    // const base64Response = await fromPath('/Users/nickvanoers/Documents/ticketdeck/app/api/ticket/sample.pdf', pdf2picOptions)(1, {responseType: "base64"} );
-    // console.log('base64Response:', base64Response);
-    // const dataUri = base64Response?.base64;
-    // if (!dataUri) {
-    //     console.error('base64Response is undefined or null');
-    //     // Handle the error or return early
-    //     return NextResponse.json({ succes: false });
-    // }
-    // console.log('dataUri:', dataUri);
+    const pdf2picOptions = {
+        quality: 100,
+        density: 300,
+        format: 'png',
+        width: 2000,
+        height: 2000,
+    };
+    const convert = fromPath(uploadpath, pdf2picOptions)
+    const base64Response = await convert(1, {responseType: "base64"} );
+    const dataUri = base64Response?.base64;
+    if (!dataUri) {
+        console.error('base64Response is undefined or null');
+        // Handle the error or return early
+        return NextResponse.json({ succes: false });
+    }
+    console.log('dataUri:', dataUri);
 
-    // let buffer;
-    // try {
-    //     buffer = Buffer.from(dataUri, 'base64');
-    // } catch (error) {
-    //     console.error('Error creating buffer:', error);
-    //     // Handle the error or return early
-    //     return NextResponse.json({ succes: false });
-    // }
+    let buffer;
+    try {
+        buffer = Buffer.from(dataUri, 'base64');
+    } catch (error) {
+        console.error('Error creating buffer:', error);
+        // Handle the error or return early
+        return NextResponse.json({ succes: false });
+    }
 
-    const png = PNG.sync.read(fileBuffer);
+    const png = PNG.sync.read(buffer);
     const code = jsQR(Uint8ClampedArray.from(png.data), png.width, png.height);
     const qrCodeText = code?.data;
 
