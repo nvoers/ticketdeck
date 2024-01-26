@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
                 userId: userId
             }
         })
-        return NextResponse.json({result})
+        return NextResponse.json({ticketId: result.id}, {status: 200})
     } else {
         return NextResponse.json({error: "Not logged in"})
     }
@@ -80,7 +80,7 @@ export async function DELETE(req) {
                 id: res.ticketId
             }
         })
-        return NextResponse.json({result})
+        return new NextResponse("Deleted ticket", {status: 200})
     } else {
         return NextResponse.json({error: "Not logged in"})
     }
