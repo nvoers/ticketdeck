@@ -2,6 +2,7 @@ import Header from '@/components/header';
 import { auth } from '@clerk/nextjs';
 import { prisma } from '@/lib/prisma';
 import FriendResult from '@/components/friendresult';
+import Link from 'next/link';
 
 async function getFriends({userId} : {userId: string}){
     const friends = await prisma.user.findMany({
@@ -21,20 +22,27 @@ async function getFriends({userId} : {userId: string}){
             id: {
                 not: userId
             },
-            userFriendships: {
-                every: {
-                    // friendId: userId,
-                    status: "ACCEPTED"
+            OR:[
+                {
+                    userFriendships: {
+                        some: {
+                            // friendId: userId,
+                            status: "ACCEPTED"
+                        }
+                    }
+                },
+                {
+                    friendFriendships: {
+                        some: {
+                            // userId: userId,
+                            status: "ACCEPTED"
+                        }
+                    }
                 }
-            },
-            friendFriendships: {
-                every: {
-                    // userId: userId,
-                    status: "ACCEPTED"
-                }
-            },
+            ],
         }
     });
+
     return friends;
 }
 
@@ -58,14 +66,27 @@ async function getUser({id} : {id: string}){
 }
 
 async function getFriendship(userId: string, friendId: string){
-    const friendship = await prisma.friendship.findUnique({
+    var friendship = await prisma.friendship.findUnique({
         where: {
-            OR:[
-                {userId: userId, friendId: friendId},
-                {userId: friendId, friendId: userId}
-            ]
+            unique_friendship:{
+                userId: userId,
+                friendId: friendId
+            }
         }
     });
+    if(friendship == null){
+        friendship = await prisma.friendship.findUnique({
+            where: {
+                unique_friendship_inverse:{
+                    userId: friendId,
+                    friendId: userId
+                }
+            }
+        });
+    }
+    if(friendship == null){
+        return null;
+    }
     return friendship.id;
 }
 
@@ -86,8 +107,27 @@ export default async function Page(){
                     })}
                     {friends.length > 0 ? <p className="text-lg font-semibold mt-4 ml-4">Friends</p> : null}
                     {friends.map(async (friend) => {
-                        return (<FriendResult userResult={friend} userId={userId} friendshipId={await getFriendship(userId, friend.id)} status="FRIENDS"/>);
+                        const friendshipId = await getFriendship(userId, friend.id);
+                        if(friendshipId == null){
+                            return null;
+                        }
+                        return (<FriendResult userResult={friend} userId={userId} friendshipId={friendshipId} status="FRIENDS"/>);
                     })}
+                    {friends.length == 0 && requests.length == 0 ? 
+                        <div className="text-md text-center text-white">
+                            <p>No friends yet</p>
+                        </div> 
+                    : null}
+                    <div className='w-full flex justify-center'>
+                        <Link
+                            href='/friends/add'
+                            prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                            className="btn btn-sm btn-accent text-md mt-4"
+                        >
+                        Add friends
+                        </Link>
+                    </div>
+                    
                 </div>
             </div>
         </>

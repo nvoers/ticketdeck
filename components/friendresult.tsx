@@ -19,7 +19,6 @@ export default function FriendResult({userResult, friendshipId, userId, status} 
     }
 
     const removeFriend = async (user: any) => {
-        console.log(friendshipId);
         try {
             await fetch(`/api/friendrequest`, {
                 method: 'DELETE',

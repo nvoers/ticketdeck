@@ -26,10 +26,10 @@ export default function Header() {
                 className="text-black"
                 >Add ticket</Link></li>
                 <li><Link
-                href={"/friends/add"}
+                href={"/friends"}
                 prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
                 className="text-black"
-                >Add friends</Link></li>
+                >Friends</Link></li>
               </ul>
             </div>
           </SignedIn>
