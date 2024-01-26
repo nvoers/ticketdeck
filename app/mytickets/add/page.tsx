@@ -71,8 +71,9 @@ export default function AddTickets() {
                 body: data,
             })
             // handle the error
+            // console.log(res.json())
             if (!res.ok) throw new Error(await res.text())
-            window.location.href = '/mytickets?addSuccess=1';
+            // window.location.href = '/mytickets?addSuccess=1';
         } catch (e: any) {
             // Handle errors here
             console.error(e)

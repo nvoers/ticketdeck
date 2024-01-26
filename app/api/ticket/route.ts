@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
                 userId: userId
             }
         })
-        return NextResponse.json({succes: true})
+        return NextResponse.json({result})
     } else {
         return NextResponse.json({error: "Not logged in"})
     }
