@@ -19,9 +19,9 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer()
     const fileBuffer = Buffer.from(bytes)
   
-    const uploadpath = `/tmp/${file.name}`
-    await writeFile(uploadpath, fileBuffer)
-    console.log(`open ${uploadpath} to see the uploaded file`)
+    // const uploadpath = `/tmp/${file.name}`
+    // await writeFile(uploadpath, fileBuffer)
+    // console.log(`open ${uploadpath} to see the uploaded file`)
 
     const pdf2picOptions = {
         quality: 100,
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
         width: 2000,
         height: 2000,
     };
-    const convert = fromPath(uploadpath, pdf2picOptions)
+    const convert = fromBuffer(fileBuffer, pdf2picOptions)
     const base64Response = await convert(1, {responseType: "base64"} );
     const dataUri = base64Response?.base64;
     if (!dataUri) {
@@ -38,7 +38,6 @@ export async function POST(request: NextRequest) {
         // Handle the error or return early
         return NextResponse.json({ succes: false });
     }
-    console.log('dataUri:', dataUri);
 
     let buffer;
     try {
