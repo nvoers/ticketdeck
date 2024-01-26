@@ -23,52 +23,64 @@ export async function POST(request: NextRequest) {
     // await writeFile(uploadpath, fileBuffer)
     // console.log(`open ${uploadpath} to see the uploaded file`)
 
-    // const pdf2picOptions = {
-    //     quality: 100,
-    //     density: 300,
-    //     format: 'png',
-    //     width: 2000,
-    //     height: 2000,
-    // };
-    // const base64Response = await fromPath('/Users/nickvanoers/Documents/ticketdeck/app/api/ticket/sample.pdf', pdf2picOptions)(1, {responseType: "base64"} );
-    // console.log('base64Response:', base64Response);
-    // const dataUri = base64Response?.base64;
-    // if (!dataUri) {
-    //     console.error('base64Response is undefined or null');
-    //     // Handle the error or return early
-    //     return NextResponse.json({ succes: false });
-    // }
-    // console.log('dataUri:', dataUri);
+    const pdf2picOptions = {
+        quality: 100,
+        density: 300,
+        format: 'png',
+        width: 2000,
+        height: 2000,
+    };
+    const base64Response = await fromBuffer(fileBuffer, pdf2picOptions).bulk(-1, {responseType: "base64"} );
+    const qrCodeTextList = []
+    base64Response.forEach((responseElement) => {
+        const dataUri = responseElement?.base64;
+        if (!dataUri) {
+            console.error('base64Response is undefined or null');
+            // Handle the error or return early
+            return NextResponse.json({ succes: false });
+        }
 
-    // let buffer;
-    // try {
-    //     buffer = Buffer.from(dataUri, 'base64');
-    // } catch (error) {
-    //     console.error('Error creating buffer:', error);
-    //     // Handle the error or return early
-    //     return NextResponse.json({ succes: false });
-    // }
+        let buffer;
+        try {
+            buffer = Buffer.from(dataUri, 'base64');
+        } catch (error) {
+            console.error('Error creating buffer:', error);
+            // Handle the error or return early
+            return NextResponse.json({ succes: false });
+        }
 
-    const png = PNG.sync.read(fileBuffer);
-    const code = jsQR(Uint8ClampedArray.from(png.data), png.width, png.height);
-    const qrCodeText = code?.data;
+        const png = PNG.sync.read(buffer);
+        const code = jsQR(Uint8ClampedArray.from(png.data), png.width, png.height);
+        if (code?.data) {
+            qrCodeTextList.push(code?.data)
+        }
+    });
+    
 
     const { userId } = auth();
-    
-    if(userId) {
-        const eventName = data.get('event_name') as string
-        const result = await prisma.ticket.create({
-            data: {
-                name: eventName,
-                code: qrCodeText,
-                date: new Date(data.get('event_date') as string).toISOString(),
-                userId: userId
+
+    qrCodeTextList.forEach(async (qrCodeText) => {
+        if(userId) {
+            const eventName = data.get('event_name') as string
+            try {
+                await prisma.ticket.create({
+                    data: {
+                        name: eventName,
+                        code: qrCodeText,
+                        date: new Date(data.get('event_date') as string).toISOString(),
+                        userId: userId
+                    }
+                })
+            } catch (e) {
+                console.error(e)
+                return NextResponse.json({error: "Error creating ticket"})
             }
-        })
-        return NextResponse.json({succes: true})
-    } else {
-        return NextResponse.json({error: "Not logged in"})
-    }
+        } else {
+            return NextResponse.json({error: "Not logged in"})
+        }
+    })
+
+    return NextResponse.json({status: 200})
   
 }
 
@@ -81,7 +93,7 @@ export async function DELETE(req) {
                 id: res.ticketId
             }
         })
-        return NextResponse.json({result})
+        return new NextResponse("Deleted ticket", {status: 200})
     } else {
         return NextResponse.json({error: "Not logged in"})
     }
