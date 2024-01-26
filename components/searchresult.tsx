@@ -1,5 +1,6 @@
 'use client'
 import toast from 'react-hot-toast';
+import { prisma } from '@/lib/prisma'
 
 export default function SearchResult({userResult, key, userId} : {userResult: any, key: string, userId: string}){
 
@@ -11,6 +12,7 @@ export default function SearchResult({userResult, key, userId} : {userResult: an
             });
             toast.success('Friend request sent!');
         } catch (error) {
+            toast.error('Something went wrong');
             console.log(error);
         }
     }
@@ -25,7 +27,7 @@ export default function SearchResult({userResult, key, userId} : {userResult: an
             </div>
             <div className="flex flex-row items-center">
                 <div className="flex flex-col">
-                    <button className="btn btn-sm btn-success" onClick={() => sendFriendrequest(userResult)}>Add friend</button>
+                    <button className="btn btn-sm btn-accent" onClick={() => sendFriendrequest(userResult)}>Add friend</button>
                 </div>
             </div>
         </div>

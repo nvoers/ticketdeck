@@ -45,8 +45,8 @@ model Friendship {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@unique([userId, friendId])
-  @@unique([friendId, userId])
+  @@unique(fields: [userId, friendId], name: "unique_friendship")
+  @@unique(fields: [friendId, userId], name: "unique_friendship_inverse")
 }
 
 enum FriendshipStatus {

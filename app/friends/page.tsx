@@ -1,55 +1,93 @@
-import Search from "@/components/search";
-import Header from "@/components/header";
-import { prisma } from "@/lib/prisma";
-import SearchResult from "@/components/searchresult";
-import { auth } from "@clerk/nextjs";
+import Header from '@/components/header';
+import { auth } from '@clerk/nextjs';
+import { prisma } from '@/lib/prisma';
+import FriendResult from '@/components/friendresult';
 
-
-async function searchResults({query, userId} : {query: string, userId: string}){
-    if (!query) {
-        return [];
-    }
-    const users = await prisma.user.findMany({
-        where: {
-            username: {
-                contains: query.toLowerCase()
+async function getFriends({userId} : {userId: string}){
+    const friends = await prisma.user.findMany({
+        include: {
+            userFriendships: {
+                where: {
+                    friendId: userId
+                }
             },
+            friendFriendships: {
+                where: {
+                    userId: userId
+                }
+            },
+        },
+        where: {
             id: {
                 not: userId
-            }
-        },
+            },
+            userFriendships: {
+                every: {
+                    // friendId: userId,
+                    status: "ACCEPTED"
+                }
+            },
+            friendFriendships: {
+                every: {
+                    // userId: userId,
+                    status: "ACCEPTED"
+                }
+            },
+        }
     });
-    return users;
+    return friends;
 }
 
-export default async function Page({
-    searchParams,
-  }: {
-    searchParams?: {
-      query?: string;
-      page?: string;
-    };
-  }) {
+async function getRequests({userId} : {userId: string}){
+    const requests = await prisma.friendship.findMany({
+        where: {
+            friendId: userId,
+            status: "REQUESTED"
+        },
+    });
+    return requests;
+}
 
-    const query = searchParams?.query || null;
-    const users = await searchResults({query, userId:"id"});
+async function getUser({id} : {id: string}){
+    const user = await prisma.user.findUnique({
+        where: {
+            id: id
+        }
+    });
+    return user;
+}
+
+async function getFriendship(userId: string, friendId: string){
+    const friendship = await prisma.friendship.findUnique({
+        where: {
+            OR:[
+                {userId: userId, friendId: friendId},
+                {userId: friendId, friendId: userId}
+            ]
+        }
+    });
+    return friendship.id;
+}
+
+export default async function Page(){
+
     const { userId } = auth();
-    
+    const friends = await getFriends({userId});
+    const requests = await getRequests({userId});
+
     return(
         <>
             <Header />
             <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
                 <div className="container mx-auto">
-                    <Search placeholder="Search for friends" />
-                    {users.length == 0 && query ? 
-                        <div className="text-md text-center mt-4 text-gray-800">No results</div> 
-                        : 
-                        users.map((user) => {
-                            return(
-                                <SearchResult userResult={user} key={user.id} userId={userId}/>
-                            );
-                        })
-                    }
+                    {requests.length > 0 ? <p className="text-lg font-semibold mt-4 ml-4">Requests</p> : null}
+                    {requests.map(async (request) => {
+                        return (<FriendResult userResult={await getUser({id:request.userId})} userId={userId} friendshipId={request.id} status="REQUESTED"/>);
+                    })}
+                    {friends.length > 0 ? <p className="text-lg font-semibold mt-4 ml-4">Friends</p> : null}
+                    {friends.map(async (friend) => {
+                        return (<FriendResult userResult={friend} userId={userId} friendshipId={await getFriendship(userId, friend.id)} status="FRIENDS"/>);
+                    })}
                 </div>
             </div>
         </>
