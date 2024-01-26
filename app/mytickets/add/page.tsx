@@ -59,7 +59,7 @@ export default function AddTickets() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!ticket_info) return
-        const toastId = toast.loading('Uploading ticket...')
+        const toastId = toast.loading('Uploading tickets...')
         try {
             const data = new FormData()
             data.append('ticket_info', ticket_info)
@@ -73,9 +73,9 @@ export default function AddTickets() {
             // handle the error
             const response = await res.json()
             if (!res.ok) throw new Error(await res.text())
-            toast.success('Ticket uploaded!', { id: toastId })
+            toast.success('Tickets uploaded!', { id: toastId })
             window.location.reload();
-            window.location.href = '/mytickets/' + response.ticketId;
+            window.location.href = '/mytickets/all';;
         } catch (e: any) {
             // Handle errors here
             toast.error('Something went wrong', { id: toastId })
