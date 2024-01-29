@@ -2,13 +2,20 @@ import Button from "@/components/button";
 import Header from "@/components/header";
 import NextEvent from "@/components/nextevent";
 import TicketModal from "@/components/ticketmodal";
+import { auth } from "@clerk/nextjs";
 
 async function getEvents(){
     try {
+        const token = await auth().getToken();
         const res = await fetch(process.env.URL + '/api/ticket', {
             method: 'GET',
-			cache: 'no-store'
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
         });
+        if(res.status == 401){
+			console.log("Unauthorized");
+			return [];
+      }
         const result = await res.json();
 		if(!result.tickets){
 			return [];

@@ -31,8 +31,8 @@ export default function EventCard({ticketId, eventName, eventDate}: {ticketId: s
         <label htmlFor={ticketId} className="card bg-secondary glass text-white py-2 px-4 my-4 rounded-none relative">
             <div className="flex items-center">
                 <p className="text-xl font-bold ">{eventName}</p>
-                {isToday(eventDate) ? <span className="badge badge-accent font-bold ml-2">Today</span> : <></>}
-                {isTomorrow(eventDate) ? <span className="badge badge-accent font-bold ml-2">Tomorrow</span> : <></>}
+                {/* {isToday(eventDate) ? <span className="badge badge-accent font-bold ml-2">Today</span> : <></>}
+                {isTomorrow(eventDate) ? <span className="badge badge-accent font-bold ml-2">Tomorrow</span> : <></>} */}
             </div>
             <p className="text-md">{formatDate(eventDate)}</p>
         </label>

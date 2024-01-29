@@ -28,16 +28,42 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
     const { userId } = auth();
-    try {
-        const result = await prisma.friendship.findMany({
+    const searchParams = request.nextUrl.searchParams
+
+    if(userId) {
+        var result = await prisma.friendship.findMany({
             where: {
-                OR:[{userId: userId},{friendId: userId}]
+                OR: [
+                    {
+                        userId: userId
+                    },
+                    {
+                        friendId: userId
+                    }
+                ]
+            },
+        })
+        searchParams.forEach((value, key) => {
+            if(key === "status") {
+                result = result.filter((friendRequest) => {
+                    return (friendRequest.status === value.toUpperCase())
+                })
+            }
+            if(key === "outgoing") {
+                if(value === "true"){
+                    result = result.filter((friendRequest) => {
+                        return (friendRequest.userId === userId)
+                    })
+                } else {
+                    result = result.filter((friendRequest) => {
+                        return (friendRequest.friendId === userId)
+                    })
+                }
             }
         })
-        return new NextResponse(JSON.stringify(result), {status: 200})
-    } catch (e) {
-        console.error('Error getting friend requests:', e);
-        return new NextResponse("Error getting friend requests: " + e, {status: 500})
+        return NextResponse.json({"friendRequests": result}, {status: 200})
+    } else {
+        return NextResponse.json({error: "Not logged in"}, {status: 401})
     }
 }
 
@@ -56,7 +82,7 @@ export async function DELETE(request: NextRequest) {
     }
 }
 
-export async function PUT(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
     const response = await request.json()
     try {
         const result = await prisma.friendship.update({

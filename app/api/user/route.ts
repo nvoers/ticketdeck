@@ -10,14 +10,14 @@ export async function GET(request: NextRequest) {
     
     if(userId) {
         const result = await prisma.user.findMany({
-            // where: {
-            //     id: {
-            //         contains: query
-            //     }
-            // }
+            where: {
+                username: {
+                    contains: query
+                }
+            }
         })
-        return NextResponse.json(result)
+        return NextResponse.json({"users": result})
     } else {
-        return NextResponse.json({error: "Not logged in"})
+        return NextResponse.json({error: "Not logged in"}, {status: 401})
     }
 }

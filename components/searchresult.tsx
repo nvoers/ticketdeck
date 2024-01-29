@@ -6,7 +6,7 @@ export default function SearchResult({userResult, key, userId} : {userResult: an
 
     const sendFriendrequest = async (user: any) => {
         try {
-            await fetch(`/api/friendrequest`, {
+            await fetch(`/api/friendship`, {
                 method: 'POST',
                 body: JSON.stringify({userId: userId, friendId: user.id})
             });

@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({error: "Error creating ticket"})
             }
         } else {
-            return NextResponse.json({error: "Not logged in"})
+            return NextResponse.json({error: "Not logged in"}, {status: 401})
         }
     })
 
@@ -102,7 +102,7 @@ export async function DELETE(req) {
 export async function GET(request : NextRequest) {
     const { userId } = auth();
     const searchParams = request.nextUrl.searchParams
-    const datetimeFilter = new Date('2024-01-29T00:00:00.000Z');
+    const datetimeFilter = new Date();
     datetimeFilter.setHours(0,0,0,0);
     
     if(userId) {
@@ -119,8 +119,6 @@ export async function GET(request : NextRequest) {
         })
         return NextResponse.json({"tickets": result.map((ticket) => {ticket.date = new Date(ticket.date); return ticket;})})
     } else {
-        return NextResponse.json({error: "Not logged in"})
+        return NextResponse.json({error: "Not logged in"}, {status: 401})
     }
-
-    return NextResponse.json({ "message" : "get tickets"})
 }
