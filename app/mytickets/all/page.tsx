@@ -2,24 +2,28 @@ import Header from "@/components/header";
 import EventCard from "@/components/eventcard";
 import TicketModal from "@/components/ticketmodal";
 import Button from "@/components/button";
-import { prisma } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs";
 
-async function getTickets(userId) {
-    const tickets = await prisma.ticket.findMany({
-        where: {
-            userId: userId
-        },
-        orderBy: {
-            date: 'asc'
-        }
-    });
-    return tickets;
+async function getTickets() {
+    try {
+        const token = await auth().getToken();
+        const res = await fetch(process.env.URL + '/api/ticket', {
+            method: 'GET',
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        const result = await res.json();
+        if(!result.tickets){
+			return [];
+		}
+        return result.tickets;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export default async function MyTickets() {
-    const { userId } = auth();
-    const tickets = await getTickets(userId);
+    const tickets = await getTickets();
     return (
         <>
         <Header/>

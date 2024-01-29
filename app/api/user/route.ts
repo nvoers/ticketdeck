@@ -2,19 +2,22 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 
-export async function GET(request) {
+export async function GET(request: NextRequest) {
+    const searchParams = request.nextUrl.searchParams
+    const query = searchParams.get('query')
+
     const { userId } = auth();
-    const response = await request.json();
+    
     if(userId) {
         const result = await prisma.user.findMany({
             where: {
-                id: {
-                    contains: response.query
+                username: {
+                    contains: query
                 }
             }
         })
-        return NextResponse.json({result})
+        return NextResponse.json({"users": result})
     } else {
-        return NextResponse.json({error: "Not logged in"})
+        return NextResponse.json({error: "Not logged in"}, {status: 401})
     }
 }

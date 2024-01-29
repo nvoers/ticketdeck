@@ -33,29 +33,6 @@ export default function AddTickets() {
         setTicketInfo(event.target.files[0]);
     }
 
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //     try{
-    //         await fetch('/api/ticket', {
-    //             method: 'POST', 
-    //             headers: {
-    //             'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({event_name, event_date, ticket_info}) 
-    //         });
-    //         // window.location.href = '/mytickets';
-    //         window.location.href = '/mytickets?addSuccess=1';
-    //         toast.success('Ticket added!');
-    //     } catch (error){
-    //         toast.error('Something went wrong');
-    //         console.error(error);
-    //     }
-    
-    //     setEventName('');
-    //     setEventDate('');
-    //     setTicketInfo('');
-    // };
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!ticket_info) return
@@ -68,7 +45,7 @@ export default function AddTickets() {
     
             const res = await fetch('/api/ticket', {
                 method: 'POST',
-                body: data,
+                body: data
             })
             // handle the error
             const response = await res.json()
