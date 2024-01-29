@@ -1,7 +1,7 @@
 import Header from "@/components/header";
 import EventCard from "@/components/eventcard";
 import TicketModal from "@/components/ticketmodal";
-import Button from "@/components/button";
+import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 
 async function getTickets() {
@@ -34,9 +34,13 @@ export default async function MyTickets() {
                 );
             })}
         </div>
-        <Button 
-            link={"/mytickets/add"} 
-            text={"Add tickets"}/>
+        <Link
+                href={"/mytickets/add"}
+                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                className="btn btn-sm btn-accent btn-outline text-md"
+            >
+            Add tickets
+            </Link>
         {tickets.map((ticket) => {
             return(
                 <TicketModal key={ticket.id} ticketId={ticket.id} eventName={ticket.name} ticketInfo={ticket.code}/>

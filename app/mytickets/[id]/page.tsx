@@ -1,20 +1,26 @@
 import Header from '@/components/header';
-import { prisma } from '@/lib/prisma';
 import { auth } from '@clerk/nextjs';
 import QRCode from '@/components/qrcode';
-import TicketOptions from '@/components/ticketoptions';
 import { notFound } from 'next/navigation';
+import TicketOptions from '@/components/ticketoptions';
 
 export default async function Page({params} : {params: {id: string}}) {
-    const { userId } = auth();
-    const ticket = await prisma.ticket.findUnique({
-        where: {
-            userId: userId,
-            id: params.id
-        }
-    });
-    if (!ticket) {
-        notFound();
+    var ticket: any = null;
+    try {
+        const token = await auth().getToken();
+        const res = await fetch(process.env.URL + '/api/ticket?id=' + params.id, {
+            method: 'GET',
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        const result = await res.json();
+        if(!result.ticket){
+			notFound();
+		}
+        ticket = result.ticket
+        ticket.date = new Date(ticket.date);
+    } catch (error) {
+        console.log(error);
     }
 
     return(
@@ -26,7 +32,7 @@ export default async function Page({params} : {params: {id: string}}) {
                 <div className='w-fit'>
                     <QRCode info={ticket.code}/>
                 </div>
-                <TicketOptions ticketId={params.id}/>
+                <TicketOptions ticketId={ticket.id}/>
             </div>
         </>
     );

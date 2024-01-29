@@ -1,4 +1,4 @@
-import Button from "@/components/button";
+import Link from "next/link";
 import Header from "@/components/header";
 import NextEvent from "@/components/nextevent";
 import TicketModal from "@/components/ticketmodal";
@@ -63,7 +63,13 @@ export default async function Home() {
           })}
 
         </div>
-        <Button link={"/mytickets/all"} text={"View all tickets"}/>
+        <Link
+                href={"/mytickets/all"}
+                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                className="btn btn-sm btn-accent btn-outline text-md"
+            >
+            View all tickets
+            </Link>
 
         {events.length > 0 ?
         <TicketModal ticketId={events[0].id} eventName={events[0].name} ticketInfo={events[0].code}/>:<></>}

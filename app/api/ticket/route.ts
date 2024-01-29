@@ -86,11 +86,12 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(req) {
     const { userId } = auth();
-    const res = await req.json();
-    if(userId) {
+    const searchParams = req.nextUrl.searchParams
+    const id = searchParams.get('id')
+    if(userId && id) {
         const result = await prisma.ticket.delete({
             where: {
-                id: res.ticketId
+                id: id
             }
         })
         return new NextResponse("Deleted ticket", {status: 200})
@@ -117,6 +118,15 @@ export async function GET(request : NextRequest) {
                 date: 'asc'
             }
         })
+        if(searchParams.get('id')) {
+            const ticket = await prisma.ticket.findUnique({
+                where: {
+                    userId: userId,
+                    id: searchParams.get('id')
+                }
+            })
+            return NextResponse.json({"ticket": ticket})
+        }
         return NextResponse.json({"tickets": result.map((ticket) => {ticket.date = new Date(ticket.date); return ticket;})})
     } else {
         return NextResponse.json({error: "Not logged in"}, {status: 401})

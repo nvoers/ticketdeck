@@ -1,6 +1,6 @@
 'use client'
 import toast from 'react-hot-toast'
-import TransferSearch from './transfersearch'
+import Link from 'next/link'
 
 export default function TicketOptions({ ticketId }: { ticketId: string }) {
 
@@ -20,7 +20,7 @@ export default function TicketOptions({ ticketId }: { ticketId: string }) {
 
     return(
         <div className='grid grid-cols-2 gap-2 mt-8'>
-            <label htmlFor="transfer" className="btn btn-sm btn-accent btn-outline">Transfer ticket</label>
+            <Link className="btn btn-sm btn-accent btn-outline" href={`/mytickets/${ticketId}/transfer`}>Transfer ticket</Link>
             <label htmlFor="delete" className="btn btn-sm btn-error btn-outline">Delete ticket</label>
 
         
@@ -34,19 +34,6 @@ export default function TicketOptions({ ticketId }: { ticketId: string }) {
                     </div>
                 </div>
                 <label className="modal-backdrop" htmlFor="delete">Close</label>
-            </div>
-
-            <input type="checkbox" id="transfer" className="modal-toggle" />
-            <div className="modal" role="dialog">
-                <div className="modal-box text-center">
-                    <p className='text-center text-xl font-bold pb-1'>Transfer ticket</p>
-                    <TransferSearch ticketId={ticketId}/>
-                    <div className='grid grid-cols-2 gap-2 mt-4'>
-                        {/* <button className='btn btn-sm btn-success' onClick={transferTicket}>Transfer ticket</button> */}
-                        <label htmlFor="transfer" className="btn btn-sm btn-outline btn-error col-start-2">Cancel</label>
-                    </div>
-                </div>
-                <label className="modal-backdrop" htmlFor="transfer">Close</label>
             </div>
         </div>
     );
