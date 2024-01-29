@@ -2,30 +2,26 @@ import Button from "@/components/button";
 import Header from "@/components/header";
 import NextEvent from "@/components/nextevent";
 import TicketModal from "@/components/ticketmodal";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs";
 
-async function getEvents(userId){
-  const date = new Date();
-  date.setHours(0,0,0,0);
-  const ticket = await prisma.ticket.findMany({
-    where: {
-      date: {
-        gte: date
-      },
-      userId: userId
-    },
-    orderBy: {
-      date: 'asc'
+async function getEvents(){
+    try {
+        const res = await fetch(process.env.URL + '/api/ticket', {
+            method: 'GET',
+			cache: 'no-store'
+        });
+        const result = await res.json();
+		if(!result.tickets){
+			return [];
+		}
+        return result.tickets;
+    } catch (error) {
+        console.log(error);
     }
-  });
-  return ticket;
+    return [];
 }
 
 export default async function Home() {
-  
-  const { userId } = auth();
-  const events = await getEvents(userId);
+  const events = await getEvents();
 
   return (
     <>
@@ -61,6 +57,7 @@ export default async function Home() {
 
         </div>
         <Button link={"/mytickets/all"} text={"View all tickets"}/>
+
         {events.length > 0 ?
         <TicketModal ticketId={events[0].id} eventName={events[0].name} ticketInfo={events[0].code}/>:<></>}
       </div>
