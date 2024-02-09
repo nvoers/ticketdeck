@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({error: "Error creating ticket"})
             }
         } else {
-            return NextResponse.json({error: "Not logged in"})
+            return NextResponse.json({error: "Not logged in"}, {status: 401})
         }
     })
 
@@ -86,15 +86,49 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(req) {
     const { userId } = auth();
-    const res = await req.json();
-    if(userId) {
+    const searchParams = req.nextUrl.searchParams
+    const id = searchParams.get('id')
+    if(userId && id) {
         const result = await prisma.ticket.delete({
             where: {
-                id: res.ticketId
+                id: id
             }
         })
         return new NextResponse("Deleted ticket", {status: 200})
     } else {
         return NextResponse.json({error: "Not logged in"})
+    }
+}
+
+export async function GET(request : NextRequest) {
+    const { userId } = auth();
+    const searchParams = request.nextUrl.searchParams
+    const datetimeFilter = new Date();
+    datetimeFilter.setHours(0,0,0,0);
+    
+    if(userId) {
+        const result = await prisma.ticket.findMany({
+            where: {
+                userId: userId,
+                date: {
+                    gte: datetimeFilter
+                }
+            },
+            orderBy: {
+                date: 'asc'
+            }
+        })
+        if(searchParams.get('id')) {
+            const ticket = await prisma.ticket.findUnique({
+                where: {
+                    userId: userId,
+                    id: searchParams.get('id')
+                }
+            })
+            return NextResponse.json({"ticket": ticket})
+        }
+        return NextResponse.json({"tickets": result.map((ticket) => {ticket.date = new Date(ticket.date); return ticket;})})
+    } else {
+        return NextResponse.json({error: "Not logged in"}, {status: 401})
     }
 }

@@ -1,5 +1,6 @@
 'use client'
-import toast from 'react-hot-toast';
+import toast from 'react-hot-toast'
+import Link from 'next/link'
 
 export default function TicketOptions({ ticketId }: { ticketId: string }) {
 
@@ -19,8 +20,7 @@ export default function TicketOptions({ ticketId }: { ticketId: string }) {
 
     return(
         <div className='grid grid-cols-2 gap-2 mt-8'>
-            <button className='btn btn-sm btn-accent btn-outline' onClick={comingSoon}>Transfer ticket</button>
-            {/* <button className='btn btn-sm btn-error btn-outline'>Delete ticket</button> */}
+            <Link className="btn btn-sm btn-accent btn-outline" href={`/mytickets/${ticketId}/transfer`}>Transfer ticket</Link>
             <label htmlFor="delete" className="btn btn-sm btn-error btn-outline">Delete ticket</label>
 
         

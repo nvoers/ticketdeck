@@ -1,47 +1,26 @@
 import Search from "@/components/search";
 import Header from "@/components/header";
-import { prisma } from "@/lib/prisma";
 import SearchResult from "@/components/searchresult";
 import { auth } from "@clerk/nextjs";
 
 
-async function searchResults({query, userId} : {query: string, userId: string}){
+async function searchResults(query: string){
     if (!query) {
         return [];
     }
-    const users = await prisma.user.findMany({
-        include: {
-            userFriendships: {
-                where: {
-                    friendId: userId
-                }
-            },
-            friendFriendships: {
-                where: {
-                    userId: userId
-                }
-            },
-        },
-        where: {
-            username: {
-                contains: query.toLowerCase()
-            },
-            id: {
-                not: userId
-            },
-            userFriendships: {
-                none: {
-                    friendId: userId
-                }
-            },
-            friendFriendships: {
-                none: {
-                    userId: userId
-                }
-            },
-        },
-    });
-    return users;
+    try {
+        const token = await auth().getToken();
+        const users = await fetch(process.env.URL + "/api/user/friends?not=true&query=" + query, {
+            method: 'GET',
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        const result = await users.json();
+        return result.users;
+    } catch (error) {
+        console.log(error);
+    }
+    return [];
 }
 
 export default async function Page({
@@ -55,7 +34,7 @@ export default async function Page({
 
     const query = searchParams?.query || null;
     const { userId } = auth();
-    const users = await searchResults({query, userId:userId});
+    const users = await searchResults(query);
     
     return(
         <>
