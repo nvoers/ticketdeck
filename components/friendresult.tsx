@@ -1,7 +1,7 @@
 'use client'
 import toast from 'react-hot-toast';
 
-export default function FriendResult({friendshipRequest, friend, status} : {friendshipRequest: any, friend: any, status: string}){
+export default function FriendResult({friendshipRequest, friend, status, key} : {friendshipRequest: any, friend: any, status: string, key: string}){
 
     const addFriend = async () => {
         try {
@@ -31,7 +31,7 @@ export default function FriendResult({friendshipRequest, friend, status} : {frie
     }
 
     return (
-        <div className="flex flex-row justify-between items-center bg-white rounded-md shadow-md p-4 mt-4" key={friendshipRequest.id}>
+        <div className="flex flex-row justify-between items-center bg-white rounded-md shadow-md p-4 mt-4" key={key}>
             <div className="flex flex-row items-center">
                 <div className="flex flex-col">
                     <p className="text-md font-semibold">{friend.firstName} {friend.lastName}</p>

@@ -63,7 +63,7 @@ export default async function Page({
                         friends.map(async (userId: string) => {
                             const user = await getUser(userId);
                             return(
-                                <TransferResult user={user}/>
+                                <TransferResult user={user} key={user.id}/>
                             );
                         })
                     }

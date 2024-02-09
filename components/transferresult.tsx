@@ -1,5 +1,5 @@
 'use client'
-export default function TransferResult({ user }: { user: any }) {
+export default function TransferResult({ user, key }: { user: any, key: string }) {
 
     const handleClick = () => {
         transferTicket(user.id, window.location.pathname.split('/')[2]);
@@ -20,7 +20,7 @@ export default function TransferResult({ user }: { user: any }) {
     }
 
     return (
-        <div className="flex flex-row justify-between items-center bg-white rounded-md shadow-md p-4 mt-4" key={user.id}>
+        <div className="flex flex-row justify-between items-center bg-white rounded-md shadow-md p-4 mt-4" key={key}>
             <div className="flex flex-row items-center">
                 <div className="flex flex-col">
                     <p className="text-md font-semibold">{user.firstName} {user.lastName}</p>
