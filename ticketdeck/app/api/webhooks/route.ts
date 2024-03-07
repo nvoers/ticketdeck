@@ -66,11 +66,9 @@ export async function POST(req: Request) {
                 {data: {
                     id: payload.data.id,
                     username: payload.data.username,
-                    firstName: payload.data.firstName,
-                    lastName: payload.data.lastName,
-                    profileImageUrl: payload.data.profileImageUrl,
-                    createdAt: payload.data.createdAt,
-                    updatedAt: payload.data.updatedAt,
+                    firstName: payload.data.first_name,
+                    lastName: payload.data.last_name,
+                    profileImageUrl: payload.data.image_url,
                     }
                 }
             )

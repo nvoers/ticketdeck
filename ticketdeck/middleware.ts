@@ -18,6 +18,7 @@ export default authMiddleware({
   // publicRoutes: ["/", "/api/webhooks(.*)", "/api/(.*)"],
   publicRoutes: ["/", "/api/webhooks(.*)"],
   apiRoutes: ["/api(.*)"],
+  ignoredRoutes: ['/api/webhooks'],
 });
  
 export const config = {
