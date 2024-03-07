@@ -33,33 +33,10 @@ export default function AddTickets() {
         setTicketInfo(event.target.files[0]);
     }
 
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //     try{
-    //         await fetch('/api/ticket', {
-    //             method: 'POST', 
-    //             headers: {
-    //             'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify({event_name, event_date, ticket_info}) 
-    //         });
-    //         // window.location.href = '/mytickets';
-    //         window.location.href = '/mytickets?addSuccess=1';
-    //         toast.success('Ticket added!');
-    //     } catch (error){
-    //         toast.error('Something went wrong');
-    //         console.error(error);
-    //     }
-    
-    //     setEventName('');
-    //     setEventDate('');
-    //     setTicketInfo('');
-    // };
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!ticket_info) return
-    
+        const toastId = toast.loading('Uploading tickets...')
         try {
             const data = new FormData()
             data.append('ticket_info', ticket_info)
@@ -68,14 +45,17 @@ export default function AddTickets() {
     
             const res = await fetch('/api/ticket', {
                 method: 'POST',
-                body: data,
+                body: data
             })
             // handle the error
+            const response = await res.json()
             if (!res.ok) throw new Error(await res.text())
-            window.location.href = '/mytickets?addSuccess=1';
+            toast.success('Tickets uploaded!', { id: toastId })
+            window.location.reload();
+            window.location.href = '/mytickets/all';;
         } catch (e: any) {
             // Handle errors here
-            toast.error('Something went wrong');
+            toast.error('Something went wrong', { id: toastId })
             console.error(e)
         }
       }

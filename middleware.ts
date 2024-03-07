@@ -15,7 +15,9 @@ export default authMiddleware({
     }
     return NextResponse.next();
   },
-  publicRoutes: ["/"]
+  // publicRoutes: ["/", "/api/webhooks(.*)", "/api/(.*)"],
+  publicRoutes: ["/", "/api/webhooks(.*)"],
+  apiRoutes: ["/api(.*)"],
 });
  
 export const config = {
