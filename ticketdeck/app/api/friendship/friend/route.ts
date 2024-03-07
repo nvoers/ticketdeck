@@ -8,6 +8,9 @@ export async function GET(request : NextRequest) {
     const friendshipId = searchParams.get("friendshipId");
 
     if(userId) {
+        if(friendshipId == null) {
+            return NextResponse.json({error: "friendshipId is required"})
+        }
         const friend = await prisma.user.findFirst({
             where: {
                 id: {

@@ -76,12 +76,12 @@ export default async function Page(){
                     {requests.length > 0 ? <p className="text-lg font-semibold mt-4 ml-4">Requests</p> : null}
                     {requests.map(async (request) => {
                         const friend = await getFriend(request);
-                        return (<FriendResult friendshipRequest={request} friend={friend} status="REQUESTED"/>);
+                        return (<FriendResult key={request.id} friendshipRequest={request} friend={friend} status="REQUESTED"/>);
                     })}
                     {friends.length > 0 ? <p className="text-lg font-semibold mt-4 ml-4">Friends</p> : null}
                     {friends.map(async (friendship) => {
                         const friend = await getFriend(friendship);
-                        return (<FriendResult friendshipRequest={friendship} friend={friend} status="FRIENDS"/>);
+                        return (<FriendResult key={friendship.id} friendshipRequest={friendship} friend={friend} status="FRIENDS"/>);
                     })}
                     {friends.length == 0 && requests.length == 0 ? 
                         <div className="text-md text-center text-white">

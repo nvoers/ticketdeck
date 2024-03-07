@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
         height: 2000,
     };
     const base64Response = await fromBuffer(fileBuffer, pdf2picOptions).bulk(-1, {responseType: "base64"} );
-    const qrCodeTextList = []
+    const qrCodeTextList: string[] = []
     base64Response.forEach((responseElement) => {
         const dataUri = responseElement?.base64;
         if (!dataUri) {
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
   
 }
 
-export async function DELETE(req) {
+export async function DELETE(req : NextRequest) {
     const { userId } = auth();
     const searchParams = req.nextUrl.searchParams
     const id = searchParams.get('id')
@@ -117,12 +117,13 @@ export async function GET(request : NextRequest) {
             orderBy: {
                 date: 'asc'
             }
-        })
-        if(searchParams.get('id')) {
+        }) 
+        const searchId = searchParams.get('id')
+        if(searchId) {
             const ticket = await prisma.ticket.findUnique({
                 where: {
                     userId: userId,
-                    id: searchParams.get('id')
+                    id: searchId
                 }
             })
             return NextResponse.json({"ticket": ticket})

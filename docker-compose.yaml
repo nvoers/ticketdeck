@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:16
+    container_name: ticketdeck_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  app:
+    image: ticketdeck
+    container_name: ticketdeck_app
+    depends_on:
+      - db
+    build:
+      context: ./ticketdeck
+      target: dev
+      dockerfile: dockerfile
+    volumes:
+        - ./ticketdeck:/app
+        - /ticketdeck/app/node_modules
+        - /ticketdeck/app/.next
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?schema=public
+    
+volumes:
+  db:
