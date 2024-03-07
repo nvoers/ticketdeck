@@ -28,20 +28,32 @@ export default async function MyTickets() {
         <>
         <Header/>
         <div className="pt-4">
-            {tickets.map((ticket) => {
-                return(
-                    <EventCard key={ticket.id} ticketId={ticket.id} eventName={ticket.name} eventDate={ticket.date}/>
-                );
-            })}
+            {tickets.length > 0 ? 
+                tickets.map((ticket: any) => {
+                    return(
+                        <EventCard key={ticket.id} ticketId={ticket.id} eventName={ticket.name} eventDate={ticket.date}/>
+                    );
+                })
+            :
+            <div className="container mx-auto p-8 pb-0">
+                <div className="text-2xl font-bold">No tickets</div>
+            </div>
+            }
+            <div className="container mx-auto p-8 pb-4">
+                <div className="grid grid-cols-2 gap-2">
+                    <Link
+                            href={"/mytickets/add"}
+                            prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                            className="btn btn-sm btn-accent btn-outline text-md"
+                        >
+                        Add tickets
+                    </Link>
+                </div>
+            </div>
+            
         </div>
-        <Link
-                href={"/mytickets/add"}
-                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-                className="btn btn-sm btn-accent btn-outline text-md"
-            >
-            Add tickets
-            </Link>
-        {tickets.map((ticket) => {
+        
+        {tickets.map((ticket: any) => {
             return(
                 <TicketModal key={ticket.id} ticketId={ticket.id} eventName={ticket.name} ticketInfo={ticket.code}/>
             );

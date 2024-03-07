@@ -25,7 +25,7 @@ export default function Home() {
         </div>
       </div>
       <div className="container mx-auto pt-16 px-8">
-        <p className="text-5xl font-bold">
+        <p className="text-4xl font-bold">
           Ticketdeck: Your personal digital ticket wallet
         </p>
         <p className="pt-8">

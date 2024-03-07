@@ -42,7 +42,7 @@ export default async function Home() {
 
         <div className="text-neutral mt-8 mb-8">
           <div className="text-2xl font-bold">Upcoming events</div>
-          {events.slice(1,4).map((ticket) => {
+          {events.slice(1,4).map((ticket: any) => {
             return(
               <div key={ticket.id} className="flex flex-col pl-2 pt-2">
                 <div className="pt-2 pb-1 flex items-center">
@@ -63,14 +63,22 @@ export default async function Home() {
           })}
 
         </div>
-        <Link
-                href={"/mytickets/all"}
+        <div className="grid grid-cols-2 gap-2 mt-8">
+          <Link
+                  href={"/mytickets/all"}
+                  prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                  className="btn btn-sm btn-accent btn-outline text-md"
+              >
+              View all tickets
+          </Link>
+          <Link
+                href={"/mytickets/add"}
                 prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
                 className="btn btn-sm btn-accent btn-outline text-md"
-            >
-            View all tickets
-            </Link>
-
+              >
+              Add ticket
+          </Link>
+        </div>
         {events.length > 0 ?
         <TicketModal ticketId={events[0].id} eventName={events[0].name} ticketInfo={events[0].code}/>:<></>}
       </div>

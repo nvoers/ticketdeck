@@ -51,14 +51,15 @@ export async function POST(request: NextRequest) {
 
         const png = PNG.sync.read(buffer);
         const code = jsQR(Uint8ClampedArray.from(png.data), png.width, png.height);
-        if (code?.data) {
+        if(code?.data){
             qrCodeTextList.push(code?.data)
+        } else {
+            return NextResponse.json({error: "No qr code found in image"}, {status: 400})
         }
     });
     
 
     const { userId } = auth();
-
     qrCodeTextList.forEach(async (qrCodeText) => {
         if(userId) {
             const eventName = data.get('event_name') as string

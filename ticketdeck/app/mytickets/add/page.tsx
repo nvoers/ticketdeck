@@ -20,15 +20,15 @@ export default function AddTickets() {
     const [event_date, setEventDate] = useState('');
     const [ticket_info, setTicketInfo] = useState('');
 
-    const handleEventNameChange = (event) => {
+    const handleEventNameChange = (event: any) => {
         setEventName(event.target.value);
     }
 
-    const handleDateChange = (event) => {
+    const handleDateChange = (event: any) => {
         setEventDate(event.target.value);
     }
 
-    const handleTicketInfoChange = (event) => {
+    const handleTicketInfoChange = (event: any) => {
         setTicketInfo(event.target.files[0]);
     }
 
@@ -51,7 +51,7 @@ export default function AddTickets() {
             if (!res.ok) throw new Error(await res.text())
             toast.success('Tickets uploaded!', { id: toastId })
             window.location.reload();
-            window.location.href = '/mytickets/all';;
+            window.location.href = '/mytickets/all';
         } catch (e: any) {
             // Handle errors here
             toast.error('Something went wrong', { id: toastId })
