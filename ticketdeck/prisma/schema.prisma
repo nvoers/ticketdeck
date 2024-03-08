@@ -18,6 +18,7 @@ model User {
   updatedAt         DateTime     @updatedAt
   friendFriendships Friendship[] @relation("friendFriendships")
   userFriendships   Friendship[] @relation("userFriendships")
+  role              Role         @default(USER)
 }
 
 model Ticket {
@@ -47,4 +48,10 @@ enum FriendshipStatus {
   REQUESTED
   ACCEPTED
   DECLINED
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPER_ADMIN
 }
