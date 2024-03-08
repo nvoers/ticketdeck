@@ -6,7 +6,6 @@ import { SignInButton, SignUpButton } from "@clerk/nextjs";
 export default function Home() {
   return (
     <>
-      <Header />
       <div className="bg-gradient-to-b from-primary to-white ">
         <div className="w-full flex justify-between px-8 py-32 container mx-auto">
           <div className="flex flex-col place-content-center">

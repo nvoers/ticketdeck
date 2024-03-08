@@ -4,7 +4,7 @@ import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { UserButton } from "@clerk/nextjs";
 import { SignedIn } from "@clerk/nextjs";
 
-export default function Header() {
+export default function Header({admin}: {admin : boolean}) {
 
     return (
       <div className="navbar bg-primary text-white">
@@ -30,6 +30,13 @@ export default function Header() {
                 prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
                 className="text-black"
                 >Friends</Link></li>
+                {admin ? 
+                  <li><Link
+                  href={"/admin"}
+                  prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
+                  className="text-black"
+                  >Admin</Link></li> 
+                : <></>}
               </ul>
             </div>
           </SignedIn>

@@ -38,7 +38,6 @@ export default async function Page({
     
     return(
         <>
-            <Header />
             <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
                 <div className="container mx-auto">
                     <Search placeholder="Search for friends" />

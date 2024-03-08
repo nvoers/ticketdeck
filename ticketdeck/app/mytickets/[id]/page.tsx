@@ -14,7 +14,7 @@ export default async function Page({params} : {params: {id: string}}) {
             headers: {Authorization: `Bearer ${token}`}
         });
         const result = await res.json();
-        if(!result.ticket){
+        if(!result.ticket || result.ticket == null){
 			notFound();
 		}
         ticket = result.ticket
@@ -25,7 +25,6 @@ export default async function Page({params} : {params: {id: string}}) {
 
     return(
         <>
-            <Header />
             <div className='container mx-auto mt-4 flex flex-col items-center'>
                 <p className='text-4xl text-black font-bold text-center'>{ticket.name}</p>
                 <p className='text-xl text-black text-center'>{ticket.date.toLocaleDateString('en-UK', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</p>

@@ -7,6 +7,8 @@ import { Suspense } from "react";
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { ClerkProvider } from '@clerk/nextjs'
+import Header from "@/components/header";
+import { auth } from "@clerk/nextjs";
 
 config.autoAddCss = false;
 
@@ -27,6 +29,24 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+  let admin = false;
+  try {
+    const token = await auth().getToken();
+    const { userId } = auth();
+    const res = await fetch(process.env.URL + '/api/user?id=' + userId, {
+      method: 'GET',
+      cache: 'no-store',
+      headers: {Authorization: `Bearer ${token}`}
+    });
+    const result = await res.json();
+    if(result.user.role != 'USER'){
+      admin = true;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
@@ -37,6 +57,7 @@ export default async function RootLayout({
         <body className={roboto.className}>
           <Toaster position="bottom-right" reverseOrder={false}/>
           <Suspense fallback="Loading...">
+            <Header admin={admin}/>
             {}
           </Suspense>
           {children}

@@ -61,7 +61,6 @@ export default function AddTickets() {
 
     return (
         <>
-            <Header/>
             <div className="flex justify-center pt-8">
             <form onSubmit={handleSubmit} className="form-control w-full max-w-xs">
                 <label htmlFor="event_name">Event name</label>

@@ -32,7 +32,6 @@ export default async function Home() {
 
   return (
     <>
-      <Header />
       <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
         <div className="container mx-auto">
         {events.length > 0 ? 
