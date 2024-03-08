@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs";
 import TransferResult from "@/components/transferresult";
 
 async function searchResults(query: string){
-    if (!query) {
+    if (!query || query == "") {
         return [];
     }
     try {
@@ -48,7 +48,7 @@ export default async function Page({
         };
     }) {
     
-    const query = searchParams?.query || null;
+    const query = searchParams?.query || "";
     const friends = await searchResults(query);
 
     return(

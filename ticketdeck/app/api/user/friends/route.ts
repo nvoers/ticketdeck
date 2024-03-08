@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
                         not: userId
                     },
                     username: {
-                        contains: searchParams.get("query")
+                        contains: searchParams.get("query") as string
                     
                     }
                 }

@@ -1,7 +1,7 @@
 "use client"
 
 export default function NextEvent({ticketId, eventName, eventDate}: {ticketId: string, eventName: string, eventDate: Date}) {
-    const formatDate = (dateString) => {
+    const formatDate = (dateString: any) => {
         const formattedDate = new Date(dateString).toLocaleDateString('en-UK', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
         return formattedDate;
       };

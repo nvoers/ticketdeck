@@ -33,8 +33,7 @@ export default async function Page({
   }) {
 
     const query = searchParams?.query || null;
-    const { userId } = auth();
-    const users = await searchResults(query);
+    const users = await searchResults(query as any);
     
     return(
         <>
@@ -45,9 +44,9 @@ export default async function Page({
                     {users.length == 0 && query ? 
                         <div className="text-md text-center mt-4 text-gray-800">No results</div> 
                         : 
-                        users.map(async (user) => {
+                        users.map(async (user: any) => {
                             return(
-                                <SearchResult userResult={user} key={user.id} userId={userId}/>
+                                <SearchResult userResult={user} key={user.id} userId={user.id}/>
                             );
                         })
                     }
