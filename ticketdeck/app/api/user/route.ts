@@ -6,6 +6,8 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const query = searchParams.get('query')
     const id = searchParams.get('id')
+    const count = searchParams.has('count')
+    const all = searchParams.has('all')
 
     const { userId } = auth();
     
@@ -27,6 +29,14 @@ export async function GET(request: NextRequest) {
                 }
             })
             return NextResponse.json({"user": result})
+        }
+        if(count){
+            const result = await prisma.user.count()
+            return NextResponse.json({"count": result})
+        }
+        if(all){
+            const result = await prisma.user.findMany()
+            return NextResponse.json({"users": result})
         }
     } else {
         return NextResponse.json({error: "Not logged in"}, {status: 401})

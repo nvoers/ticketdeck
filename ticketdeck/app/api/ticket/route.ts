@@ -106,8 +106,18 @@ export async function GET(request : NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const datetimeFilter = new Date();
     datetimeFilter.setHours(0,0,0,0);
+    const count = searchParams.has('count')
+    const all = searchParams.has('all')
     
     if(userId) {
+        if(count){
+            const result = await prisma.ticket.count();
+            return NextResponse.json({"count": result})
+        }
+        if(all){
+            const result = await prisma.ticket.findMany()
+            return NextResponse.json({"tickets": result})
+        }
         const result = await prisma.ticket.findMany({
             where: {
                 userId: userId,

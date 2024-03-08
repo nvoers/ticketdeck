@@ -29,8 +29,18 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
     const { userId } = auth();
     const searchParams = request.nextUrl.searchParams
+    const count = searchParams.has('count')
+    const all = searchParams.has('all')
 
     if(userId) {
+        if(count){
+            const result = await prisma.friendship.count();
+            return NextResponse.json({"count": result})
+        }
+        if(all){
+            const result = await prisma.friendship.findMany()
+            return NextResponse.json({"friendships": result})
+        }
         var result = await prisma.friendship.findMany({
             where: {
                 OR: [
