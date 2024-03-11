@@ -1,40 +1,42 @@
 "use client"
+import Link from "next/link";
 
-function isTomorrow(date: Date) {
-    if(date.getDate() === (new Date().getDate() + 1)) {
-        if(date.getMonth() === (new Date().getMonth())) {
-            if(date.getFullYear() === (new Date().getFullYear())) {
-                return true;
-            }
-        }
+const formatDate = (dateString: any) => {
+    const eventDate = new Date(dateString);
+    if(isToday(dateString)){
+        return "Today";
     }
-    return false;
+    const formattedDate = eventDate.toLocaleDateString('en-UK', {day: 'numeric', month: 'long', year: 'numeric' });
+    return formattedDate;
+};
+
+const isToday = (dateString: any) => {
+    const eventDate = new Date(dateString);
+    const today = new Date();
+    return today.getFullYear() === eventDate.getFullYear() &&
+                today.getMonth() === eventDate.getMonth() &&
+                today.getDate() === eventDate.getDate();
 }
 
-function isToday(date: Date) {
-    if(date.getDate() === (new Date().getDate())) {
-        if(date.getMonth() === (new Date().getMonth())) {
-            if(date.getFullYear() === (new Date().getFullYear())) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
+export default function EventCard({ticketId, eventName, eventDate}: {ticketId: string, eventName: string, eventDate: String}) {
 
-export default function EventCard({ticketId, eventName, eventDate}: {ticketId: string, eventName: string, eventDate: Date}) {
-    const formatDate = (dateString: string | number | Date) => {
-        const formattedDate = new Date(dateString).toLocaleDateString('en-UK', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
-        return formattedDate;
-      };
-    return(
-        <label htmlFor={ticketId} className="card bg-secondary glass text-white py-2 px-4 my-4 rounded-none relative">
-            <div className="flex items-center">
-                <p className="text-xl font-bold ">{eventName}</p>
-                {/* {isToday(eventDate) ? <span className="badge badge-accent font-bold ml-2">Today</span> : <></>}
-                {isTomorrow(eventDate) ? <span className="badge badge-accent font-bold ml-2">Tomorrow</span> : <></>} */}
-            </div>
-            <p className="text-md">{formatDate(eventDate)}</p>
-        </label>
-    );
+    if(isToday(eventDate)){
+        return(
+            <Link href={`/mytickets/${ticketId}`} >
+                <div className="bg-primary text-secondary px-3 py-3 text-3xl font-bold rounded-lg mb-3">
+                    <p className="truncate">{eventName}</p>
+                    <p>{formatDate(eventDate)}</p>
+                </div>
+            </Link>
+        );
+    } else {
+        return(
+            <Link href={`/mytickets/${ticketId}`} >
+                <div className="text-primary border-2 border-primary px-3 py-3 text-3xl font-bold rounded-lg mb-3">
+                    <p className="truncate">{eventName}</p>
+                    <p>{formatDate(eventDate)}</p>
+                </div>
+            </Link>
+        );
+    }
 }

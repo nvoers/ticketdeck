@@ -9,7 +9,7 @@ export default function QRCode({info}: {info: string}) {
             text={info}
             options={{
                 margin: 2,
-                width: 200,
+                width: 300,
             }}
         />
     );

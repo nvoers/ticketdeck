@@ -19,9 +19,9 @@ export default function TicketOptions({ ticketId }: { ticketId: string }) {
     }
 
     return(
-        <div className='grid grid-cols-2 gap-2 mt-8'>
-            <Link className="btn btn-sm btn-accent btn-outline" href={`/mytickets/${ticketId}/transfer`}>Transfer ticket</Link>
-            <label htmlFor="delete" className="btn btn-sm btn-error btn-outline">Delete ticket</label>
+        <div className='grid grid-cols-2 gap-2 mt-4'>
+            <Link className="border-2 border-primary rounded-lg text-primary text-sm font-bold px-2 py-2 flex items-center" href={`/mytickets/${ticketId}/transfer`}>Transfer ticket</Link>
+            <label htmlFor="delete" className="border-2 border-error rounded-lg text-error text-sm font-bold px-2 py-2 flex items-center">Delete ticket</label>
 
         
             <input type="checkbox" id="delete" className="modal-toggle" />

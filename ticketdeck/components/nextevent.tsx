@@ -4,7 +4,7 @@ export default function NextEvent({ticketId, eventName, eventDate}: {ticketId: s
     const formatDate = (dateString: any) => {
         const formattedDate = new Date(dateString).toLocaleDateString('en-UK', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
         return formattedDate;
-      };
+    };
       
     return(
         <label htmlFor={ticketId}  className="card glass bg-secondary text-white font-bold text-center py-4">

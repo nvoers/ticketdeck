@@ -7,9 +7,9 @@ import { SignedIn } from "@clerk/nextjs";
 export default function Header() {
 
     return (
-      <div className="navbar bg-primary text-white">
+      <div className="navbar bg-secondary">
         <div className="navbar-start">
-          <SignedIn>
+          {/* <SignedIn>
             <div className="dropdown">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
                 <FontAwesomeIcon icon={faBars} />
@@ -32,19 +32,18 @@ export default function Header() {
                 >Friends</Link></li>
               </ul>
             </div>
-          </SignedIn>
+          </SignedIn> */}
         </div>
         <div className="navbar-center">
           <Link
             href="/mytickets"
             prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-            className="btn btn-ghost text-xl"
+            className="text-xl text-neutral font-bold text-center"
           >
-
             Ticketdeck
           </Link>
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end pr-4">
             <UserButton 
               afterSignOutUrl="/"
               appearance={{

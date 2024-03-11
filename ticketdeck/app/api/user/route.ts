@@ -28,6 +28,12 @@ export async function GET(request: NextRequest) {
             })
             return NextResponse.json({"user": result})
         }
+        const result = await prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        })
+        return NextResponse.json({"user": result})
     } else {
         return NextResponse.json({error: "Not logged in"}, {status: 401})
     }

@@ -3,6 +3,8 @@ import EventCard from "@/components/eventcard";
 import TicketModal from "@/components/ticketmodal";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 async function getTickets() {
     try {
@@ -27,7 +29,24 @@ export default async function MyTickets() {
     return (
         <>
         <Header/>
-        <div className="pt-4">
+        <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
+            <div className="flex justify-between items-center mb-3">
+                <p className="text-3xl font-bold">Your tickets</p>
+                <Link href="/mytickets/add">
+                    <FontAwesomeIcon icon={faPlus} className="h-fill pr-3" color="neutral" size="2x"/>
+                </Link>
+            </div>
+            {tickets.length > 0 ?
+                tickets.map((ticket: any) => {
+                    return(
+                        <EventCard key={ticket.id} ticketId={ticket.id} eventName={ticket.name} eventDate={ticket.date}/>
+                    );
+                })
+            :
+            <div className="text-2xl font-bold">No tickets</div>}
+        </div>
+            
+        {/* <div className="pt-4">
             {tickets.length > 0 ? 
                 tickets.map((ticket: any) => {
                     return(
@@ -51,13 +70,7 @@ export default async function MyTickets() {
                 </div>
             </div>
             
-        </div>
-        
-        {tickets.map((ticket: any) => {
-            return(
-                <TicketModal key={ticket.id} ticketId={ticket.id} eventName={ticket.name} ticketInfo={ticket.code}/>
-            );
-        })}
+        </div> */}
         </>
     );
 

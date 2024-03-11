@@ -4,32 +4,43 @@ import QRCode from '@/components/qrcode';
 import { notFound } from 'next/navigation';
 import TicketOptions from '@/components/ticketoptions';
 
-export default async function Page({params} : {params: {id: string}}) {
-    var ticket: any = null;
+export async function getTicket(id: string){
     try {
         const token = await auth().getToken();
-        const res = await fetch(process.env.URL + '/api/ticket?id=' + params.id, {
+        const res = await fetch(process.env.URL + '/api/ticket?id=' + id, {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
         const result = await res.json();
+        console.log(result);
         if(!result.ticket){
 			notFound();
 		}
-        ticket = result.ticket
+        let ticket = result.ticket;
         ticket.date = new Date(ticket.date);
+        return ticket;
     } catch (error) {
         console.log(error);
     }
+}
+
+const formatDate = (dateString: any) => {
+    const eventDate = new Date(dateString);
+    const formattedDate = eventDate.toLocaleDateString('en-UK', {day: 'numeric', month: 'long', year: 'numeric' });
+    return formattedDate;
+};
+
+export default async function Page({params} : {params: {id: string}}) {
+    const ticket = await getTicket(params.id);
 
     return(
         <>
-            <Header />
-            <div className='container mx-auto mt-4 flex flex-col items-center'>
-                <p className='text-4xl text-black font-bold text-center'>{ticket.name}</p>
-                <p className='text-xl text-black text-center'>{ticket.date.toLocaleDateString('en-UK', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                <div className='w-fit'>
+        <Header />
+            <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
+                <p className="text-2xl font-bold">{ticket.name}</p>
+                <p className="text-2xl font-bold mb-4">{formatDate(ticket.date)}</p>
+                <div className='bg-white w-full aspect-square rounded-lg flex justify-center items-center'>
                     <QRCode info={ticket.code}/>
                 </div>
                 <TicketOptions ticketId={ticket.id}/>
