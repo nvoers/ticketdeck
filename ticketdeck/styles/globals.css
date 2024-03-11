@@ -12,6 +12,5 @@
 @tailwind utilities;
 
 body {
-    color: ;
     background-color: var(--color-secondary);
 }

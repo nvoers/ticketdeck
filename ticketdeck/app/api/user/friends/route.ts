@@ -30,23 +30,24 @@ export async function GET(request: NextRequest) {
                 return friendship.userId
             }
         })
-        if(searchParams.get("not") === "true"){
-            const notFriends = await prisma.user.findMany({
-                where: {
-                    id: {
-                        notIn: result,
-                        not: userId
-                    },
-                    username: {
-                        contains: searchParams.get("query") as string
+        return NextResponse.json({"friends": result}, {status: 200})
+        // if(searchParams.get("not") === "true"){
+        //     const notFriends = await prisma.user.findMany({
+        //         where: {
+        //             id: {
+        //                 notIn: result,
+        //                 not: userId
+        //             },
+        //             username: {
+        //                 contains: searchParams.get("query") as string
                     
-                    }
-                }
-            })
-            return NextResponse.json({"users": notFriends}, {status: 200})
-        } else {
-            return NextResponse.json({"friends": result}, {status: 200})
-        }
+        //             }
+        //         }
+        //     })
+        //     return NextResponse.json({"users": notFriends}, {status: 200})
+        // } else {
+        //     return NextResponse.json({"friends": result}, {status: 200})
+        // }
     } else {
         return new NextResponse("Not logged in", {status: 401})
     }

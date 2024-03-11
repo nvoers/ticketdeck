@@ -13,7 +13,6 @@ export async function getTicket(id: string){
             headers: {Authorization: `Bearer ${token}`}
         });
         const result = await res.json();
-        console.log(result);
         if(!result.ticket){
 			notFound();
 		}

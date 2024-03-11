@@ -9,7 +9,7 @@ function SubmitButton() {
     const { pending } = useFormStatus()
   
     return (
-      <button type="submit" aria-disabled={pending} className='btn btn-accent btn-outline mt-4'>
+      <button type="submit" aria-disabled={pending} className='bg-primary text-secondary text-lg font-bold mt-4 text-left rounded-lg px-3 py-3'>
         Add ticket
       </button>
     )
@@ -62,6 +62,7 @@ export default function AddTickets() {
     return (
         <>
             <Header/>
+            <div className="container mx-auto px-4 py-4 bg-secondary min-h-screen">
             <div className="flex justify-center pt-8">
             <form onSubmit={handleSubmit} className="form-control w-full max-w-xs">
                 <label htmlFor="event_name">Event name</label>
@@ -104,6 +105,7 @@ export default function AddTickets() {
                 <SubmitButton />
             </form>
             
+            </div>
             </div>
         </>
     );

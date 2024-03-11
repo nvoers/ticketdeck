@@ -29,8 +29,18 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
     const { userId } = auth();
     const searchParams = request.nextUrl.searchParams
+    const friendshipId = searchParams.get('id')
 
     if(userId) {
+        if(friendshipId){
+            const result = await prisma.friendship.findFirst({
+                where: {
+                    id: friendshipId,
+                    status: "ACCEPTED"
+                }
+            })
+            return NextResponse.json({"friendship": result}, {status: 200})
+        }
         var result = await prisma.friendship.findMany({
             where: {
                 OR: [

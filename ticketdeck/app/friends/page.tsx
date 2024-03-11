@@ -1,12 +1,16 @@
 import Header from '@/components/header';
-import FriendResult from '@/components/friendresult';
+import FriendshipCard from '@/components/friendshipcard';
 import Link from 'next/link';
 import { auth } from '@clerk/nextjs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import FriendRequestCard from '@/components/friendrequestcard';
+import { User } from '@prisma/client';
 
 async function getFriends(){
     try {
         const token = await auth().getToken();
-        const users = await fetch(process.env.URL + "/api/friendship?status=accepted", {
+        const users = await fetch(process.env.URL + "/api/friendship", {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -26,7 +30,7 @@ async function getFriends(){
 async function getRequests(){
     try {
         const token = await auth().getToken();
-        const users = await fetch(process.env.URL + "/api/friendship?status=requested", {
+        const users = await fetch(process.env.URL + "/api/friendship/request", {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -43,24 +47,82 @@ async function getRequests(){
     return [];
 }
 
-async function getFriend(friendship: { id: string; }){
+async function friendshipRequestId(friendId: string){
     try {
         const token = await auth().getToken();
-        const user = await fetch(process.env.URL + "/api/friendship/friend?friendshipId=" + friendship.id, {
+        const users = await fetch(process.env.URL + "/api/friendship/request?friendId=" + friendId, {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(user.status == 401){
+        if(users.status == 401){
+            console.log("Unauthorized");
+            return "";
+        }
+        const result = await users.json();
+        return result.friendRequests[0].id;
+    } catch (error) {
+        console.log(error);
+    }
+    return "";
+}
+
+const getUser = async (user: string) => {
+    const { userId } = auth();
+    try {
+        const token = await auth().getToken();
+        const request = await fetch(process.env.URL + "/api/user?id=" + user, {
+            method: 'GET',
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        if(request.status == 401){
             console.log("Unauthorized");
             return [];
         }
-        const result = await user.json();
-        return result.friend;
+        const result = await request.json();
+        return result.user;
     } catch (error) {
         console.log(error);
-    } 
-    return [];
+    }
+}
+
+export async function declineRequest(requestId: string){
+    try {
+        const token = await auth().getToken();
+        const res = await fetch(process.env.URL + "/api/friendship/request/decline?id=" + requestId, {
+            method: 'POST',
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        if(res.status == 401){
+            console.log("Unauthorized");
+            return;
+        }
+        const result = await res.json();
+        console.log(result);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export async function acceptRequest(requestId: string){
+    try {
+        const token = await auth().getToken();
+        const res = await fetch(process.env.URL + "/api/friendship/request/accept?id=" + requestId, {
+            method: 'POST',
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        if(res.status == 401){
+            console.log("Unauthorized");
+            return;
+        }
+        const result = await res.json();
+        console.log(result);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export default async function Page(){
@@ -71,7 +133,26 @@ export default async function Page(){
     return(
         <>
             <Header />
-            <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
+            <div className='container mx-auto bg-secondary text-neutral px-4 min-h-screen'>
+                <div className="flex justify-between items-center mb-3">
+                    <p className="text-3xl font-bold">Friends</p>
+                    <Link href="/mytickets/add">
+                        <FontAwesomeIcon icon={faPlus} className="h-fill pr-3" color="neutral" size="2x"/>
+                    </Link>
+                </div>
+                {requests.length > 0 ? 
+                    requests.map(async (request: any) => {
+                        return(<FriendRequestCard key={request.id} request={request}/>);
+                    })
+                :<></>}
+                {friends.length > 0 ? 
+                    friends.map(async (friend: any) => {
+                        let friendId = friend.userId == auth().userId ? friend.friendId : friend.userId;
+                        return(<FriendshipCard key={friend.id} friendshipId={friend.id} friend={await getUser(friendId)}/>);
+                    })
+                :<></>}
+            </div>
+            {/* <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
                 <div className="container mx-auto">
                     {requests.length > 0 ? <p className="text-lg font-semibold mt-4 ml-4">Requests</p> : null}
                     {requests.map(async (request: any) => {
@@ -99,7 +180,7 @@ export default async function Page(){
                     </div>
                     
                 </div>
-            </div>
+            </div> */}
         </>
     );
 }
