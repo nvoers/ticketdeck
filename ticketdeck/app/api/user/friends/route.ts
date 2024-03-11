@@ -5,7 +5,6 @@ import { FriendshipStatus } from '@prisma/client';
 
 export async function GET(request: NextRequest) {
     const { userId } = auth();
-    const searchParams = request.nextUrl.searchParams
 
     if(userId) {
         const friendships = await prisma.friendship.findMany({
@@ -21,33 +20,15 @@ export async function GET(request: NextRequest) {
                 status: FriendshipStatus.ACCEPTED
             },
         })
-        const result = friendships.map((friendship) => {
+        let result = []
+        for(const friendship of friendships) {
             if(friendship.userId === userId) {
-                // return await prisma.user.findUnique({where: {id: friendship.friendId}})
-                return friendship.friendId
+                result.push(await prisma.user.findUnique({where: {id: friendship.friendId}}))
             } else {
-                // return await prisma.user.findUnique({where: {id: friendship.userId}})
-                return friendship.userId
+                result.push(await prisma.user.findUnique({where: {id: friendship.userId}}))
             }
-        })
+        }
         return NextResponse.json({"friends": result}, {status: 200})
-        // if(searchParams.get("not") === "true"){
-        //     const notFriends = await prisma.user.findMany({
-        //         where: {
-        //             id: {
-        //                 notIn: result,
-        //                 not: userId
-        //             },
-        //             username: {
-        //                 contains: searchParams.get("query") as string
-                    
-        //             }
-        //         }
-        //     })
-        //     return NextResponse.json({"users": notFriends}, {status: 200})
-        // } else {
-        //     return NextResponse.json({"friends": result}, {status: 200})
-        // }
     } else {
         return new NextResponse("Not logged in", {status: 401})
     }

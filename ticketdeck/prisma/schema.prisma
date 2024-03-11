@@ -33,7 +33,7 @@ model Friendship {
   id         String           @id @default(cuid())
   userId     String
   friendId   String
-  status     FriendshipStatus @default(REQUESTED)
+  status     FriendshipStatus @default(ACCEPTED)
   created_at DateTime         @default(now())
   updated_at DateTime         @updatedAt
   friend     User             @relation("friendFriendships", fields: [friendId], references: [id])
@@ -41,6 +41,18 @@ model Friendship {
 
   @@unique([userId, friendId], name: "unique_friendship")
   @@unique([friendId, userId], name: "unique_friendship_inverse")
+}
+
+model FriendshipRequest {
+  id         String           @id @default(cuid())
+  userId     String
+  friendId   String
+  status     FriendshipStatus @default(REQUESTED)
+  created_at DateTime         @default(now())
+  updated_at DateTime         @updatedAt
+
+  @@unique([userId, friendId], name: "unique_friendship_request")
+  @@unique([friendId, userId], name: "unique_friendship_request_inverse")
 }
 
 enum FriendshipStatus {
