@@ -78,7 +78,7 @@ export default async function Page(){
             <div className='container mx-auto bg-secondary text-neutral px-4 min-h-screen'>
                 <div className="flex justify-between items-center mb-3">
                     <p className="text-3xl font-bold">Friends</p>
-                    <Link href="/mytickets/add">
+                    <Link href="/friends/add">
                         <FontAwesomeIcon icon={faPlus} className="h-fill pr-3" color="neutral" size="2x"/>
                     </Link>
                 </div>

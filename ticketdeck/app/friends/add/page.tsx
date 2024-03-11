@@ -10,13 +10,17 @@ async function searchResults(query: string){
     }
     try {
         const token = await auth().getToken();
-        const users = await fetch(process.env.URL + "/api/user/friends?not=true&query=" + query, {
+        const users = await fetch(process.env.URL + "/api/user/friends/find&query=" + query, {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
+        if(users.status == 401){
+            console.log("Unauthorized");
+            return [];
+        }
         const result = await users.json();
-        return result.users;
+        return [];
     } catch (error) {
         console.log(error);
     }
@@ -38,7 +42,19 @@ export default async function Page({
     return(
         <>
             <Header />
-            <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
+            <div className="container mx-auto bg-secondary text-neutral px-4 min-h-screen">
+                <Search placeholder="Search for friends" />
+                {users.length == 0 && query ? 
+                    <div className="text-md mt-4">No results</div> 
+                    : 
+                    users.map(async (user: any) => {
+                        return(
+                            <SearchResult userResult={user} key={user.id} userId={user.id}/>
+                        );
+                    })
+                }
+            </div>
+            {/* <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
                 <div className="container mx-auto">
                     <Search placeholder="Search for friends" />
                     {users.length == 0 && query ? 
@@ -51,7 +67,7 @@ export default async function Page({
                         })
                     }
                 </div>
-            </div>
+            </div> */}
         </>
     );
 }
