@@ -9,15 +9,15 @@ export async function POST(request: NextRequest) {
 
     if(userId) {
         if(id){
-            await prisma.friendshipRequest.delete({
+            await prisma.friendship.delete({
                 where: {
                     id: id
                 }
             })
         } else {
-            return new NextResponse("Friend request not found", {status: 404})
+            return new NextResponse("Friendship not found", {status: 404})
         }
-        return new NextResponse("Friend request declined", {status: 200})
+        return new NextResponse("Friendship declined", {status: 200})
     } else {
         return new NextResponse("Unauthorized", {status: 401})
     }

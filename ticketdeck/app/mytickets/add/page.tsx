@@ -57,7 +57,7 @@ export default function AddTickets() {
             toast.error('Something went wrong', { id: toastId })
             console.error(e)
         }
-      }
+    }
 
     return (
         <>

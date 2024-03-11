@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
     if(userId) {
         if(id){
-            const result = await prisma.friendship.findFirst({
+            const result = await prisma.friendshipRequest.findFirst({
                 where: {
                     AND: [
                         {id: id},
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
             })
             return NextResponse.json({"friendRequest": result})
         }
-        const result = await prisma.friendship.findMany({
+        const result = await prisma.friendshipRequest.findMany({
             where: {
                 AND: [
                     {friendId: userId},

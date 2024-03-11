@@ -7,28 +7,34 @@ export async function GET(request: NextRequest) {
     const { userId } = auth();
 
     if(userId) {
-        const friendships = await prisma.friendship.findMany({
+        let friendships = []
+        const userfriends = await prisma.friendship.findMany({
             where: {
-                OR: [
-                    {
-                        userId: userId
-                    },
-                    {
-                        friendId: userId
-                    }
-                ],
-                status: FriendshipStatus.ACCEPTED
-            },
-        })
-        let result = []
-        for(const friendship of friendships) {
-            if(friendship.userId === userId) {
-                result.push(await prisma.user.findUnique({where: {id: friendship.friendId}}))
-            } else {
-                result.push(await prisma.user.findUnique({where: {id: friendship.userId}}))
+                userId: userId
             }
+        })
+        const friendfriends = await prisma.friendship.findMany({
+            where: {
+                friendId: userId
+            }
+        })
+        for (const friend of userfriends) {
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: friend.friendId
+                }
+            })
+            friendships.push({friendshipId: friend.id, user: user})
         }
-        return NextResponse.json({"friends": result}, {status: 200})
+        for (const friend of friendfriends) {
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: friend.userId
+                }
+            })
+            friendships.push({friendshipId: friend.id, user: user})
+        }
+        return NextResponse.json({"friends": friendships}, {status: 200})
     } else {
         return new NextResponse("Not logged in", {status: 401})
     }

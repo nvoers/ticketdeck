@@ -9,12 +9,24 @@ export async function POST(request: NextRequest) {
 
     if(userId) {
         if(id){
-            await prisma.friendship.update({
+            await prisma.friendshipRequest.update({
                 where: {
                     id: id
                 },
                 data: {
                     status: "ACCEPTED"
+                }
+            })
+            const friendId = await prisma.friendshipRequest.findUnique({
+                where: {
+                    id: id
+                }
+            })
+            if(!friendId) return new NextResponse("Friend request not found", {status: 404})
+            await prisma.friendship.create({
+                data: {
+                    userId: userId,
+                    friendId: friendId.userId,
                 }
             })
         } else {
