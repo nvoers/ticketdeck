@@ -18,7 +18,7 @@ const isToday = (dateString: string) => {
                 today.getDate() === eventDate.getDate();
 }
 
-export default function EventCard({ticketId, eventName, eventDate}: {ticketId: string, eventName: string, eventDate: string}) {
+export default function EventCard({ticketId, eventName, eventDate}: {ticketId: string, eventName: string, eventDate: any}) {
 
     if(isToday(eventDate)){
         return(

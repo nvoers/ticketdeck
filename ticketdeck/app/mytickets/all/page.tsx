@@ -39,7 +39,7 @@ export default async function MyTickets() {
             {tickets.length > 0 ?
                 tickets.map((ticket: Ticket) => {
                     return(
-                        <EventCard key={ticket.id} ticketId={ticket.id} eventName={ticket.name} eventDate={ticket.date.toISOString()}/>
+                        <EventCard key={ticket.id} ticketId={ticket.id} eventName={ticket.name} eventDate={ticket.date}/>
                     );
                 })
             :
