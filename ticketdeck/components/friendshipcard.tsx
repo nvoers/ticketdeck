@@ -21,8 +21,6 @@ export default function FriendshipCard({friendshipId, friend, option}: {friendsh
             }
             const result = await res.json();
             console.log(result);
-            window.location.reload();
-            window.location.href = '/friends';
         } catch (error) {
             console.log(error);
         }
@@ -40,8 +38,6 @@ export default function FriendshipCard({friendshipId, friend, option}: {friendsh
             }
             console.log(res)
             const result = await res.json();
-            window.location.reload();
-            window.location.href = '/friends';
         } catch (error) {
             console.log(error);
         }

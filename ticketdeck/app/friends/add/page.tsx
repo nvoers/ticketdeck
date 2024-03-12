@@ -44,9 +44,10 @@ export default async function Page({
         <>
             <Header />
             <div className="container mx-auto bg-secondary text-neutral px-4 min-h-screen">
+                <p className="text-3xl font-bold mb-2 ml-2">Add friends</p>
                 <Search placeholder="Search for friends"/>
                 {users.length == 0 && query ? 
-                    <div className="text-md mt-4">No results</div> 
+                    <div className="text-md mt-4 ml-2">No results</div> 
                     : 
                     users.map(async (user: any) => {
                         return(
