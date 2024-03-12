@@ -47,7 +47,7 @@ export default async function Page({
 
     return(
         <>
-            <Header />
+            <Header back={true}/>
             <div className="container mx-auto bg-secondary text-neutral px-4 min-h-screen">
                 <p className="text-3xl font-bold mb-2 ml-2">Transfer ticket</p>
                 <Search placeholder="Search for friends"/>
