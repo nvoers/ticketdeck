@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Header from "@/components/header";
 import NextEvent from "@/components/nextevent";
-import TicketModal from "@/components/ticketmodal";
+import TicketModal from "@/components/transferticketmodal";
 import { auth } from "@clerk/nextjs";
 import { Ticket } from "@prisma/client";
 

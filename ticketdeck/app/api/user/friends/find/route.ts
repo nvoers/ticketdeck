@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const query = searchParams.get('query')?.toLowerCase()
 
     if(userId){
-        const friendships = await prisma.friendship.findMany({
+        const friendships = await prisma.friendshipRequest.findMany({
             where: {
                 OR: [
                     {

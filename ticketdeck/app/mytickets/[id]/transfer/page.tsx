@@ -1,10 +1,11 @@
 import Search from "@/components/search";
 import Header from "@/components/header";
 import { auth } from "@clerk/nextjs";
-import TransferResult from "@/components/transferresult";
+import TransferCard from "@/components/transfercard";
+import TransferTicketModal from "@/components/transferticketmodal";
 
 async function searchResults(query: string){
-    if (!query || query == "") {
+    if (!query) {
         return [];
     }
     try {
@@ -14,29 +15,16 @@ async function searchResults(query: string){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
+        if(users.status == 401){
+            console.log("Unauthorized");
+            return [];
+        }
         const result = await users.json();
         return result.friends;
     } catch (error) {
         console.log(error);
     }
     return [];
-}
-
-async function getUser(userId: string) {
-    try {
-        const token = await auth().getToken();
-        const user = await fetch(process.env.BASE_URL + '/api/user?id=' + userId, {
-            method: 'GET',
-            cache: 'no-store',
-            headers: {Authorization: `Bearer ${token}`}
-        });
-        const result = await user.json();
-        return result.user;
-    } catch (error) {
-        console.log(error);
-    }
-    return null;
-
 }
 
 export default async function Page({
@@ -54,21 +42,26 @@ export default async function Page({
     return(
         <>
             <Header />
-            <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
-                <div className="container mx-auto">
-                    <Search placeholder="Search for friends"/>
-                    {friends.length == 0 && query ? 
-                        <div className="text-md text-center mt-4 text-gray-800">No results</div> 
-                        : 
-                        friends.map(async (userId: string) => {
-                            const user = await getUser(userId);
-                            return(
-                                <TransferResult user={user} key={user.id}/>
-                            );
-                        })
-                    }
-                </div>
+            <div className="container mx-auto bg-secondary text-neutral px-4 min-h-screen">
+                <p className="text-3xl font-bold mb-2 ml-2">Transfer ticket</p>
+                <Search placeholder="Search for friends"/>
+                {friends.length == 0 && query ? 
+                    <div className="text-md mt-4 ml-2">No results</div> 
+                    : 
+                    friends.map(async (friend: any) => {
+                        return(
+                            <TransferCard key={friend.user.id} friend={friend.user}/>
+                        );
+                    })
+                }
             </div>
+            {friends.length == 0 && query ?<></>:
+            friends.map((friend: any) => {
+                return(
+                    <TransferTicketModal key={friend.user.id} friend={friend.user}/>
+                );
+            })
+            }
         </>
     );
 }

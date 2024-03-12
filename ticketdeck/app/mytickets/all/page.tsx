@@ -1,6 +1,6 @@
 import Header from "@/components/header";
 import EventCard from "@/components/eventcard";
-import TicketModal from "@/components/ticketmodal";
+import TicketModal from "@/components/transferticketmodal";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

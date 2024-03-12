@@ -4,6 +4,7 @@ import Header from "@/components/header";
 import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from "react-hot-toast";
+import { useRouter } from 'next/navigation';
 
 function SubmitButton() {
     const { pending } = useFormStatus()
@@ -19,6 +20,7 @@ export default function AddTickets() {
     const [event_name, setEventName] = useState('');
     const [event_date, setEventDate] = useState('');
     const [ticket_info, setTicketInfo] = useState('');
+    const router = useRouter();
 
     const handleEventNameChange = (event: any) => {
         setEventName(event.target.value);
@@ -47,11 +49,14 @@ export default function AddTickets() {
                 body: data
             })
             // handle the error
-            const response = await res.json()
-            if (!res.ok) throw new Error(await res.text())
-            toast.success('Tickets uploaded!', { id: toastId })
-            window.location.reload();
-            window.location.href = '/mytickets/all';
+            if(res.status == 401){
+                console.log("Unauthorized");
+                return;
+            }
+            if(res.status == 200){
+                toast.success('Tickets uploaded!', { id: toastId })
+                router.push('/mytickets/all');
+            }
         } catch (e: any) {
             // Handle errors here
             toast.error('Something went wrong', { id: toastId })

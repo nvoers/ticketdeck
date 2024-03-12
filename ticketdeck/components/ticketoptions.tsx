@@ -1,18 +1,26 @@
 'use client'
 import toast from 'react-hot-toast'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function TicketOptions({ ticketId }: { ticketId: string }) {
 
-    const comingSoon = () => {toast("Coming soon!", {style:{border: "2px solid #ffbe00"}, icon: '🚧'})}
+    const router = useRouter();
 
     async function deleteTicket() {
         try {
-            await fetch(`/api/ticket`, {
+            const res = await fetch(`/api/ticket?id=` + ticketId, {
                 method: 'DELETE',
                 body: JSON.stringify({ticketId})
             });
-            window.location.href = '/mytickets?deleteSuccess=1';
+            if(res.status == 401){
+                console.log("Unauthorized");
+                return;
+            }
+            if(res.status == 200){
+                toast.success("Ticket deleted");
+                router.push('/mytickets');
+            }
         } catch (error) {
             console.log(error);
         }

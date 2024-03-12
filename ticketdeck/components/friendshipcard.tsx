@@ -2,8 +2,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faX, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { User } from '@prisma/client';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 export default function FriendshipCard({friendshipId, friend, option}: {friendshipId: string, friend: User, option: string}){
+
+    const router = useRouter();
 
     const removeFriend = async () => {
         try {
@@ -19,8 +23,10 @@ export default function FriendshipCard({friendshipId, friend, option}: {friendsh
                 console.log("Friend not found");
                 return;
             }
-            const result = await res.json();
-            console.log(result);
+            if(res.status == 200){
+                toast.success('Friend removed');
+                router.refresh();
+            }
         } catch (error) {
             console.log(error);
         }
@@ -36,8 +42,10 @@ export default function FriendshipCard({friendshipId, friend, option}: {friendsh
                 console.log("Unauthorized");
                 return;
             }
-            console.log(res)
-            const result = await res.json();
+            if(res.status == 200){
+                router.refresh();
+                toast.success('Friend added');
+            }
         } catch (error) {
             console.log(error);
         }
