@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link";
 
-const formatDate = (dateString: any) => {
+const formatDate = (dateString: string) => {
     const eventDate = new Date(dateString);
     if(isToday(dateString)){
         return "Today";
@@ -10,7 +10,7 @@ const formatDate = (dateString: any) => {
     return formattedDate;
 };
 
-const isToday = (dateString: any) => {
+const isToday = (dateString: string) => {
     const eventDate = new Date(dateString);
     const today = new Date();
     return today.getFullYear() === eventDate.getFullYear() &&
@@ -18,7 +18,7 @@ const isToday = (dateString: any) => {
                 today.getDate() === eventDate.getDate();
 }
 
-export default function EventCard({ticketId, eventName, eventDate}: {ticketId: string, eventName: string, eventDate: String}) {
+export default function EventCard({ticketId, eventName, eventDate}: {ticketId: string, eventName: string, eventDate: string}) {
 
     if(isToday(eventDate)){
         return(

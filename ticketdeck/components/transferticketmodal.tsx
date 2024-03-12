@@ -1,8 +1,9 @@
 "use client"
 import toast from 'react-hot-toast'
 import { useRouter, usePathname } from 'next/navigation'
+import { User } from '@prisma/client';
 
-export default function TransferTicketModal({ friend }: { friend: any}) {
+export default function TransferTicketModal({ friend }: { friend: User}) {
 
     const router = useRouter();
     const pathname = usePathname();

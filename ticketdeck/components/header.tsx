@@ -1,38 +1,19 @@
+"use client"
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { UserButton } from "@clerk/nextjs";
-import { SignedIn } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
-export default function Header() {
+export default function Header({ back }: { back?: boolean}) {
+    const router = useRouter();
 
     return (
       <div className="navbar bg-secondary">
         <div className="navbar-start">
-          {/* <SignedIn>
-            <div className="dropdown">
-              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-                <FontAwesomeIcon icon={faBars} />
-              </div>
-              <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                <li><Link
-                href={"/mytickets"}
-                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-                className="text-black"
-                >My tickets</Link></li>
-                <li><Link
-                href={"/mytickets/add"}
-                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-                className="text-black"
-                >Add ticket</Link></li>
-                <li><Link
-                href={"/friends"}
-                prefetch={false} // workaround until https://github.com/vercel/vercel/pull/8978 is deployed
-                className="text-black"
-                >Friends</Link></li>
-              </ul>
-            </div>
-          </SignedIn> */}
+          {back ? 
+            <FontAwesomeIcon icon={faArrowLeft} onClick={() => router.back()} size="1x" className="ml-4"/>
+          : <></>}
         </div>
         <div className="navbar-center">
           <Link

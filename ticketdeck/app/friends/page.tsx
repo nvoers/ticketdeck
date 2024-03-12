@@ -5,7 +5,12 @@ import { auth } from '@clerk/nextjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import FriendRequestCard from '@/components/friendrequestcard';
-import { User } from '@prisma/client';
+import { FriendshipRequest, User } from '@prisma/client';
+
+type FriendshipObject = {
+    friendshipId: string;
+    user: User;
+}
 
 async function getFriends(){
     try {
@@ -82,11 +87,11 @@ export default async function Page(){
                         <FontAwesomeIcon icon={faPlus} className="h-fill pr-3" color="neutral" size="2x"/>
                     </Link>
                 </div>
-                {requests.map(async (request: any) => {
+                {requests.map(async (request: FriendshipRequest) => {
                     return(<FriendRequestCard key={request.id} request={request} user={await getUser(request.userId)}/>);
                 })}
-                {friends.map(async (friend: any) => {
-                        return(<FriendshipCard key={friend.id} friendshipId={friend.friendshipId} friend={friend.user} option={"remove"}/>);
+                {friends.map(async (friend: FriendshipObject) => {
+                        return(<FriendshipCard key={friend.friendshipId} friendshipId={friend.friendshipId} friend={friend.user} option={"remove"}/>);
                     })
                 }
             </div>

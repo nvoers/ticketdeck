@@ -3,6 +3,12 @@ import Header from "@/components/header";
 import { auth } from "@clerk/nextjs";
 import TransferCard from "@/components/transfercard";
 import TransferTicketModal from "@/components/transferticketmodal";
+import { User } from '@prisma/client';
+
+type FriendObject = {
+    friendshipId: string;
+    user: User;
+}
 
 async function searchResults(query: string){
     if (!query) {
@@ -48,7 +54,7 @@ export default async function Page({
                 {friends.length == 0 && query ? 
                     <div className="text-md mt-4 ml-2">No results</div> 
                     : 
-                    friends.map(async (friend: any) => {
+                    friends.map(async (friend: FriendObject) => {
                         return(
                             <TransferCard key={friend.user.id} friend={friend.user}/>
                         );
@@ -56,7 +62,7 @@ export default async function Page({
                 }
             </div>
             {friends.length == 0 && query ?<></>:
-            friends.map((friend: any) => {
+            friends.map((friend: FriendObject) => {
                 return(
                     <TransferTicketModal key={friend.user.id} friend={friend.user}/>
                 );

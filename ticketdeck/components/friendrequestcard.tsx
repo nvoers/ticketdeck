@@ -1,7 +1,5 @@
 'use client'
-import { auth } from "@clerk/nextjs";
 import { Friendship, User } from "@prisma/client";
-import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 

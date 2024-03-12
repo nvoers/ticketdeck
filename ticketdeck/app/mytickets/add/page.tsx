@@ -1,7 +1,7 @@
 'use client'
 
 import Header from "@/components/header";
-import { useState } from 'react'
+import { SetStateAction, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from "react-hot-toast";
 import { useRouter } from 'next/navigation';
@@ -57,7 +57,7 @@ export default function AddTickets() {
                 toast.success('Tickets uploaded!', { id: toastId })
                 router.push('/mytickets/all');
             }
-        } catch (e: any) {
+        } catch (e) {
             // Handle errors here
             toast.error('Something went wrong', { id: toastId })
             console.error(e)

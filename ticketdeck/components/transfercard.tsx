@@ -1,6 +1,8 @@
 'use client'
 
-export default function TransferCard({ friend }: { friend: any}) {
+import { User } from "@prisma/client";
+
+export default function TransferCard({ friend }: { friend: User}) {
 
     return (
         <div className="border-primary border-2 px-3 py-3 font-bold rounded-lg mb-3 w-full text-left">

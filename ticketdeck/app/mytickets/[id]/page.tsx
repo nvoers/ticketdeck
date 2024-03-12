@@ -24,7 +24,7 @@ export async function getTicket(id: string){
     }
 }
 
-const formatDate = (dateString: any) => {
+const formatDate = (dateString: string) => {
     const eventDate = new Date(dateString);
     const formattedDate = eventDate.toLocaleDateString('en-UK', {day: 'numeric', month: 'long', year: 'numeric' });
     return formattedDate;

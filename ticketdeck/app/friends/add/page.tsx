@@ -1,6 +1,6 @@
 import Search from "@/components/search";
 import Header from "@/components/header";
-import SearchResult from "@/components/searchresult";
+import { User } from '@prisma/client';
 import { auth } from "@clerk/nextjs";
 import FriendshipCard from "@/components/friendshipcard";
 
@@ -38,7 +38,7 @@ export default async function Page({
   }) {
 
     const query = searchParams?.query || null;
-    const users = await searchResults(query as any);
+    const users = await searchResults(query as string);
     
     return(
         <>
@@ -49,27 +49,13 @@ export default async function Page({
                 {users.length == 0 && query ? 
                     <div className="text-md mt-4 ml-2">No results</div> 
                     : 
-                    users.map(async (user: any) => {
+                    users.map(async (user: User) => {
                         return(
                             <FriendshipCard friendshipId={""} key={user.id} friend={user} option={"add"}/>
                         );
                     })
                 }
             </div>
-            {/* <div className="bg-gradient-to-b from-primary to-white to-[50%] h-screen p-8">
-                <div className="container mx-auto">
-                    <Search placeholder="Search for friends" />
-                    {users.length == 0 && query ? 
-                        <div className="text-md text-center mt-4 text-gray-800">No results</div> 
-                        : 
-                        users.map(async (user: any) => {
-                            return(
-                                <SearchResult userResult={user} key={user.id} userId={user.id}/>
-                            );
-                        })
-                    }
-                </div>
-            </div> */}
         </>
     );
 }

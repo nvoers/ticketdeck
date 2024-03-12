@@ -1,9 +1,10 @@
 'use client'
+import { User } from '@prisma/client';
 import toast from 'react-hot-toast';
 
-export default function SearchResult({userResult, key, userId} : {userResult: any, key: string, userId: string}){
+export default function SearchResult({userResult, key, userId} : {userResult: User, key: string, userId: string}){
 
-    const sendFriendrequest = async (user: any) => {
+    const sendFriendrequest = async (user: User) => {
         try {
             await fetch(`/api/friendship`, {
                 method: 'POST',
