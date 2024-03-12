@@ -4,7 +4,7 @@ import QRCode from '@/components/qrcode';
 import { notFound } from 'next/navigation';
 import TicketOptions from '@/components/ticketoptions';
 
-export async function getTicket(id: string){
+async function getTicket(id: string){
     try {
         const token = await auth().getToken();
         const res = await fetch(process.env.BASE_URL + '/api/ticket?id=' + id, {
