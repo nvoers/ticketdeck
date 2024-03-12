@@ -44,7 +44,7 @@ export default function AddTickets() {
             data.append('event_name', event_name)
             data.append('event_date', event_date)
     
-            const res = await fetch('/api/ticket', {
+            const res = await fetch(process.env.BASE_URL + '/api/ticket', {
                 method: 'POST',
                 body: data
             })

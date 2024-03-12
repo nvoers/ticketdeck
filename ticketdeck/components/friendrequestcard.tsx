@@ -8,7 +8,7 @@ export default function FriendRequestCard({request, user}: {request: Friendship,
     const router = useRouter();
 
     const acceptRequest = async () => {
-        const response = await fetch("/api/friendshiprequest/accept?id=" + request.id, {
+        const response = await fetch(process.env.BASE_URL + "/api/friendshiprequest/accept?id=" + request.id, {
             method: 'POST',
         });
         if(response.status == 401) {
@@ -21,7 +21,7 @@ export default function FriendRequestCard({request, user}: {request: Friendship,
     }
 
     const declineRequest = async () => {
-        const response = await fetch("/api/friendshiprequest/decline?id=" + request.id, {
+        const response = await fetch(process.env.BASE_URL + "/api/friendshiprequest/decline?id=" + request.id, {
             method: 'POST',
         });
         if(response.status == 401) {

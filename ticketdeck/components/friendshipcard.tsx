@@ -11,7 +11,7 @@ export default function FriendshipCard({friendshipId, friend, option}: {friendsh
 
     const removeFriend = async () => {
         try {
-            const res = await fetch("/api/user/friends/remove?id=" + friendshipId, {
+            const res = await fetch(process.env.BASE_URL + "/api/user/friends/remove?id=" + friendshipId, {
                 method: 'POST',
                 cache: 'no-store',
             });
@@ -34,7 +34,7 @@ export default function FriendshipCard({friendshipId, friend, option}: {friendsh
 
     const addFriend = async () => {
         try {
-            const res = await fetch("/api/friendshiprequest?id=" + friend.id, {
+            const res = await fetch(process.env.BASE_URL + "/api/friendshiprequest?id=" + friend.id, {
                 method: 'POST',
                 cache: 'no-store',
             });

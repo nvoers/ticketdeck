@@ -11,7 +11,7 @@ export default function TransferTicketModal({ friend }: { friend: User}) {
     async function transferTicket() {
         const ticketId = pathname.split('/')[2];
         try {
-            const result = await fetch('/api/ticket/transfer', {
+            const result = await fetch(process.env.BASE_URL + '/api/ticket/transfer', {
                 method: 'POST',
                 body: JSON.stringify({userId: friend.id, ticketId: ticketId}),
             });
