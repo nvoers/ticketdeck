@@ -8,7 +8,7 @@ import { Ticket } from "@prisma/client";
 async function getEvents(){
     try {
         const token = await auth().getToken();
-        const res = await fetch(process.env.URL + '/api/ticket', {
+        const res = await fetch(process.env.BASE_URL + '/api/ticket', {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -31,7 +31,7 @@ async function getEvents(){
 export async function getFirstname(){
     try {
         const token = await auth().getToken();
-        const res = await fetch(process.env.URL + '/api/user', {
+        const res = await fetch(process.env.BASE_URL + '/api/user', {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}

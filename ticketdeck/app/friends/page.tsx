@@ -10,7 +10,7 @@ import { User } from '@prisma/client';
 async function getFriends(){
     try {
         const token = await auth().getToken();
-        const users = await fetch(process.env.URL + "/api/user/friends", {
+        const users = await fetch(process.env.BASE_URL + "/api/user/friends", {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -30,7 +30,7 @@ async function getFriends(){
 async function getRequests(){
     try {
         const token = await auth().getToken();
-        const requests = await fetch(process.env.URL + "/api/friendshiprequest", {
+        const requests = await fetch(process.env.BASE_URL + "/api/friendshiprequest", {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -51,7 +51,7 @@ const getUser = async (user: string) => {
     const { userId } = auth();
     try {
         const token = await auth().getToken();
-        const request = await fetch(process.env.URL + "/api/user?id=" + user, {
+        const request = await fetch(process.env.BASE_URL + "/api/user?id=" + user, {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -86,7 +86,7 @@ export default async function Page(){
                     return(<FriendRequestCard key={request.id} request={request} user={await getUser(request.userId)}/>);
                 })}
                 {friends.map(async (friend: any) => {
-                        return(<FriendshipCard key={friend.id} friendshipId={friend.friendshipId} friend={friend.user}/>);
+                        return(<FriendshipCard key={friend.id} friendshipId={friend.friendshipId} friend={friend.user} option={"remove"}/>);
                     })
                 }
             </div>

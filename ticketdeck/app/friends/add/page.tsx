@@ -2,6 +2,7 @@ import Search from "@/components/search";
 import Header from "@/components/header";
 import SearchResult from "@/components/searchresult";
 import { auth } from "@clerk/nextjs";
+import FriendshipCard from "@/components/friendshipcard";
 
 
 async function searchResults(query: string){
@@ -10,7 +11,7 @@ async function searchResults(query: string){
     }
     try {
         const token = await auth().getToken();
-        const users = await fetch(process.env.URL + "/api/user/friends/find&query=" + query, {
+        const users = await fetch(process.env.BASE_URL + "/api/user/friends/find?query=" + query, {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -20,7 +21,7 @@ async function searchResults(query: string){
             return [];
         }
         const result = await users.json();
-        return [];
+        return result.users;
     } catch (error) {
         console.log(error);
     }
@@ -43,13 +44,13 @@ export default async function Page({
         <>
             <Header />
             <div className="container mx-auto bg-secondary text-neutral px-4 min-h-screen">
-                <Search placeholder="Search for friends" />
+                <Search placeholder="Search for friends"/>
                 {users.length == 0 && query ? 
                     <div className="text-md mt-4">No results</div> 
                     : 
                     users.map(async (user: any) => {
                         return(
-                            <SearchResult userResult={user} key={user.id} userId={user.id}/>
+                            <FriendshipCard friendshipId={""} key={user.id} friend={user} option={"add"}/>
                         );
                     })
                 }

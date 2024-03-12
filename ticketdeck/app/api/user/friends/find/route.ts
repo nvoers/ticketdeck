@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { User } from '@prisma/client';
 
 export async function GET(request: NextRequest) {
     const { userId } = auth();
@@ -8,6 +9,27 @@ export async function GET(request: NextRequest) {
     const query = searchParams.get('query')?.toLowerCase()
 
     if(userId){
+        const friendships = await prisma.friendship.findMany({
+            where: {
+                OR: [
+                    {
+                        userId: userId
+                    },
+                    {
+                        friendId: userId
+                    }
+                ]
+            }
+        })
+        let friendIds = []
+        for(const friendship of friendships){
+            if(friendship.userId == userId){
+                friendIds.push(friendship.friendId)
+            } else { 
+                friendIds.push(friendship.userId) 
+            }
+        }
+
         const users = await prisma.user.findMany({
             where: {
                 username: {
@@ -15,26 +37,13 @@ export async function GET(request: NextRequest) {
                 }
             }
         })
-
-        // const friends = await fetch(process.env.URL + "/api/user/friends?uid", {
-        //     method: 'GET',
-        //     cache: 'no-store',
-        //     headers: {Authorization: `Bearer ${auth().getToken()}`}
-        // });
-        // const result = await friends.json();
-        // let nonfriends = []
-        // for(const user of users){
-        //     let isFriend = false
-        //     for(const friend of result.friends){
-        //         if(friend == user.id){
-        //             isFriend = true
-        //         }
-        //     }
-        //     if(!isFriend){
-        //         nonfriends.push(user)
-        //     }
-        // }
-        return NextResponse.json({"users": users})
+        let filteredUsers : User[] = []
+        for(var x = 0; x < users.length; x++){
+            if(!friendIds.includes(users[x].id)){
+                filteredUsers.push(users[x])
+            }
+        }
+        return NextResponse.json({"users": filteredUsers})
     } else {
         return NextResponse.json({"error": "Unauthorized"}, {status: 401})
     }

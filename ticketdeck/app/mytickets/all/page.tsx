@@ -9,7 +9,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 async function getTickets() {
     try {
         const token = await auth().getToken();
-        const res = await fetch(process.env.URL + '/api/ticket', {
+        const res = await fetch(process.env.BASE_URL + '/api/ticket', {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}

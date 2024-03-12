@@ -9,7 +9,7 @@ async function searchResults(query: string){
     }
     try {
         const token = await auth().getToken();
-        const users = await fetch(process.env.URL + "/api/user/friends", {
+        const users = await fetch(process.env.BASE_URL + "/api/user/friends", {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -25,7 +25,7 @@ async function searchResults(query: string){
 async function getUser(userId: string) {
     try {
         const token = await auth().getToken();
-        const user = await fetch(process.env.URL + '/api/user?id=' + userId, {
+        const user = await fetch(process.env.BASE_URL + '/api/user?id=' + userId, {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
