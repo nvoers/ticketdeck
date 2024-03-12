@@ -92,7 +92,7 @@ export default function AddTickets() {
                     required/>
                 <label htmlFor="ticket_info">
                     <div className="has-tooltip flex w-fit">
-                        <span className='tooltip rounded shadow-lg p-1 bg-gray-100 -mt-8'>Upload an image of the qr-code on your ticket</span>
+                        <span className='tooltip rounded shadow-lg p-1 bg-gray-100 -mt-8'>Upload an PDF file of the qr-code on your ticket</span>
                         QR-code
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-slate-400 w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
