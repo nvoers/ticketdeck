@@ -1,3 +1,4 @@
 .env
 /ticketdeck/.env
 .DS_Store
+ticketdeck/.next
