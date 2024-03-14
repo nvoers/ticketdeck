@@ -36,7 +36,7 @@ export default async function Page({params} : {params: {id: string}}) {
 
     return(
         <>
-        <Header back={true}/>
+        <Header back/>
             <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
                 <p className="text-2xl font-bold">{ticket.name}</p>
                 <p className="text-2xl font-bold mb-4">{formatDate(String(ticket.date))}</p>

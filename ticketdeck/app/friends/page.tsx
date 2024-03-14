@@ -74,7 +74,7 @@ export default async function Page(){
 
     return(
         <>
-            <Header back={true}/>
+            <Header back/>
             <div className='container mx-auto bg-secondary text-neutral px-4 min-h-screen'>
                 <div className="flex justify-between items-center mb-3">
                     <p className="text-3xl font-bold">Friends</p>
