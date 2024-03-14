@@ -45,7 +45,8 @@ export default async function Page() {
                         <tr>
                             <th>User</th> 
                             <th>User</th> 
-                            <th></th> 
+                            <th>Status</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -54,8 +55,9 @@ export default async function Page() {
                                 <tr key={friendship.friendship.id}>
                                     <td>{friendship.user.username}</td>
                                     <td>{friendship.friend.username}</td>
+                                    <td>{friendship.friendship.status}</td>
                                     <td>
-                                        <Link href={`/admin/friendships/${friendship.friendship.id}`}>View</Link>
+                                        <Link href={`/admin/friendships`}>Delete</Link>
                                     </td>
                                 </tr>
                             );

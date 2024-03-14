@@ -57,7 +57,7 @@ export default async function Page() {
                                     <td>{ticket.user.username}</td>
                                     <td>{ticket.ticket.name}</td>
                                     <td>
-                                        <Link href={`/admin/tickets/${ticket.ticket.id}`}>View</Link>
+                                        <Link href={`/admin/tickets`}>Delete</Link>
                                     </td>
                                 </tr>
                             );

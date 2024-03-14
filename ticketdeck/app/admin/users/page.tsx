@@ -54,7 +54,7 @@ export default async function Page() {
                                     <td>{user.lastName}</td>
                                     <td>{user.role}</td>
                                     <td>
-                                        <Link href={`/admin/users/${user.id}`}>View</Link>
+                                        <Link href={`/admin/users`}>Delete</Link>
                                     </td>
                                 </tr>
                             );
