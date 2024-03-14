@@ -66,7 +66,7 @@ export default function AddTickets() {
 
     return (
         <>
-            <Header back={true}/>
+            <Header back/>
             <div className="container mx-auto px-4 py-4 bg-secondary min-h-screen">
             <div className="flex justify-center pt-8">
             <form onSubmit={handleSubmit} className="form-control w-full max-w-xs">
