@@ -126,7 +126,7 @@ export async function GET(request : NextRequest) {
             })
             if(user) {
                 let combinedResult: TicketData[] = []
-                result.forEach(async (ticket) => {
+                for(const ticket of result){
                     if(ticket.userId){
                         const user = await prisma.user.findUnique({
                             where: {
@@ -142,8 +142,7 @@ export async function GET(request : NextRequest) {
                             )
                         }
                     }
-                })
-                console.log(combinedResult)
+                }
                 return NextResponse.json({"tickets": combinedResult})
             }
         }
@@ -160,13 +159,27 @@ export async function GET(request : NextRequest) {
         }) 
         const searchId = searchParams.get('id')
         if(searchId) {
-            const ticket = await prisma.ticket.findUnique({
+            const admin = await prisma.user.findUnique({
                 where: {
-                    userId: userId,
-                    id: searchId
+                    id: userId
                 }
-            })
-            return NextResponse.json({"ticket": ticket})
+            }).then((user) => {return user?.role === "ADMIN"}) 
+            if(admin){
+                const ticket = await prisma.ticket.findUnique({
+                    where: {
+                        id: searchId
+                    }
+                })
+                return NextResponse.json({"ticket": ticket})
+            } else {
+                const ticket = await prisma.ticket.findUnique({
+                    where: {
+                        userId: userId,
+                        id: searchId
+                    }
+                })
+                return NextResponse.json({"ticket": ticket})
+            }
         }
         return NextResponse.json({"tickets": result.map((ticket) => {ticket.date = new Date(ticket.date); return ticket;})})
     } else {

@@ -1,6 +1,7 @@
 import Header from "@/components/header";
 import { Ticket, User } from "@prisma/client";
 import Link from "next/link";
+import { auth } from "@clerk/nextjs";
 
 type TicketData = {
     ticket: Ticket,
@@ -9,9 +10,11 @@ type TicketData = {
 
 async function getTickets(){
     try {
+        const token = await auth().getToken();
         const res = await fetch(process.env.BASE_URL + '/api/ticket?all&user', {
             method: 'GET',
-            cache: 'no-store'
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
         });
         if(res.status == 401){
             console.log("Unauthorized");
@@ -21,7 +24,6 @@ async function getTickets(){
             console.log("Error" + res.status);
             return [];
         } else {
-            console.log("Success");
             const result = await res.json();
             return result.tickets;
         }
@@ -43,7 +45,7 @@ export default async function Page() {
                     <table className="table table-xs">
                         <thead>
                         <tr>
-                            <th>Username</th> 
+                            <th>Owner</th> 
                             <th>Event name</th> 
                             <th></th> 
                         </tr>
@@ -55,7 +57,7 @@ export default async function Page() {
                                     <td>{ticket.user.username}</td>
                                     <td>{ticket.ticket.name}</td>
                                     <td>
-                                        <Link href={`/admin/users/${ticket.ticket.id}`}>View</Link>
+                                        <Link href={`/admin/tickets/${ticket.ticket.id}`}>View</Link>
                                     </td>
                                 </tr>
                             );
