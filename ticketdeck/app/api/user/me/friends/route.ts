@@ -1,18 +1,26 @@
 import { auth } from "@clerk/nextjs";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { Friendship, User } from "@prisma/client";
+import { Friendship, FriendshipStatus, User } from "@prisma/client";
 
 export async function GET(request: NextRequest) {
     const { userId } = auth();
     if(userId) {
         const friendships : Friendship[] = await prisma.user.findUnique({
             where: {
-                id: userId
+                id: userId,
             },
             include: {
-                initiatedFriendships: true,
-                receivedFriendships: true
+                initiatedFriendships: {
+                    where: {
+                        status: FriendshipStatus.ACCEPTED
+                    }
+                },
+                receivedFriendships: {
+                    where: {
+                        status: FriendshipStatus.ACCEPTED
+                    }
+                }
             }
         }).then((user) => { return user?.initiatedFriendships.concat(user?.receivedFriendships) }) as Friendship[]
         let friends : User[] = []
