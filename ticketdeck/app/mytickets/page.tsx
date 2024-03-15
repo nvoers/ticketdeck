@@ -29,7 +29,7 @@ async function getEvents(){
 async function getFirstname(){
     try {
         const token = await auth().getToken();
-        const res = await fetch(process.env.BASE_URL + '/api/user', {
+        const res = await fetch(process.env.BASE_URL + '/api/user/me', {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
