@@ -5,6 +5,9 @@ import { Friendship, FriendshipStatus, User } from "@prisma/client";
 
 export async function GET(request: NextRequest) {
     const { userId } = auth();
+    const searchParams = request.nextUrl.searchParams
+    const query = searchParams.has("query") ? searchParams.get("query") as string : ""
+
     if(userId) {
         const friendships : Friendship[] = await prisma.user.findUnique({
             where: {
@@ -26,18 +29,28 @@ export async function GET(request: NextRequest) {
         let friends : User[] = []
         for(const friendship of friendships){
             if(friendship.initiatorId === userId){
-                const friend : User = await prisma.user.findUnique({
+                const friend : User = await prisma.user.findFirst({
                     where: {
-                        id: friendship.receiverId
+                        id: friendship.receiverId,
+                        OR: [
+                            {username: {contains: query}},
+                            {firstName: {contains: query}},
+                            {lastName: {contains: query}},
+                        ]
                     }
                 }) as User
                 if(friend){
                     friends.push(friend)
                 }
             } else {
-                const friend : User = await prisma.user.findUnique({
+                const friend : User = await prisma.user.findFirst({
                     where: {
-                        id: friendship.initiatorId
+                        id: friendship.initiatorId,
+                        OR: [
+                            {username: {contains: query}},
+                            {firstName: {contains: query}},
+                            {lastName: {contains: query}},
+                        ]
                     }
                 }) as User
                 if(friend){

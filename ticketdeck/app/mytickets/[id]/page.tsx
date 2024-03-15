@@ -7,7 +7,7 @@ import TicketOptions from '@/components/ticketoptions';
 async function getTicket(id: string){
     try {
         const token = await auth().getToken();
-        const res = await fetch(process.env.BASE_URL + '/api/ticket?id=' + id, {
+        const res = await fetch(process.env.BASE_URL + '/api/ticket/' + id, {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}

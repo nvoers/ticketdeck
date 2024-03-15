@@ -16,7 +16,7 @@ async function searchResults(query: string){
     }
     try {
         const token = await auth().getToken();
-        const users = await fetch(process.env.BASE_URL + "/api/user/friends", {
+        const users = await fetch(process.env.BASE_URL + "/api/user/me/friends?query=" + query, {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
