@@ -50,6 +50,27 @@ async function getFirstname(){
     return "";
 }
 
+async function getAdmin(){
+    try {
+        const token = await auth().getToken();
+        const res = await fetch(process.env.BASE_URL + '/api/user?admin', {
+            method: 'GET',
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        if(res.status == 401){
+            console.log("Unauthorized");
+            return false;
+        }
+        const result = await res.json();
+        return result.admin;
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+
+}
+
 const formatDate = (dateString: string) => {
     const eventDate = new Date(dateString);
     const today = new Date();
@@ -66,6 +87,7 @@ const formatDate = (dateString: string) => {
 export default async function Home() {
     let events = await getEvents();
     let firstName = await getFirstname();
+    let admin = await getAdmin();
 
     return (
     <>
@@ -99,6 +121,11 @@ export default async function Home() {
                 <Link href="/mytickets/add" className="text-xl text-primary border-2 border-primary font-bold rounded-lg py-2 px-3">New ticket</Link>
                 <Link href="/mytickets/all" className="text-xl text-primary border-2 border-primary font-bold rounded-lg py-2 px-3">All tickets</Link>
                 <Link href="/friends" className="text-xl text-secondary bg-accent font-bold rounded-lg py-2 px-3">Friends</Link>
+                {admin ? 
+                    <Link href="/admin" className="text-2xl bg-primary text-secondary font-bold rounded-lg py-2 px-3 h-28 flex flex-col justify-end">
+                    <p>Admin</p>
+                    </Link>
+                : null}
             </div>
         </div>
     </>
