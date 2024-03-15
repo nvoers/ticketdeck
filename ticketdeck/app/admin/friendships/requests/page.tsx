@@ -1,6 +1,5 @@
 import Header from "@/components/header";
 import { FriendshipRequest, User } from "@prisma/client";
-import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 
 type RequestData = {
@@ -40,13 +39,12 @@ export default async function Page({ params } : { params: { id: string } }) {
             <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
                 <p className="text-3xl font-bold mb-4">Friendship requests</p>
                 <div className="overflow-x-auto">
-                    <table className="table table-xs">
+                    <table className="table table-sm">
                         <thead>
                         <tr>
                             <th>Sender</th> 
                             <th>Receiver</th> 
                             <th>Status</th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -56,9 +54,6 @@ export default async function Page({ params } : { params: { id: string } }) {
                                     <td>{request.user.username}</td>
                                     <td>{request.friend.username}</td>
                                     <td>{request.request.status}</td>
-                                    <td>
-                                        <Link href={`/admin/friendships/requests`}>Delete</Link>
-                                    </td>
                                 </tr>
                             );
                         })}

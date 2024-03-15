@@ -1,6 +1,5 @@
 import Header from "@/components/header";
 import { Friendship, User } from "@prisma/client";
-import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 
 type FriendshipData = {
@@ -40,13 +39,12 @@ export default async function Page() {
             <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
                 <p className="text-3xl font-bold mb-4">Friendships</p>
                 <div className="overflow-x-auto">
-                    <table className="table table-xs">
+                    <table className="table table-sm">
                         <thead>
                         <tr>
                             <th>User</th> 
                             <th>User</th> 
                             <th>Status</th>
-                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -56,9 +54,6 @@ export default async function Page() {
                                     <td>{friendship.user.username}</td>
                                     <td>{friendship.friend.username}</td>
                                     <td>{friendship.friendship.status}</td>
-                                    <td>
-                                        <Link href={`/admin/friendships`}>Delete</Link>
-                                    </td>
                                 </tr>
                             );
                         })}
