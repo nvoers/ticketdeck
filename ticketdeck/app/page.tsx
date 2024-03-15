@@ -1,4 +1,5 @@
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
+import Image from 'next/image';
 
 export default function Home() {
     return (
@@ -20,6 +21,7 @@ export default function Home() {
                 <div className="col-span-2">
                     <p className="text-2xl text-primary border-2 border-primary font-bold rounded-lg p-2">Share tickets with <span className="text-accent">friends</span> and <span className="text-accent">family</span></p>
                 </div>
+                <Image src="/mockup_2.jpeg" alt="Ticketdeck" width={500} height={500} className="col-span-2 rounded-lg" />
             </div>
             
         </div>
