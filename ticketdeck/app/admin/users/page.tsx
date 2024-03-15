@@ -1,7 +1,6 @@
 import Header from "@/components/header";
 import { auth } from "@clerk/nextjs";
 import { User } from "@prisma/client";
-import Link from "next/link";
 
 async function getUsers(){
     try {
@@ -35,14 +34,13 @@ export default async function Page() {
             <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
                 <p className="text-3xl font-bold mb-4">Users</p>
                 <div className="overflow-x-auto">
-                    <table className="table table-xs">
+                    <table className="table table-sm">
                         <thead>
                         <tr>
                             <th>Username</th> 
                             <th>First name</th> 
                             <th>Last name</th> 
                             <th>Role</th> 
-                            <th></th> 
                         </tr>
                         </thead>
                         <tbody>
@@ -53,9 +51,6 @@ export default async function Page() {
                                     <td>{user.firstName}</td>
                                     <td>{user.lastName}</td>
                                     <td>{user.role}</td>
-                                    <td>
-                                        <Link href={`/admin/users`}>Delete</Link>
-                                    </td>
                                 </tr>
                             );
                         })}

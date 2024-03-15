@@ -1,6 +1,5 @@
 import Header from "@/components/header";
 import { Ticket, User } from "@prisma/client";
-import Link from "next/link";
 import { auth } from "@clerk/nextjs";
 
 type TicketData = {
@@ -42,12 +41,11 @@ export default async function Page() {
             <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
                 <p className="text-3xl font-bold mb-4">Tickets</p>
                 <div className="overflow-x-auto">
-                    <table className="table table-xs">
+                    <table className="table table-sm">
                         <thead>
                         <tr>
                             <th>Owner</th> 
                             <th>Event name</th> 
-                            <th></th> 
                         </tr>
                         </thead>
                         <tbody>
@@ -56,9 +54,6 @@ export default async function Page() {
                                 <tr key={ticket.ticket.id}>
                                     <td>{ticket.user.username}</td>
                                     <td>{ticket.ticket.name}</td>
-                                    <td>
-                                        <Link href={`/admin/tickets`}>Delete</Link>
-                                    </td>
                                 </tr>
                             );
                         })}
