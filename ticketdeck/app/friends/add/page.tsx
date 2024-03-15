@@ -2,7 +2,7 @@ import Search from "@/components/search";
 import Header from "@/components/header";
 import { User } from '@prisma/client';
 import { auth } from "@clerk/nextjs";
-import FriendshipCard from "@/components/friendshipcard";
+import AddFriendCard from "@/components/addfriendcard";
 
 
 async function searchResults(query: string){
@@ -51,7 +51,7 @@ export default async function Page({
                     : 
                     users.map(async (user: User) => {
                         return(
-                            <FriendshipCard friendshipId={""} key={user.id} friend={user} option={"add"}/>
+                            <AddFriendCard key={user.id} user={user}/>
                         );
                     })
                 }

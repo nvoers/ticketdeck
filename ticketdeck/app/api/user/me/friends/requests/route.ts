@@ -14,6 +14,9 @@ export async function GET(request: NextRequest) {
                 receivedFriendships: {
                     where: {
                         status: FriendshipStatus.REQUESTED
+                    },
+                    include: {
+                        initiator: true,
                     }
                 }
             }
