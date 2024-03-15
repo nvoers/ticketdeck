@@ -1,10 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-import { fromPath, fromBuffer } from "pdf2pic";
+import { fromBuffer } from "pdf2pic";
 import jsQR from "jsqr";
-import { writeFile } from 'fs/promises'
-import path from 'path'
 
 export async function POST(request: NextRequest) {
     const PNG = require('pngjs').PNG;
@@ -83,54 +81,4 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({status: 200})
   
-}
-
-export async function DELETE(req : NextRequest) {
-    const { userId } = auth();
-    const searchParams = req.nextUrl.searchParams
-    const id = searchParams.get('id')
-    if(userId && id) {
-        const result = await prisma.ticket.delete({
-            where: {
-                id: id
-            }
-        })
-        return new NextResponse("Deleted ticket", {status: 200})
-    } else {
-        return NextResponse.json({error: "Not logged in"})
-    }
-}
-
-export async function GET(request : NextRequest) {
-    const { userId } = auth();
-    const searchParams = request.nextUrl.searchParams
-    const datetimeFilter = new Date();
-    datetimeFilter.setHours(0,0,0,0);
-    
-    if(userId) {
-        const result = await prisma.ticket.findMany({
-            where: {
-                userId: userId,
-                date: {
-                    gte: datetimeFilter
-                }
-            },
-            orderBy: {
-                date: 'asc'
-            }
-        }) 
-        const searchId = searchParams.get('id')
-        if(searchId) {
-            const ticket = await prisma.ticket.findUnique({
-                where: {
-                    userId: userId,
-                    id: searchId
-                }
-            })
-            return NextResponse.json({"ticket": ticket})
-        }
-        return NextResponse.json({"tickets": result.map((ticket) => {ticket.date = new Date(ticket.date); return ticket;})})
-    } else {
-        return NextResponse.json({error: "Not logged in"}, {status: 401})
-    }
 }

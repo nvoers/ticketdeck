@@ -6,14 +6,20 @@ import { Ticket } from "@prisma/client";
 export async function GET(request: NextRequest) {
     const { userId } = auth();
     if(userId) {
-        const tickets : Ticket[] = await prisma.user.findUnique({
+        const datetimeFilter = new Date();
+        datetimeFilter.setHours(0,0,0,0);
+        const tickets : Ticket[] = await prisma.ticket.findMany({
             where: {
-                id: userId
+                userId: userId,
+                date: {
+                    gte: datetimeFilter
+                }
             },
-            include: {
-                tickets: true
-            }
-        }).then((user) => { return user?.tickets }) as Ticket[]
+            orderBy: {
+                date: "asc"
+            },
+
+        })
         return NextResponse.json({"tickets": tickets})
     } else {
         return NextResponse.json({error: "Not logged in"}, {status: 401})
