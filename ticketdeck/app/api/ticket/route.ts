@@ -1,18 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
-import { fromPath, fromBuffer } from "pdf2pic";
+import { fromBuffer } from "pdf2pic";
 import jsQR from "jsqr";
-import { writeFile } from 'fs/promises'
-import path from 'path'
-import { Prisma, $Enums } from "@prisma/client";
-import { DynamicModelExtensionFluentApi, InternalArgs, PrismaPromise } from "@prisma/client/runtime/library";
-import { Ticket, User } from "@prisma/client";
-
-type TicketData = {
-    ticket: Ticket,
-    user: User
-}
 
 export async function POST(request: NextRequest) {
     const PNG = require('pngjs').PNG;
@@ -90,99 +80,4 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json({status: 200})
-  
-}
-
-export async function DELETE(req : NextRequest) {
-    const { userId } = auth();
-    const searchParams = req.nextUrl.searchParams
-    const id = searchParams.get('id')
-    if(userId && id) {
-        const result = await prisma.ticket.delete({
-            where: {
-                id: id
-            }
-        })
-        return new NextResponse("Deleted ticket", {status: 200})
-    } else {
-        return NextResponse.json({error: "Not logged in"})
-    }
-}
-
-export async function GET(request : NextRequest) {
-    const { userId } = auth();
-    const searchParams = request.nextUrl.searchParams
-    const all = searchParams.has('all')
-    const user = searchParams.has('user')
-    const datetimeFilter = new Date();
-    datetimeFilter.setHours(0,0,0,0);
-    
-    if(userId) {
-        if(all) {
-            const result = await prisma.ticket.findMany({
-                orderBy: {
-                    date: 'desc'
-                }
-            })
-            if(user) {
-                let combinedResult: TicketData[] = []
-                for(const ticket of result){
-                    if(ticket.userId){
-                        const user = await prisma.user.findUnique({
-                            where: {
-                                id: ticket.userId
-                            }
-                        })
-                        if(user){
-                            combinedResult.push(
-                                {
-                                    ticket,
-                                    user
-                                }
-                            )
-                        }
-                    }
-                }
-                return NextResponse.json({"tickets": combinedResult})
-            }
-        }
-        const result = await prisma.ticket.findMany({
-            where: {
-                userId: userId,
-                date: {
-                    gte: datetimeFilter
-                }
-            },
-            orderBy: {
-                date: 'asc'
-            }
-        }) 
-        const searchId = searchParams.get('id')
-        if(searchId) {
-            const admin = await prisma.user.findUnique({
-                where: {
-                    id: userId
-                }
-            }).then((user) => {return user?.role === "ADMIN"}) 
-            if(admin){
-                const ticket = await prisma.ticket.findUnique({
-                    where: {
-                        id: searchId
-                    }
-                })
-                return NextResponse.json({"ticket": ticket})
-            } else {
-                const ticket = await prisma.ticket.findUnique({
-                    where: {
-                        userId: userId,
-                        id: searchId
-                    }
-                })
-                return NextResponse.json({"ticket": ticket})
-            }
-        }
-        return NextResponse.json({"tickets": result.map((ticket) => {ticket.date = new Date(ticket.date); return ticket;})})
-    } else {
-        return NextResponse.json({error: "Not logged in"}, {status: 401})
-    }
 }

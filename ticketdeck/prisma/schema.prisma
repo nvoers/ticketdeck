@@ -9,16 +9,22 @@ datasource db {
 }
 
 model User {
-  id                String       @id
-  firstName         String?
-  lastName          String?
-  username          String       @unique
-  profileImageUrl   String?
-  role              UserRole     @default(USER)
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-  friendFriendships Friendship[] @relation("friendFriendships")
-  userFriendships   Friendship[] @relation("userFriendships")
+  id                   String       @id
+  firstName            String?
+  lastName             String?
+  username             String       @unique
+  profileImageUrl      String?
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+  initiatedFriendships Friendship[] @relation("Initiator")
+  receivedFriendships  Friendship[] @relation("Receiver")
+  tickets              Ticket[]
+  role                 Userrole     @default(USER)
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }
 
 enum UserRole {
@@ -32,37 +38,29 @@ model Ticket {
   /// @encrypted
   code   String
   date   DateTime
-  userId String?
+  user   User     @relation(fields: [userId], references: [id])
+  userId String
 }
 
 model Friendship {
-  id         String           @id @default(cuid())
-  userId     String
-  friendId   String
-  status     FriendshipStatus @default(ACCEPTED)
-  created_at DateTime         @default(now())
-  updated_at DateTime         @updatedAt
-  friend     User             @relation("friendFriendships", fields: [friendId], references: [id])
-  user       User             @relation("userFriendships", fields: [userId], references: [id])
-
-  @@unique([userId, friendId], name: "unique_friendship")
-  @@unique([friendId, userId], name: "unique_friendship_inverse")
-}
-
-model FriendshipRequest {
-  id         String           @id @default(cuid())
-  userId     String
-  friendId   String
-  status     FriendshipStatus @default(REQUESTED)
-  created_at DateTime         @default(now())
-  updated_at DateTime         @updatedAt
-
-  @@unique([userId, friendId], name: "unique_friendship_request")
-  @@unique([friendId, userId], name: "unique_friendship_request_inverse")
+  id          String           @id @default(cuid())
+  initiator   User             @relation("Initiator", fields: [initiatorId], references: [id])
+  initiatorId String
+  receiver    User             @relation("Receiver", fields: [receiverId], references: [id])
+  receiverId  String
+  status      FriendshipStatus @default(REQUESTED)
+  created_at  DateTime         @default(now())
+  updated_at  DateTime         @updatedAt
 }
 
 enum FriendshipStatus {
   REQUESTED
   ACCEPTED
   DECLINED
+  REMOVED
+}
+
+enum Userrole {
+  USER
+  ADMIN
 }

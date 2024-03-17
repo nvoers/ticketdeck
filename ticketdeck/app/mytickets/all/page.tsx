@@ -9,7 +9,7 @@ import { Ticket } from "@prisma/client";
 async function getTickets() {
     try {
         const token = await auth().getToken();
-        const res = await fetch(process.env.BASE_URL + '/api/ticket', {
+        const res = await fetch(process.env.BASE_URL + '/api/user/me/tickets', {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}

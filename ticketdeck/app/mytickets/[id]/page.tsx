@@ -3,11 +3,12 @@ import { auth } from '@clerk/nextjs';
 import QRCode from '@/components/qrcode';
 import { notFound } from 'next/navigation';
 import TicketOptions from '@/components/ticketoptions';
+import { Ticket } from '@prisma/client';
 
 async function getTicket(id: string){
     try {
         const token = await auth().getToken();
-        const res = await fetch(process.env.BASE_URL + '/api/ticket?id=' + id, {
+        const res = await fetch(process.env.BASE_URL + '/api/ticket/' + id, {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -31,14 +32,14 @@ const formatDate = (dateString: string) => {
 };
 
 export default async function Page({params} : {params: {id: string}}) {
-    const ticket = await getTicket(params.id);
+    const ticket : Ticket = await getTicket(params.id);
 
     return(
         <>
         <Header back/>
             <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
                 <p className="text-2xl font-bold">{ticket.name}</p>
-                <p className="text-2xl font-bold mb-4">{formatDate(ticket.date)}</p>
+                <p className="text-2xl font-bold mb-4">{formatDate(String(ticket.date))}</p>
                 <div className='bg-white w-full aspect-square rounded-lg flex justify-center items-center'>
                     <QRCode info={ticket.code}/>
                 </div>
