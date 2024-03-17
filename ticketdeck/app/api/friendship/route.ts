@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
                     receiverId: body.receiverId
                 }
             })
+            return NextResponse.json({message: 'Friend request sent'}, {status: 200})
         } catch (e) {
             return NextResponse.json({error: "Failed to add friend"}, {status: 500})
         }

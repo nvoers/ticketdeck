@@ -5,7 +5,12 @@ import { prisma } from '@/lib/prisma';
 export async function DELETE(request : NextRequest, { params }: { params: { id: string } }) {
     const { userId } = auth();
     if(userId) {
-        const admin : boolean = await fetch(`api/user/${userId}/admin`).then((response) => response.json()).then((data) => data.admin)
+        const token = await auth().getToken();
+        const admin = await fetch(`${process.env.BASE_URL}/api/user/${userId}/admin`, {
+                method: 'GET',
+                cache: 'no-store',
+                headers: {Authorization: `Bearer ${token}`}
+            }).then((response) => response.json()).then((data) => data.admin);
         if(admin) {
             try {
                 await prisma.ticket.delete({
@@ -38,7 +43,13 @@ export async function DELETE(request : NextRequest, { params }: { params: { id: 
 export async function GET(request : NextRequest, { params }: { params: { id: string } }) {
     const { userId } = auth();
     if(userId) {
-        const admin : boolean = await fetch(`api/user/${userId}/admin`).then((response) => response.json()).then((data) => data.admin)
+        const token = await auth().getToken();
+        const admin = await fetch(`${process.env.BASE_URL}/api/user/${userId}/admin`, {
+                method: 'GET',
+                cache: 'no-store',
+                headers: {Authorization: `Bearer ${token}`}
+            }).then((response) => response.json()).then((data) => data.admin);
+            
         if(admin) {
             try {
                 const result = await prisma.ticket.findUnique({

@@ -41,17 +41,20 @@ async function getFriends(){
 async function getRequests(){
     try {
         const token = await auth().getToken();
-        const requests = await fetch(process.env.BASE_URL + "/api/friends/requests", {
+        const request = await fetch(process.env.BASE_URL + "/api/user/me/friends/requests", {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(requests.status == 401){
+        if(request.status == 401){
             console.log("Unauthorized");
             return [];
         }
-        const result = await requests.json();
-        return result.friendRequests;
+        if(request.status != 200){
+            console.log(request.status);
+        }
+        const result = await request.json();
+        return result.requests;
     } catch (error) {
         console.log(error);
     }
@@ -65,6 +68,7 @@ const getFriend = async (friendship: Friendship) => {
 
 export default async function Page(){
 
+    const { userId } = auth();
     const friendships = await getFriends();
     const requests = await getRequests();
 
@@ -82,7 +86,10 @@ export default async function Page(){
                     return(<FriendRequestCard key={request.id} request={request}/>);
                 })}
                 {friendships.map(async (friendship: Friendship) => {
-                        return(<FriendshipCard key={friendship.id} friendship={friendship}/>);
+                    if(friendship.initiatorId === userId)
+                        return(<FriendshipCard key={friendship.id} friendship={friendship} receiver={true}/>);
+                    else
+                        return(<FriendshipCard key={friendship.id} friendship={friendship} receiver={false}/>);
                     })
                 }
             </div>

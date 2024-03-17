@@ -9,7 +9,7 @@ export default function TicketOptions({ ticketId }: { ticketId: string }) {
 
     async function deleteTicket() {
         try {
-            const res = await fetch(process.env.BASE_URL + `/api/ticket?id=` + ticketId, {
+            const res = await fetch(process.env.BASE_URL + `/api/ticket/` + ticketId, {
                 method: 'DELETE',
                 body: JSON.stringify({ticketId})
             });

@@ -5,11 +5,6 @@ import TransferCard from "@/components/transfercard";
 import TransferTicketModal from "@/components/transferticketmodal";
 import { User } from '@prisma/client';
 
-type FriendObject = {
-    friendshipId: string;
-    user: User;
-}
-
 async function searchResults(query: string){
     if (!query) {
         return [];
@@ -34,12 +29,12 @@ async function searchResults(query: string){
 }
 
 export default async function Page({
-        searchParams,
+        searchParams, params
     }: {
         searchParams?: {
             query?: string;
             page?: string;
-        };
+    }, params: { id: string }
     }) {
     
     const query = searchParams?.query || "";
@@ -54,17 +49,17 @@ export default async function Page({
                 {friends.length == 0 && query ? 
                     <div className="text-md mt-4 ml-2">No results</div> 
                     : 
-                    friends.map(async (friend: FriendObject) => {
+                    friends.map(async (friend: User) => {
                         return(
-                            <TransferCard key={friend.user.id} friend={friend.user}/>
+                            <TransferCard key={friend.id} friend={friend}/>
                         );
                     })
                 }
             </div>
             {friends.length == 0 && query ?<></>:
-            friends.map((friend: FriendObject) => {
+            friends.map((friend: User) => {
                 return(
-                    <TransferTicketModal key={friend.user.id} friend={friend.user}/>
+                    <TransferTicketModal key={friend.id} friend={friend} id={params.id}/>
                 );
             })
             }

@@ -20,7 +20,7 @@ export default function FriendRequestCard({request}: {request: Friendship}) {
 
     const acceptRequest = async () => {
         const response = await fetch(process.env.BASE_URL + `/api/friendship/${request.id}/accept`, {
-            method: 'POST',
+            method: 'POST'
         });
         if(response.status == 401) {
             console.log("Unauthorized");
@@ -28,12 +28,14 @@ export default function FriendRequestCard({request}: {request: Friendship}) {
         if(response.status == 200) {
             toast.success('Friend request accepted!');
             router.refresh();
+        } else {
+            console.log(response.status);
         }
     }
 
     const declineRequest = async () => {
         const response = await fetch(process.env.BASE_URL + `/api/friendship/${request.id}/decline`, {
-            method: 'POST',
+            method: 'POST'
         });
         if(response.status == 401) {
             console.log("Unauthorized");

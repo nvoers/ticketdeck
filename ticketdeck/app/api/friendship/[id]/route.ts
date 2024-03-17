@@ -6,7 +6,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const { userId } = auth();
 
     if(userId) {
-        const admin : boolean = await fetch(`api/user/${userId}/admin`).then((response) => response.json()).then((data) => data.admin)
+        const admin : boolean = await fetch(`${process.env.BASE_URL}/api/user/${userId}/admin`).then((response) => response.json()).then((data) => data.admin)
         if(admin) {
             try {
                 const friendship = await prisma.friendship.findUnique({
@@ -43,7 +43,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     const { userId } = auth();
 
     if(userId) {
-        const admin = await fetch(`api/user/${userId}/admin`).then((response) => response.json()).then((data) => data.admin)
+        const admin = await fetch(`${process.env.BASE_URL}/api/user/${userId}/admin`).then((response) => response.json()).then((data) => data.admin)
         if(admin) {
             try {
                 await prisma.friendship.delete({

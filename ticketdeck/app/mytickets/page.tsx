@@ -52,7 +52,8 @@ async function getFirstname(){
     return "";
 }
 
-const formatDate = (date: Date) => {
+const formatDate = (datestring: string) => {
+    const date : Date = new Date(datestring);
     const today = new Date();
     const isToday = today.getFullYear() === date.getFullYear() &&
                 today.getMonth() === date.getMonth() &&
@@ -78,7 +79,7 @@ export default async function Home() {
                 <Link href={`/mytickets/${tickets[0].id}`} className="col-span-2 text-xl bg-primary text-secondary font-bold rounded-lg py-2 px-3">
                     <p className="mb-4">Next event</p>
                     <p>{tickets[0].name}</p>
-                    <p>{formatDate(tickets[0].date)}</p>
+                    <p>{formatDate(String(tickets[0].date))}</p>
                 </Link>
                 :
                 <div className="col-span-2 text-xl bg-primary text-secondary font-bold rounded-lg py-2 px-3">
