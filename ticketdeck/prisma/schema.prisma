@@ -27,6 +27,11 @@ enum UserRole {
   ADMIN
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
+
 model Ticket {
   id     String   @id @default(cuid())
   name   String
