@@ -4,19 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { Friendship, FriendshipStatus, User } from "@prisma/client";
 
 export async function GET(request: NextRequest) {
-    let userid = ""
-    try {
-        const { userId } = auth();
-        userid = userId as string;
-    } catch (error) {
-        console.log(error);
-    }
+    const { userId } = auth();
     
-    if(userid) {
+    if(userId) {
         try {
             const requests : Friendship[] = await prisma.user.findUnique({
                 where: {
-                    id: userid,
+                    id: userId,
                 },
                 include: {
                     receivedFriendships: {

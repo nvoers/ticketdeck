@@ -6,7 +6,12 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const { userId } = auth();
 
     if(userId) {
-        const admin : boolean = await fetch(`${process.env.BASE_URL}/api/user/${userId}/admin`).then((response) => response.json()).then((data) => data.admin)
+        const token = await auth().getToken();
+        const admin = await fetch(`${process.env.BASE_URL}/api/user/${userId}/admin`, {
+                method: 'GET',
+                cache: 'no-store',
+                headers: {Authorization: `Bearer ${token}`}
+            }).then((response) => response.json()).then((data) => data.admin);
         if(admin) {
             try {
                 const friendship = await prisma.friendship.findUnique({
@@ -43,7 +48,12 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     const { userId } = auth();
 
     if(userId) {
-        const admin = await fetch(`${process.env.BASE_URL}/api/user/${userId}/admin`).then((response) => response.json()).then((data) => data.admin)
+        const token = await auth().getToken();
+        const admin = await fetch(`${process.env.BASE_URL}/api/user/${userId}/admin`, {
+                method: 'GET',
+                cache: 'no-store',
+                headers: {Authorization: `Bearer ${token}`}
+            }).then((response) => response.json()).then((data) => data.admin);
         if(admin) {
             try {
                 await prisma.friendship.delete({
