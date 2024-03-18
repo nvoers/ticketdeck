@@ -14,3 +14,9 @@
 body {
     background-color: #F0F9FF;
 }
+
+@media(prefers-color-scheme: dark) {
+    body {
+        background-color: #0035B2;
+    }
+}

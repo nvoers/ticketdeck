@@ -102,7 +102,7 @@ export default async function Home() {
                 </Link>
                 <Link href="/mytickets/add" className="text-xl text-primary border-2 border-primary font-bold rounded-lg py-2 px-3">New ticket</Link>
                 <Link href="/mytickets/all" className="text-xl text-primary border-2 border-primary font-bold rounded-lg py-2 px-3">All tickets</Link>
-                <Link href="/friends" className="text-xl text-secondary bg-accent font-bold rounded-lg py-2 px-3">Friends</Link>
+                <Link href="/friends" className="text-xl text-secondary dark:text-primary bg-accent font-bold rounded-lg py-2 px-3">Friends</Link>
             </div>
         </div>
     </>

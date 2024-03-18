@@ -12,7 +12,7 @@ export default function Header({ back }: { back?: boolean}) {
       <div className="navbar bg-secondary">
         <div className="navbar-start">
           {back ? 
-            <FontAwesomeIcon icon={faArrowLeft} onClick={() => router.back()} size="1x" className="ml-4"/>
+            <FontAwesomeIcon icon={faArrowLeft} onClick={() => router.back()} size="1x" className="ml-4 text-neutral"/>
           : <></>}
         </div>
         <div className="navbar-center">
