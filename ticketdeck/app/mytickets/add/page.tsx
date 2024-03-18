@@ -70,7 +70,7 @@ export default function AddTickets() {
             <div className="container mx-auto px-4 py-4 bg-secondary min-h-screen">
             <div className="flex justify-center pt-8">
             <form onSubmit={handleSubmit} className="form-control w-full max-w-xs">
-                <label htmlFor="event_name">Event name</label>
+                <label htmlFor="event_name" className="text-neutral dark:text-primary">Event name</label>
                 <input 
                     id="event_name" 
                     name="event_name" 
@@ -80,7 +80,7 @@ export default function AddTickets() {
                     value={event_name}
                     onChange={handleEventNameChange}
                     required/>
-                <label htmlFor="event_date">Date</label>
+                <label htmlFor="event_date" className="text-neutral dark:text-primary">Date</label>
                 <input 
                     id="event_date" 
                     name="event_date" 
@@ -91,10 +91,10 @@ export default function AddTickets() {
                     onChange={handleDateChange}
                     required/>
                 <label htmlFor="ticket_info">
-                    <div className="has-tooltip flex w-fit">
-                        <span className='tooltip rounded shadow-lg p-1 bg-gray-100 -mt-8'>Upload an PDF file of the qr-code on your ticket</span>
+                    <div className="has-tooltip flex w-fit text-neutral dark:text-primary">
+                        <span className='tooltip rounded shadow-lg p-1 bg-primary text-secondary -mt-8'>Upload an PDF file of the qr-code on your ticket</span>
                         QR-code
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-slate-400 w-6 h-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-neutral dark:text-primary w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                         </svg>
                     </div>

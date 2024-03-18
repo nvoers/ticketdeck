@@ -49,11 +49,13 @@ export default async function Page({
                 {friends.length == 0 && query ? 
                     <div className="text-md mt-4 ml-2">No results</div> 
                     : 
-                    friends.map(async (friend: User) => {
+                    <div className="md:grid md:grid-cols-3 md:gap-2">
+                        {friends.map(async (friend: User) => {
                         return(
                             <TransferCard key={friend.id} friend={friend}/>
                         );
-                    })
+                    })}
+                    </div>
                 }
             </div>
             {friends.length == 0 && query ?<></>:

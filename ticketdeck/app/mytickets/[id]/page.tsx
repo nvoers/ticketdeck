@@ -38,10 +38,14 @@ export default async function Page({params} : {params: {id: string}}) {
         <>
         <Header back/>
             <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
-                <p className="text-2xl font-bold">{ticket.name}</p>
-                <p className="text-2xl font-bold mb-4">{formatDate(String(ticket.date))}</p>
-                <div className='bg-white w-full aspect-square rounded-lg flex justify-center items-center'>
-                    <QRCode info={ticket.code}/>
+                <div className='md:grid md:grid-cols-2 md:gap-2'>
+                    <div>
+                        <p className="text-2xl font-bold">{ticket.name}</p>
+                        <p className="text-2xl font-bold mb-4">{formatDate(String(ticket.date))}</p>
+                    </div>
+                    <div className='bg-white w-full aspect-square rounded-lg flex justify-center items-center'>
+                        <QRCode info={ticket.code}/>
+                    </div>
                 </div>
                 <TicketOptions ticketId={ticket.id}/>
             </div>

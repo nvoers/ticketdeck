@@ -82,9 +82,12 @@ export default async function Page(){
                         <FontAwesomeIcon icon={faPlus} className="h-fill pr-3" color="neutral" size="2x"/>
                     </Link>
                 </div>
+                <div className='md:grid md:grid-cols-3 md:gap-2'>
                 {requests.map(async (request: Friendship) => {
                     return(<FriendRequestCard key={request.id} request={request}/>);
                 })}
+                </div>
+                <div className='md:grid md:grid-cols-3 md:gap-2'>
                 {friendships.map(async (friendship: Friendship) => {
                     if(friendship.initiatorId === userId)
                         return(<FriendshipCard key={friendship.id} friendship={friendship} receiver={true}/>);
@@ -92,6 +95,7 @@ export default async function Page(){
                         return(<FriendshipCard key={friendship.id} friendship={friendship} receiver={false}/>);
                     })
                 }
+                </div>
             </div>
         </>
     );
