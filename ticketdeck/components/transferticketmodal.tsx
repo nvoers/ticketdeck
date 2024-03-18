@@ -3,21 +3,25 @@ import toast from 'react-hot-toast'
 import { useRouter, usePathname } from 'next/navigation'
 import { User } from '@prisma/client';
 
-export default function TransferTicketModal({ friend }: { friend: User}) {
+export default function TransferTicketModal({ friend, id }: { friend: User, id: string}) {
 
     const router = useRouter();
     const pathname = usePathname();
 
     async function transferTicket() {
+        console.log(friend);
         const ticketId = pathname.split('/')[2];
         try {
-            const result = await fetch(process.env.BASE_URL + '/api/ticket/transfer', {
+            const result = await fetch(process.env.BASE_URL + `/api/ticket/${id}/transfer`, {
                 method: 'POST',
-                body: JSON.stringify({userId: friend.id, ticketId: ticketId}),
+                body: JSON.stringify({receiverId: friend.id}),
             });
             if(result.status === 200) {
                 toast.success('Ticket transferred');
                 router.push('/mytickets/all');
+            } else {
+                toast.error('Failed to transfer ticket');
+                console.log(result);
             }
         } catch (error) {
             console.log(error);

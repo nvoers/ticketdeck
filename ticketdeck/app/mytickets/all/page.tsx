@@ -9,7 +9,7 @@ import { Ticket } from "@prisma/client";
 async function getTickets() {
     try {
         const token = await auth().getToken();
-        const res = await fetch(process.env.BASE_URL + '/api/ticket', {
+        const res = await fetch(process.env.BASE_URL + '/api/user/me/tickets', {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -28,7 +28,7 @@ export default async function MyTickets() {
     const tickets = await getTickets();
     return (
         <>
-        <Header back={true}/>
+        <Header back/>
         <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
             <div className="flex justify-between items-center mb-3">
                 <p className="text-3xl font-bold">Your tickets</p>

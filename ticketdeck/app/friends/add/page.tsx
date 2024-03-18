@@ -2,7 +2,7 @@ import Search from "@/components/search";
 import Header from "@/components/header";
 import { User } from '@prisma/client';
 import { auth } from "@clerk/nextjs";
-import FriendshipCard from "@/components/friendshipcard";
+import AddFriendCard from "@/components/addfriendcard";
 
 
 async function searchResults(query: string){
@@ -11,7 +11,7 @@ async function searchResults(query: string){
     }
     try {
         const token = await auth().getToken();
-        const users = await fetch(process.env.BASE_URL + "/api/user/friends/find?query=" + query, {
+        const users = await fetch(process.env.BASE_URL + "/api/user/me/friends/new?query=" + query, {
             method: 'GET',
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
@@ -42,7 +42,7 @@ export default async function Page({
     
     return(
         <>
-            <Header back={true}/>
+            <Header back/>
             <div className="container mx-auto bg-secondary text-neutral px-4 min-h-screen">
                 <p className="text-3xl font-bold mb-2 ml-2">Add friends</p>
                 <Search placeholder="Search for friends"/>
@@ -51,7 +51,7 @@ export default async function Page({
                     : 
                     users.map(async (user: User) => {
                         return(
-                            <FriendshipCard friendshipId={""} key={user.id} friend={user} option={"add"}/>
+                            <AddFriendCard key={user.id} user={user}/>
                         );
                     })
                 }
