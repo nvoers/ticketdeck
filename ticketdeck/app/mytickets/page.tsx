@@ -74,15 +74,17 @@ export default async function Home() {
         <Header />
         <div className="container mx-auto px-4 py-4 min-h-screen bg-secondary text-neutral">
             <p className="text-3xl font-bold mb-4">Welcome, {firstName}</p>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {tickets.length > 0 ?
-                <Link href={`/mytickets/${tickets[0].id}`} className="col-span-2 text-xl bg-primary text-secondary font-bold rounded-lg py-2 px-3">
+                <Link href={`/mytickets/${tickets[0].id}`} className="col-span-2 md:col-span-1 md:row-span-3 text-xl bg-primary text-secondary font-bold rounded-lg py-2 px-3 flex justify-between flex-col">
                     <p className="mb-4">Next event</p>
-                    <p>{tickets[0].name}</p>
-                    <p>{formatDate(String(tickets[0].date))}</p>
+                    <div>
+                        <p>{tickets[0].name}</p>
+                        <p>{formatDate(String(tickets[0].date))}</p>
+                    </div>
                 </Link>
                 :
-                <div className="col-span-2 text-xl bg-primary text-secondary font-bold rounded-lg py-2 px-3">
+                <div className="col-span-2 md:col-span-1 md:row-span-3 text-xl bg-primary text-secondary font-bold rounded-lg py-2 px-3">
                     <p className="mb-4">Next event</p>
                     <p>No upcoming event</p>
                 </div>

@@ -37,11 +37,13 @@ export default async function MyTickets() {
                 </Link>
             </div>
             {tickets.length > 0 ?
-                tickets.map((ticket: Ticket) => {
+                <div className="md:grid md:grid-cols-3 md:gap-2">
+                {tickets.map((ticket: Ticket) => {
                     return(
                         <EventCard key={ticket.id} ticketId={ticket.id} eventName={ticket.name} eventDate={ticket.date}/>
                     );
-                })
+                })}
+                </div>
             :
             <div className="text-2xl font-bold">No tickets</div>}
         </div>
