@@ -33,6 +33,7 @@ export default async function RootLayout({
         <head>
           <title>{title}</title>
           <meta name="description" content={description} />
+          <link rel="apple-touch-icon" sizes="180x180" href="/ticket-icon.png"></link>
         </head>
         <body className={roboto.className}>
           <Toaster position="bottom-right" reverseOrder={false}/>
