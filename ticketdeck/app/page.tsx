@@ -8,7 +8,7 @@ export default function Home() {
             <p className="text-4xl font-bold">Ticketdeck</p>
             <p className="text-2xl font-bold">All of your tickets in one place</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
-                <div className="md:col-span-2 grid grid-cols-2 gap-2">
+                <div className="col-span-2 grid grid-cols-2 gap-2">
                     <SignUpButton redirectUrl="/mytickets">
                         <div className="text-2xl bg-primary text-secondary font-bold rounded-lg p-2 h-28 flex flex-col justify-end">
                             <p>Register</p>
