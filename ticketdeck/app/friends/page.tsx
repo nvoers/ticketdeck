@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import FriendRequestCard from '@/components/friendrequestcard';
 import { User } from '@prisma/client';
+import { notFound } from 'next/navigation';
 
 type Friendship = {
     id: number,
@@ -26,16 +27,16 @@ async function getFriends(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(users.status == 401){
-            console.log("Unauthorized");
-            return [];
+        if(users.status != 200){
+            throw new Error(users.statusText);
+        } else {
+            const result = await users.json();
+            return result.friendships;
         }
-        const result = await users.json();
-        return result.friendships;
     } catch (error) {
         console.log(error);
+        return null;
     }
-    return [];
 }
 
 async function getRequests(){
@@ -46,24 +47,17 @@ async function getRequests(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(request.status == 401){
-            console.log("Unauthorized");
-            return [];
-        }
         if(request.status != 200){
-            console.log(request.status);
+            throw new Error(request.statusText);
         }
-        const result = await request.json();
-        return result.requests;
+        else {
+            const result = await request.json();
+            return result.requests;
+        }
     } catch (error) {
         console.log(error);
+        return null;
     }
-    return [];
-}
-
-const getFriend = async (friendship: Friendship) => {
-    const { userId } = auth();
-    return userId === friendship.initiatorId ? friendship.receiver : friendship.initiator;
 }
 
 export default async function Page(){
@@ -71,6 +65,10 @@ export default async function Page(){
     const { userId } = auth();
     const friendships = await getFriends();
     const requests = await getRequests();
+
+    if(!friendships || !requests){
+        return notFound();
+    }
 
     return(
         <>

@@ -23,9 +23,10 @@ export async function GET(request: NextRequest) {
                     }
                 }
             }).then((user) => { return user?.receivedFriendships }) as Friendship[]
+            if(!requests)
+                return NextResponse.json({error: "response undefined"}, {status: 404})
             return NextResponse.json({"requests": requests}, {status: 200})
         } catch (error) {
-            console.log(error);
             return NextResponse.json({error: "Server error"}, {status: 500})
         }
         

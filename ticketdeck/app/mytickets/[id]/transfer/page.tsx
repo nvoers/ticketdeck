@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs";
 import TransferCard from "@/components/transfercard";
 import TransferTicketModal from "@/components/transferticketmodal";
 import { User } from '@prisma/client';
+import { notFound } from "next/navigation";
 
 async function searchResults(query: string){
     if (!query) {
@@ -16,16 +17,16 @@ async function searchResults(query: string){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(users.status == 401){
-            console.log("Unauthorized");
-            return [];
+        if(users.status != 200){
+            throw new Error(users.statusText);
+        } else {
+            const result = await users.json();
+            return result.friends;
         }
-        const result = await users.json();
-        return result.friends;
     } catch (error) {
         console.log(error);
+        return null;
     }
-    return [];
 }
 
 export default async function Page({
@@ -39,6 +40,10 @@ export default async function Page({
     
     const query = searchParams?.query || "";
     const friends = await searchResults(query);
+
+    if(!friends){
+        return notFound();
+    }
 
     return(
         <>

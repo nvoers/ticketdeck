@@ -1,7 +1,7 @@
 'use client'
 
 import Header from "@/components/header";
-import { SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import toast from "react-hot-toast";
 import { useRouter } from 'next/navigation';
@@ -48,19 +48,17 @@ export default function AddTickets() {
                 method: 'POST',
                 body: data
             })
-            // handle the error
-            if(res.status == 401){
-                console.log("Unauthorized");
-                return;
-            }
             if(res.status == 200){
                 toast.success('Tickets uploaded!', { id: toastId })
                 router.push('/mytickets/all');
+            } else {
+                toast.error('Failed to upload tickets', { id: toastId })
+                throw new Error(res.statusText);
             }
-        } catch (e) {
+        } catch (error) {
             // Handle errors here
             toast.error('Something went wrong', { id: toastId })
-            console.error(e)
+            console.error(error)
         }
     }
 

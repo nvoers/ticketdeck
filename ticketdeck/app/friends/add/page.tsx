@@ -3,6 +3,7 @@ import Header from "@/components/header";
 import { User } from '@prisma/client';
 import { auth } from "@clerk/nextjs";
 import AddFriendCard from "@/components/addfriendcard";
+import { notFound } from "next/navigation";
 
 
 async function searchResults(query: string){
@@ -16,16 +17,16 @@ async function searchResults(query: string){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(users.status == 401){
-            console.log("Unauthorized");
-            return [];
+        if(users.status != 200){
+            throw new Error(users.statusText);
+        } else {
+            const result = await users.json();
+            return result.users;
         }
-        const result = await users.json();
-        return result.users;
     } catch (error) {
         console.log(error);
+        return null;
     }
-    return [];
 }
 
 export default async function Page({
@@ -39,6 +40,10 @@ export default async function Page({
 
     const query = searchParams?.query || null;
     const users = await searchResults(query as string);
+
+    if(!users){
+        return notFound();
+    }
     
     return(
         <>
