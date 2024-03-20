@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import FriendRequestCard from '@/components/friendrequestcard';
 import { User } from '@prisma/client';
+import { notFound } from 'next/navigation';
 
 type Friendship = {
     id: number,
@@ -33,7 +34,8 @@ async function getFriends(){
             return result.friendships;
         }
     } catch (error) {
-        throw new Error(error as string);
+        console.log(error);
+        return null;
     }
 }
 
@@ -53,14 +55,9 @@ async function getRequests(){
             return result.requests;
         }
     } catch (error) {
-        throw new Error(error as string);
+        console.log(error);
+        return null;
     }
-    return [];
-}
-
-const getFriend = async (friendship: Friendship) => {
-    const { userId } = auth();
-    return userId === friendship.initiatorId ? friendship.receiver : friendship.initiator;
 }
 
 export default async function Page(){
@@ -68,6 +65,10 @@ export default async function Page(){
     const { userId } = auth();
     const friendships = await getFriends();
     const requests = await getRequests();
+
+    if(!friendships || !requests){
+        return notFound();
+    }
 
     return(
         <>

@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs";
 import TransferCard from "@/components/transfercard";
 import TransferTicketModal from "@/components/transferticketmodal";
 import { User } from '@prisma/client';
+import { notFound } from "next/navigation";
 
 async function searchResults(query: string){
     if (!query) {
@@ -23,7 +24,8 @@ async function searchResults(query: string){
             return result.friends;
         }
     } catch (error) {
-        throw new Error(error as string);
+        console.log(error);
+        return null;
     }
 }
 
@@ -38,6 +40,10 @@ export default async function Page({
     
     const query = searchParams?.query || "";
     const friends = await searchResults(query);
+
+    if(!friends){
+        return notFound();
+    }
 
     return(
         <>

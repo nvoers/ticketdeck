@@ -3,6 +3,7 @@ import Header from "@/components/header";
 import { User } from '@prisma/client';
 import { auth } from "@clerk/nextjs";
 import AddFriendCard from "@/components/addfriendcard";
+import { notFound } from "next/navigation";
 
 
 async function searchResults(query: string){
@@ -23,7 +24,8 @@ async function searchResults(query: string){
             return result.users;
         }
     } catch (error) {
-        throw new Error(error as string);
+        console.log(error);
+        return null;
     }
 }
 
@@ -38,6 +40,10 @@ export default async function Page({
 
     const query = searchParams?.query || null;
     const users = await searchResults(query as string);
+
+    if(!users){
+        return notFound();
+    }
     
     return(
         <>

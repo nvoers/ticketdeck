@@ -25,7 +25,8 @@ async function getTicket(id: string){
             return ticket;
         }
     } catch (error) {
-        throw new Error(error as string);
+        console.log(error);
+        return null;
     }
 }
 
@@ -37,6 +38,10 @@ const formatDate = (dateString: string) => {
 
 export default async function Page({params} : {params: {id: string}}) {
     const ticket : Ticket = await getTicket(params.id);
+
+    if(!ticket){
+        notFound();
+    }
 
     return(
         <>

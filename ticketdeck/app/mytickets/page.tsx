@@ -21,7 +21,8 @@ async function getTickets(){
 		}
         return result.tickets;
     } catch (error) {
-        throw new Error(error as string);
+        console.log(error);
+        return null;
     }
 }
 
@@ -34,6 +35,9 @@ async function getFirstname(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
+        if(res.status == 404){
+            throw new Error("User not found in database");
+        }
         if(res.status != 200){
             throw new Error(res.statusText);
         }
@@ -45,7 +49,8 @@ async function getFirstname(){
             return result.user.firstName[0].toUpperCase() + result.user.firstName.slice(1).toLowerCase();
         }
     } catch (error) {
-        throw new Error(error as string);
+        console.log(error);
+        return null;
     }
 }
 
@@ -66,7 +71,7 @@ export default async function Home() {
     let tickets : Ticket[] = await getTickets();
     let firstName : string = await getFirstname();
 
-    if(!firstName){
+    if(!firstName || !tickets){
         notFound();
     }
 
