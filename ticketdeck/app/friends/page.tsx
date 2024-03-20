@@ -47,14 +47,15 @@ async function getRequests(){
             headers: {Authorization: `Bearer ${token}`}
         });
         if(request.status == 401){
-            console.log("Unauthorized");
-            return [];
+            throw new Error("Unauthorized Error");
         }
         if(request.status != 200){
-            console.log(request.status);
+            throw new Error("Error");
         }
-        const result = await request.json();
-        return result.requests;
+        else {
+            const result = await request.json();
+            return result.requests;
+        }
     } catch (error) {
         console.log(error);
     }

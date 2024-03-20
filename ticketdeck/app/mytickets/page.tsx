@@ -2,6 +2,7 @@ import Link from "next/link";
 import Header from "@/components/header";
 import { auth } from "@clerk/nextjs";
 import { Ticket } from "@prisma/client";
+import { notFound } from "next/navigation";
 
 async function getTickets(){
     try {
@@ -27,6 +28,7 @@ async function getTickets(){
 }
 
 async function getFirstname(){
+
     try {
         const token = await auth().getToken();
         const res = await fetch(process.env.BASE_URL + '/api/user/me', {
@@ -37,6 +39,9 @@ async function getFirstname(){
         if(res.status == 401){
             console.log("Unauthorized");
             return "";
+        }
+        if(res.status == 404){
+            throw new Error("User not in database");
         }
         if(res.status == 200){
             const result = await res.json();
