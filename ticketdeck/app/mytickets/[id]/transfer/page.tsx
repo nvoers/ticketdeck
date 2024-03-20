@@ -16,16 +16,15 @@ async function searchResults(query: string){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(users.status == 401){
-            console.log("Unauthorized");
-            return [];
+        if(users.status != 200){
+            throw new Error(users.statusText);
+        } else {
+            const result = await users.json();
+            return result.friends;
         }
-        const result = await users.json();
-        return result.friends;
     } catch (error) {
-        console.log(error);
+        throw new Error(error as string);
     }
-    return [];
 }
 
 export default async function Page({

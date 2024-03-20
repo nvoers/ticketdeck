@@ -14,6 +14,9 @@ async function getTickets() {
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
+        if(res.status != 200){
+            throw new Error(res.statusText);
+        }
         const result = await res.json();
         if(!result.tickets){
 			return [];

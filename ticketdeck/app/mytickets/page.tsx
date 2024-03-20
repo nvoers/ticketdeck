@@ -12,9 +12,8 @@ async function getTickets(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(res.status == 401){
-			console.log("Unauthorized");
-			return [];
+        if(res.status != 200){
+			throw new Error("Failed to fetch tickets");
         }
         const result = await res.json();
 		if(!result.tickets){
@@ -22,9 +21,8 @@ async function getTickets(){
 		}
         return result.tickets;
     } catch (error) {
-        console.log(error);
+        throw new Error(error as string);
     }
-    return [];
 }
 
 async function getFirstname(){
@@ -36,26 +34,19 @@ async function getFirstname(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(res.status == 401){
-            throw new Error("Unauthorized");
-            return "";
+        if(res.status != 200){
+            throw new Error(res.statusText);
         }
-        if(res.status == 404){
-            throw new Error("User not found");
-            return "";
-        }
-        if(res.status == 200){
+        else{
             const result = await res.json();
             if(result.user.firstName == ""){
                 throw new Error("No first name");
-                return "";
             }
             return result.user.firstName[0].toUpperCase() + result.user.firstName.slice(1).toLowerCase();
         }
     } catch (error) {
-        console.log(error);
+        throw new Error(error as string);
     }
-    return "";
 }
 
 const formatDate = (datestring: string) => {
@@ -75,7 +66,7 @@ export default async function Home() {
     let tickets : Ticket[] = await getTickets();
     let firstName : string = await getFirstname();
 
-    if(firstName == ""){
+    if(!firstName){
         notFound();
     }
 

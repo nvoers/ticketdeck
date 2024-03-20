@@ -26,16 +26,15 @@ async function getFriends(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(users.status == 401){
-            console.log("Unauthorized");
-            return [];
+        if(users.status != 200){
+            throw new Error(users.statusText);
+        } else {
+            const result = await users.json();
+            return result.friendships;
         }
-        const result = await users.json();
-        return result.friendships;
     } catch (error) {
-        console.log(error);
+        throw new Error(error as string);
     }
-    return [];
 }
 
 async function getRequests(){
@@ -46,18 +45,15 @@ async function getRequests(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(request.status == 401){
-            throw new Error("Unauthorized Error");
-        }
         if(request.status != 200){
-            throw new Error("Error");
+            throw new Error(request.statusText);
         }
         else {
             const result = await request.json();
             return result.requests;
         }
     } catch (error) {
-        console.log(error);
+        throw new Error(error as string);
     }
     return [];
 }

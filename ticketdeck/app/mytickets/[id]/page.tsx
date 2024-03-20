@@ -13,15 +13,19 @@ async function getTicket(id: string){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        const result = await res.json();
-        if(!result.ticket){
-			notFound();
-		}
-        let ticket = result.ticket;
-        ticket.date = new Date(ticket.date);
-        return ticket;
+        if(res.status != 200){
+            throw new Error(res.statusText);
+        } else {
+            const result = await res.json();
+            if(!result.ticket){
+                notFound();
+            }
+            let ticket = result.ticket;
+            ticket.date = new Date(ticket.date);
+            return ticket;
+        }
     } catch (error) {
-        console.log(error);
+        throw new Error(error as string);
     }
 }
 

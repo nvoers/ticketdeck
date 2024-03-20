@@ -48,19 +48,17 @@ export default function AddTickets() {
                 method: 'POST',
                 body: data
             })
-            // handle the error
-            if(res.status == 401){
-                console.log("Unauthorized");
-                return;
-            }
             if(res.status == 200){
                 toast.success('Tickets uploaded!', { id: toastId })
                 router.push('/mytickets/all');
+            } else {
+                toast.error('Failed to upload tickets', { id: toastId })
+                throw new Error(res.statusText);
             }
         } catch (e) {
             // Handle errors here
             toast.error('Something went wrong', { id: toastId })
-            console.error(e)
+            throw new Error(e as string);
         }
     }
 
