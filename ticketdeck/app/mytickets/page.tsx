@@ -37,16 +37,17 @@ async function getFirstname(){
             headers: {Authorization: `Bearer ${token}`}
         });
         if(res.status == 401){
-            console.log("Unauthorized");
+            throw new Error("Unauthorized");
             return "";
         }
         if(res.status == 404){
-            throw new Error("User not in database");
+            throw new Error("User not found");
+            return "";
         }
         if(res.status == 200){
             const result = await res.json();
             if(result.user.firstName == ""){
-                console.log("No first name");
+                throw new Error("No first name");
                 return "";
             }
             return result.user.firstName[0].toUpperCase() + result.user.firstName.slice(1).toLowerCase();
@@ -73,6 +74,10 @@ const formatDate = (datestring: string) => {
 export default async function Home() {
     let tickets : Ticket[] = await getTickets();
     let firstName : string = await getFirstname();
+
+    if(firstName == ""){
+        notFound();
+    }
 
     return (
     <>
