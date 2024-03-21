@@ -7,6 +7,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import FriendRequestCard from '@/components/friendrequestcard';
 import { User } from '@prisma/client';
 import { notFound } from 'next/navigation';
+import PendingRequestCard from '@/components/pendingrequestcard';
 
 type Friendship = {
     id: number,
@@ -60,13 +61,35 @@ async function getRequests(){
     }
 }
 
+async function getPendingRequests(){
+    try {
+        const token = await auth().getToken();
+        const request = await fetch(process.env.BASE_URL + "/api/user/me/friends/pending", {
+            method: 'GET',
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        if(request.status != 200){
+            throw new Error(request.statusText);
+        }
+        else {
+            const result = await request.json();
+            return result.requests;
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
 export default async function Page(){
 
     const { userId } = auth();
     const friendships = await getFriends();
     const requests = await getRequests();
+    const pending = await getPendingRequests();
 
-    if(!friendships || !requests){
+    if(!friendships || !requests || !pending){
         return notFound();
     }
 
@@ -94,6 +117,15 @@ export default async function Page(){
                     })
                 }
                 </div>
+                { pending.length > 0 ? <>
+                    <p className='text-2xl font-bold mb-3'>Pending requests</p>
+                    <div className='md:grid md:grid-cols-3 md:gap-2'>
+                        {pending.map(async (request: Friendship) => {
+                            return(<PendingRequestCard key={request.id} request={request}/>)
+                        })}
+                    </div>
+                </>
+                : null}
             </div>
         </>
     );

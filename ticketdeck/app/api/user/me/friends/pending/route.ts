@@ -13,16 +13,16 @@ export async function GET(request: NextRequest) {
                     id: userId,
                 },
                 include: {
-                    receivedFriendships: {
+                    initiatedFriendships: {
                         where: {
                             status: FriendshipStatus.REQUESTED
                         },
                         include: {
-                            initiator: true,
+                            receiver: true,
                         }
                     }
                 }
-            }).then((user) => { return user?.receivedFriendships }) as Friendship[]
+            }).then((user) => { return user?.initiatedFriendships }) as Friendship[]
             if(!requests)
                 return NextResponse.json({error: "response undefined"}, {status: 404})
             return NextResponse.json({"requests": requests}, {status: 200})
