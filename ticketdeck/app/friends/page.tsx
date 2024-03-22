@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import FriendRequestCard from '@/components/friendrequestcard';
 import { User } from '@prisma/client';
+import { notFound } from 'next/navigation';
+import PendingRequestCard from '@/components/pendingrequestcard';
 
 type Friendship = {
     id: number,
@@ -26,16 +28,16 @@ async function getFriends(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(users.status == 401){
-            console.log("Unauthorized");
-            return [];
+        if(users.status != 200){
+            throw new Error(users.statusText);
+        } else {
+            const result = await users.json();
+            return result.friendships;
         }
-        const result = await users.json();
-        return result.friendships;
     } catch (error) {
         console.log(error);
+        return null;
     }
-    return [];
 }
 
 async function getRequests(){
@@ -46,24 +48,38 @@ async function getRequests(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(request.status == 401){
-            console.log("Unauthorized");
-            return [];
-        }
         if(request.status != 200){
-            console.log(request.status);
+            throw new Error(request.statusText);
         }
-        const result = await request.json();
-        return result.requests;
+        else {
+            const result = await request.json();
+            return result.requests;
+        }
     } catch (error) {
         console.log(error);
+        return null;
     }
-    return [];
 }
 
-const getFriend = async (friendship: Friendship) => {
-    const { userId } = auth();
-    return userId === friendship.initiatorId ? friendship.receiver : friendship.initiator;
+async function getPendingRequests(){
+    try {
+        const token = await auth().getToken();
+        const request = await fetch(process.env.BASE_URL + "/api/user/me/friends/pending", {
+            method: 'GET',
+            cache: 'no-store',
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        if(request.status != 200){
+            throw new Error(request.statusText);
+        }
+        else {
+            const result = await request.json();
+            return result.requests;
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 }
 
 export default async function Page(){
@@ -71,6 +87,11 @@ export default async function Page(){
     const { userId } = auth();
     const friendships = await getFriends();
     const requests = await getRequests();
+    const pending = await getPendingRequests();
+
+    if(!friendships || !requests || !pending){
+        return notFound();
+    }
 
     return(
         <>
@@ -96,6 +117,15 @@ export default async function Page(){
                     })
                 }
                 </div>
+                { pending.length > 0 ? <>
+                    <p className='text-2xl font-bold mb-3'>Pending requests</p>
+                    <div className='md:grid md:grid-cols-3 md:gap-2'>
+                        {pending.map(async (request: Friendship) => {
+                            return(<PendingRequestCard key={request.id} request={request}/>)
+                        })}
+                    </div>
+                </>
+                : null}
             </div>
         </>
     );

@@ -19,7 +19,6 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
                 await prisma.friendship.update({
                     where: {
                         id: params.id,
-                        status: FriendshipStatus.REMOVED
                     },
                     data: {
                         status: FriendshipStatus.REMOVED
@@ -34,7 +33,6 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
                 await prisma.friendship.update({
                     where: {
                         id: params.id,
-                        status: FriendshipStatus.ACCEPTED,
                         OR: [
                             {initiatorId: userId},
                             {receiverId: userId}

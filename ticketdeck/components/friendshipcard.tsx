@@ -76,7 +76,7 @@ export default function FriendshipCard({friendship, receiver}: {friendship: Frie
                 <p className="text-md text-slate-400 truncate">{friendship.initiator.username}</p>
             </div>}
             <button className="border-2 border-error rounded-md text-left text-error px-2" onClick={removeFriend}>
-                <FontAwesomeIcon icon={faX} className="h-fill" color="error"/>
+                REMOVE
             </button>
         </div>
     );

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Header from "@/components/header";
 import { auth } from "@clerk/nextjs";
 import { Ticket } from "@prisma/client";
+import { notFound } from "next/navigation";
 
 async function getTickets(){
     try {
@@ -11,9 +12,8 @@ async function getTickets(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(res.status == 401){
-			console.log("Unauthorized");
-			return [];
+        if(res.status != 200){
+			throw new Error("Failed to fetch tickets");
         }
         const result = await res.json();
 		if(!result.tickets){
@@ -22,11 +22,12 @@ async function getTickets(){
         return result.tickets;
     } catch (error) {
         console.log(error);
+        return null;
     }
-    return [];
 }
 
 async function getFirstname(){
+
     try {
         const token = await auth().getToken();
         const res = await fetch(process.env.BASE_URL + '/api/user/me', {
@@ -34,22 +35,23 @@ async function getFirstname(){
             cache: 'no-store',
             headers: {Authorization: `Bearer ${token}`}
         });
-        if(res.status == 401){
-            console.log("Unauthorized");
-            return "";
+        if(res.status == 404){
+            throw new Error("User not found in database");
         }
-        if(res.status == 200){
+        if(res.status != 200){
+            throw new Error(res.statusText);
+        }
+        else{
             const result = await res.json();
             if(result.user.firstName == ""){
-                console.log("No first name");
-                return "";
+                throw new Error("No first name");
             }
             return result.user.firstName[0].toUpperCase() + result.user.firstName.slice(1).toLowerCase();
         }
     } catch (error) {
         console.log(error);
+        return null;
     }
-    return "";
 }
 
 const formatDate = (datestring: string) => {
@@ -68,6 +70,10 @@ const formatDate = (datestring: string) => {
 export default async function Home() {
     let tickets : Ticket[] = await getTickets();
     let firstName : string = await getFirstname();
+
+    if(!firstName || !tickets){
+        notFound();
+    }
 
     return (
     <>

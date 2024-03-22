@@ -36,7 +36,7 @@ export default function AddFriendCard({user}: {user: User}){
                 <p className="text-md text-slate-400 truncate">{user.username}</p>
             </div>
             <button className="border-2 border-success rounded-md text-left text-success px-2" onClick={addFriend}>
-                <FontAwesomeIcon icon={faPlus} className="h-fill" color="error"/>
+                ADD
             </button>
         </div>
     );
